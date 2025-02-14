@@ -1,0 +1,93 @@
+"use client";
+
+import { Frame, FrameScreen, Text } from "@/atoms";
+import { ProjectCard } from "@/components";
+import { colors } from "@/styles";
+import useResponsiveType from "@/hooks/useResponsiveType";
+
+const Projects = () => {
+  const { responsiveType } = useResponsiveType();
+  const isMobile = responsiveType === "mobile";
+  const isTablet = responsiveType === "tablet";
+
+  const paddingX = isMobile ? 16 : isTablet ? 30 : 40;
+  const paddingY = isMobile ? 80 : isTablet ? 120 : 160;
+
+  const projects = [
+    {
+      image: "/images/hero/whale.jpg", // 실제 이미지 경로로 수정 필요
+      title: "나의 올해 사주는? 루리즈",
+      type: "Interactive Web",
+      boldTexts: ["루리즈"],
+      onClick: () => console.log("루리즈 클릭됨"),
+    },
+    {
+      image: "/images/hero/whale.jpg", // 실제 이미지 경로로 수정 필요
+      title: "흰고래컴퍼니 자체 디자인시스템",
+      type: "Interactive Web",
+      boldTexts: ["디자인시스템"],
+      onClick: () => console.log("디자인시스템 클릭됨"),
+    },
+    {
+      image: "/images/hero/whale.jpg", // 실제 이미지 경로로 수정 필요
+      title: "인도네시아에도 당근마켓이? 이너서클",
+      type: "Interactive Web",
+      boldTexts: ["이너서클"],
+      onClick: () => console.log("이너서클 클릭됨"),
+    },
+    {
+      image: "/images/hero/whale.jpg", // 실제 이미지 경로로 수정 필요
+      title: "탈중앙 암호화폐 거래소, 블록덱스",
+      type: "Interactive Web",
+      boldTexts: ["블록덱스"],
+      onClick: () => console.log("블록렉스 클릭됨"),
+    },
+  ];
+
+  const gridStyle: React.CSSProperties = {
+    display: "grid",
+    gap: "24px",
+    gridTemplateColumns: isMobile
+      ? "1fr"
+      : isTablet
+      ? "repeat(2, 1fr)"
+      : "repeat(2, 1fr)",
+    width: "100%",
+  };
+
+  return (
+    <FrameScreen
+      overflow="hidden"
+      bg={colors.white}
+      px={paddingX}
+      py={paddingY}
+    >
+      <Frame w={"100%"} alignment="center" pb={80}>
+        <Text
+          fontColor={colors.neutral[900]}
+          fontSize={52}
+          lineHeight={"72px"}
+          fontWeight={700}
+        >
+          프로젝트
+        </Text>
+      </Frame>
+      <Frame col w="100%" gap={24}>
+        <div style={gridStyle}>
+          {projects.map((project, index) => (
+            <ProjectCard
+              key={index}
+              image={project.image}
+              title={project.title}
+              type={project.type}
+              boldTexts={project.boldTexts}
+              onClick={project.onClick}
+            />
+          ))}
+        </div>
+      </Frame>
+    </FrameScreen>
+  );
+};
+
+export default Projects;
