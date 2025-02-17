@@ -1,6 +1,6 @@
 "use client";
 
-import { Frame, FrameScreen, Text } from "@/atoms";
+import { Frame, Text } from "@/atoms";
 import { ServiceCard } from "@/components";
 import { colors } from "@/styles";
 import PlanningIcon from "@/assets/icons/line/planning.svg?react";
@@ -79,11 +79,16 @@ const Services = () => {
   };
 
   return (
-    <FrameScreen
-      overflow="hidden"
-      bg={colors.white}
-      px={paddingX}
-      py={paddingY}
+    <div
+      id="services"
+      style={{
+        backgroundColor: colors.white,
+        paddingLeft: paddingX,
+        paddingRight: paddingX,
+        paddingTop: paddingY,
+        paddingBottom: paddingY,
+        overflow: "hidden",
+      }}
     >
       <Frame w={"100%"} alignment="center" pb={80}>
         <Text
@@ -110,7 +115,7 @@ const Services = () => {
           ))}
         </div>
       </Frame>
-    </FrameScreen>
+    </div>
   );
 };
 
