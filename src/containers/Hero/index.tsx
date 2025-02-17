@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import Button from "@/components/Button";
 import ArrowRight from "@/assets/icons/line/arrow-right.svg?react";
 import { colors } from "@/styles";
-import { Heading6, Text, Frame, FrameScreen } from "@/atoms";
+import { Heading6, Text, Frame } from "@/atoms";
 import { useResponsiveType } from "@/hooks";
 export default function Hero() {
   // 마운트 여부 상태 추가
@@ -32,7 +32,14 @@ export default function Hero() {
   const containerPx = isMobile ? 16 : isTablet ? 30 : 40;
 
   return (
-    <FrameScreen overflow="hidden" bg={colors.neutral[950]} px={containerPx}>
+    <div
+      id="intro"
+      className={`bg-[#0C111D] pt-[88px]`}
+      style={{
+        paddingLeft: containerPx,
+        paddingRight: containerPx,
+      }}
+    >
       <div
         style={{
           position: "relative",
@@ -107,6 +114,6 @@ export default function Hero() {
           </Frame>
         </Frame>
       </div>
-    </FrameScreen>
+    </div>
   );
 }

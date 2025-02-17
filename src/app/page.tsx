@@ -1,3 +1,7 @@
+"use client";
+
+import { useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { Frame, FrameScreen } from "@/atoms";
 import { Footer } from "@/components";
 import {
@@ -10,6 +14,20 @@ import {
 } from "@/containers";
 
 export default function Home() {
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const section = searchParams.get("section");
+    if (section) {
+      const element = document.getElementById(section);
+      if (element) {
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: "smooth" });
+        }, 100);
+      }
+    }
+  }, [searchParams]);
+
   return (
     <FrameScreen overflow="hidden">
       <Frame w="100%" h={"100%"} col>

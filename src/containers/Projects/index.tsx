@@ -1,6 +1,6 @@
 "use client";
 
-import { Frame, FrameScreen, Text } from "@/atoms";
+import { Frame, Text } from "@/atoms";
 import { ProjectCard } from "@/components";
 import { colors } from "@/styles";
 import useResponsiveType from "@/hooks/useResponsiveType";
@@ -62,11 +62,16 @@ const Projects = () => {
   });
 
   return (
-    <FrameScreen
-      overflow="hidden"
-      bg={colors.white}
-      px={paddingX}
-      py={paddingY}
+    <div
+      id="projects"
+      style={{
+        backgroundColor: colors.white,
+        paddingLeft: paddingX,
+        paddingRight: paddingX,
+        paddingTop: paddingY,
+        paddingBottom: paddingY,
+        overflow: "hidden",
+      }}
     >
       <Frame w={"100%"} alignment="center" pb={80}>
         <Text
@@ -110,7 +115,7 @@ const Projects = () => {
           ))}
         </div>
       </Frame>
-    </FrameScreen>
+    </div>
   );
 };
 
