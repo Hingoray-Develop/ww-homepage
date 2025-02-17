@@ -58,6 +58,7 @@ const Projects = () => {
   const getCardStyle = (index: number): React.CSSProperties => ({
     transform: !isMobile && index % 2 === 1 ? "translateY(80px)" : "none",
     transition: "transform 0.3s ease-in-out",
+    paddingTop: !isMobile && index % 2 === 1 ? "80px" : "0",
   });
 
   return (

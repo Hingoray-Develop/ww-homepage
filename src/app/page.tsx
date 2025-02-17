@@ -1,8 +1,13 @@
 import { Frame, FrameScreen } from "@/atoms";
 import { Footer } from "@/components";
-import { Hero, Services } from "@/containers";
-import Intro from "@/containers/Intro";
-import Projects from "@/containers/Projects";
+import {
+  Hero,
+  Services,
+  Intro,
+  Projects,
+  CooperateList,
+  WhyChooseUs,
+} from "@/containers";
 
 export default function Home() {
   return (
@@ -12,6 +17,8 @@ export default function Home() {
         <Intro />
         <Services />
         <Projects />
+        <WhyChooseUs />
+        <CooperateList />
         <Footer />
       </Frame>
     </FrameScreen>

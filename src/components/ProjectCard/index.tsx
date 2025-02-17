@@ -83,7 +83,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           priority
         />
       </div>
-      <div style={{ paddingTop: 24 }}>
+      <div style={{ paddingTop: 16 }}>
         {renderTitle(title)}
         <Text fontSize={16} lineHeight="24px" fontColor={colors.neutral[500]}>
           {type}

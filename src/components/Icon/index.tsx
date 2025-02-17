@@ -39,10 +39,10 @@ function Icon<T extends IconType>({
   useEffect(() => {
     const importIcon = async () => {
       try {
-        const { default: ImportedIcon } = await import(
-          `@/images/icons/${type}/${name}.svg?react`
-        );
-        setIconComponent(() => ImportedIcon);
+        // const { default: ImportedIcon } = await import(
+        //   `@/images/icons/${type}/${name}.svg?react`
+        // );
+        // setIconComponent(() => ImportedIcon);
       } catch (error) {
         console.error(`Failed to load image: ${type}/${name}, ${error}`);
         setIconComponent(null);
