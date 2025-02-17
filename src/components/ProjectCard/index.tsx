@@ -70,9 +70,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         borderRadius: 8,
       }}
     >
-      <div
-        style={{ position: "relative", width: "100%", paddingTop: "56.25%" }}
-      >
+      <div style={{ position: "relative", width: "100%", paddingTop: "100%" }}>
         <Image
           src={image}
           alt={title}
@@ -80,6 +78,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           style={{
             objectFit: "cover",
             objectPosition: "center center",
+            borderRadius: 32,
           }}
           priority
         />

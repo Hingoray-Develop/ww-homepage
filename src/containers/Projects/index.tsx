@@ -55,6 +55,11 @@ const Projects = () => {
     width: "100%",
   };
 
+  const getCardStyle = (index: number): React.CSSProperties => ({
+    transform: !isMobile && index % 2 === 1 ? "translateY(80px)" : "none",
+    transition: "transform 0.3s ease-in-out",
+  });
+
   return (
     <FrameScreen
       overflow="hidden"
@@ -71,18 +76,36 @@ const Projects = () => {
         >
           프로젝트
         </Text>
+        <Text
+          fontColor={colors.neutral[700]}
+          fontSize={20}
+          lineHeight={"30x"}
+          fontWeight={400}
+          pt={8}
+        >
+          기업과 유저가 원하는 최고의 문제해결을 통해
+        </Text>
+        <Text
+          fontColor={colors.neutral[700]}
+          fontSize={20}
+          lineHeight={"30x"}
+          fontWeight={400}
+        >
+          우리가 함께 완성한 프로젝트를 소개합니다.
+        </Text>
       </Frame>
       <Frame col w="100%" gap={24}>
         <div style={gridStyle}>
           {projects.map((project, index) => (
-            <ProjectCard
-              key={index}
-              image={project.image}
-              title={project.title}
-              type={project.type}
-              boldTexts={project.boldTexts}
-              onClick={project.onClick}
-            />
+            <div key={index} style={getCardStyle(index)}>
+              <ProjectCard
+                image={project.image}
+                title={project.title}
+                type={project.type}
+                boldTexts={project.boldTexts}
+                onClick={project.onClick}
+              />
+            </div>
           ))}
         </div>
       </Frame>
