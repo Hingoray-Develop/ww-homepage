@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Header } from "@/components";
 import localFont from "next/font/local";
+import { GoogleAnalytics } from '@next/third-parties/google';
 // import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
@@ -36,6 +37,7 @@ export default function RootLayout({
         <Header />
         {children}
         {/* <Footer /> */}
+        <GoogleAnalytics gaId="G-RSB381YFK5" />
       </body>
     </html>
   );

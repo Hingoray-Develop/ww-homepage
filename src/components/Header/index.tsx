@@ -48,7 +48,16 @@ const Header = () => {
         zIndex={1000}
       >
         <Frame>
-          <Link href="/">
+          <Link
+            href="/"
+            onClick={() => {
+              if (typeof window.gtag === "function") {
+                window.gtag("event", "menu_click", {
+                  menu_name: "home",
+                });
+              }
+            }}
+          >
             <Image
               src="/images/logo/logo.png"
               alt="logo"
@@ -61,7 +70,14 @@ const Header = () => {
         <Frame row gap={24} tablet={{ hidden: true }} mobile={{ hidden: true }}>
           <div
             className="items-center justify-center px-[4px] py-[19px] cursor-pointer"
-            onClick={() => scrollToSection("intro")}
+            onClick={() => {
+              scrollToSection("intro");
+              if (typeof window.gtag === "function") {
+                window.gtag("event", "menu_click", {
+                  menu_name: "intro",
+                });
+              }
+            }}
           >
             <span
               className={`py-[19px] font-[600] text-[16px] items-center justify-center text-[#CED3D8] hover:text-[#344054]`}
@@ -71,7 +87,14 @@ const Header = () => {
           </div>
           <div
             className="items-center justify-center px-[4px] py-[19px] cursor-pointer"
-            onClick={() => scrollToSection("projects")}
+            onClick={() => {
+              scrollToSection("projects");
+              if (typeof window.gtag === "function") {
+                window.gtag("event", "menu_click", {
+                  menu_name: "projects",
+                });
+              }
+            }}
           >
             <span
               className={`py-[19px] font-[600] text-[16px] items-center justify-center text-[#CED3D8] hover:text-[#344054]`}
@@ -81,7 +104,14 @@ const Header = () => {
           </div>
           <div
             className="items-center justify-center px-[4px] py-[19px] cursor-pointer"
-            onClick={() => scrollToSection("services")}
+            onClick={() => {
+              scrollToSection("services");
+              if (typeof window.gtag === "function") {
+                window.gtag("event", "menu_click", {
+                  menu_name: "services",
+                });
+              }
+            }}
           >
             <span
               className={`py-[19px] font-[600] text-[16px] items-center justify-center text-[#CED3D8] hover:text-[#344054]`}
@@ -98,7 +128,14 @@ const Header = () => {
           </div>
           <div
             className="items-center justify-center px-[4px] py-[19px] cursor-pointer"
-            onClick={() => router.push("/cost-calculator")}
+            onClick={() => {
+              router.push("/cost-calculator");
+              if (typeof window.gtag === "function") {
+                window.gtag("event", "menu_click", {
+                  menu_name: "cost-calculator",
+                });
+              }
+            }}
           >
             <span
               className={`py-[19px] font-[600] text-[16px] items-center justify-center text-[#84AAFB] hover:text-[#2167F7]`}
@@ -108,7 +145,14 @@ const Header = () => {
           </div>
           <div
             className="items-center justify-center px-[4px] py-[19px] cursor-pointer"
-            onClick={() => router.push("/question")}
+            onClick={() => {
+              router.push("/question");
+              if (typeof window.gtag === "function") {
+                window.gtag("event", "menu_click", {
+                  menu_name: "question",
+                });
+              }
+            }}
           >
             <span
               className={`py-[19px] font-[600] text-[16px] items-center justify-center text-[#CED3D8] hover:text-[#344054]`}

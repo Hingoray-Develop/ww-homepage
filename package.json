@@ -10,6 +10,7 @@
     "generate-icon-types": "ts-node --project tsconfig.json src/scripts/generateIconTypes.ts"
   },
   "dependencies": {
+    "@next/third-parties": "^15.1.7",
     "@nextui-org/react": "^2.6.11",
     "framer-motion": "^12.4.1",
     "next": "15.1.6",
