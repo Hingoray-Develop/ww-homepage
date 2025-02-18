@@ -27,7 +27,7 @@ const Services = () => {
         "정보 구조 설계 (IA)",
         "프로젝트 계획 수립",
       ],
-      onClick: () => console.log("기획 더보기 클릭"),
+      // onClick: () => console.log("기획 더보기 클릭"),
     },
     {
       icon: <DesignIcon width={64} height={64} fill={colors.neutral[300]} />,
@@ -38,7 +38,7 @@ const Services = () => {
         "UI 디자인",
         "프로토타입 제작",
       ],
-      onClick: () => console.log("디자인 더보기 클릭"),
+      // onClick: () => console.log("디자인 더보기 클릭"),
     },
     {
       icon: <DevelopIcon width={64} height={64} fill={colors.neutral[300]} />,
@@ -49,7 +49,7 @@ const Services = () => {
         "서버, API 개발",
         "성능 최적화",
       ],
-      onClick: () => console.log("개발 더보기 클릭"),
+      // onClick: () => console.log("개발 더보기 클릭"),
     },
     {
       icon: (
@@ -62,7 +62,7 @@ const Services = () => {
         "정기 점검 및 최적화",
         "기능 업데이트*",
       ],
-      onClick: () => console.log("유지보수 더보기 클릭"),
+      // onClick: () => console.log("유지보수 더보기 클릭"),
     },
   ];
 
@@ -109,7 +109,7 @@ const Services = () => {
               icon={service.icon}
               title={service.title}
               descriptions={service.descriptions}
-              onMoreClick={service.onClick}
+              // onMoreClick={service.onClick}
               minH={isMobile ? 220 : 300}
             />
           ))}

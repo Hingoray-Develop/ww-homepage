@@ -13,7 +13,7 @@ export interface ServiceCardProps {
   icon: ReactNode;
   title: string;
   descriptions: string[];
-  onMoreClick?: () => void;
+  // onMoreClick?: () => void;
   /** 카드의 최소 높이, 기본값 300 */
   minH?: number;
 }
@@ -22,7 +22,7 @@ const ServiceCard = ({
   icon,
   title,
   descriptions,
-  onMoreClick,
+  // onMoreClick,
   minH = 300,
 }: ServiceCardProps) => {
   return (
@@ -54,14 +54,14 @@ const ServiceCard = ({
         </Frame>
       </Frame>
 
-      <Frame
+      {/* <Frame
         w={"100%"}
         cursor="pointer"
         onClick={onMoreClick}
         alignment="bottom-right"
       >
         <Body1 fontColor={colors.neutral[500]}>더보기 →</Body1>
-      </Frame>
+      </Frame> */}
     </Frame>
   );
 };
