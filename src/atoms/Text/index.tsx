@@ -13,6 +13,7 @@ import {
 import usePaddingStyle, {
   UsePaddingStyleProps,
 } from "@/styles/usePaddingStyle";
+import type { JSX } from "react";
 
 const HEADING_TAG_MAP: Record<string, keyof JSX.IntrinsicElements> = {
   Heading1: "h1",
