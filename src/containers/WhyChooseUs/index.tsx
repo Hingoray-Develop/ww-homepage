@@ -10,6 +10,7 @@ import { Body1, Frame, Heading4, Text } from "@/atoms";
 import { colors } from "@/styles";
 import { useResponsiveType } from "@/hooks";
 import { Divider } from "@/components";
+import { AnalyticsEventList, logEvent } from "@/utils/analytics";
 
 /**
  * 아이콘 위치를 지정할 수 있도록 iconPosition 필드를 만듭니다.
@@ -152,7 +153,16 @@ function ReasonCard({
             fontColor={colors.white}
             underline
           >
-            <Link href={href}>비용 산정하러 가기 {">"}</Link>
+            <Link
+              href={href}
+              onClick={() => {
+                logEvent(AnalyticsEventList.BUTTON_CLICK, {
+                  button_name: "cost_calculator_why_choose_us",
+                });
+              }}
+            >
+              비용 산정하러 가기 {">"}
+            </Link>
           </Text>
         )}
       </div>

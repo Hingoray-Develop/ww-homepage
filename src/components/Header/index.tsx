@@ -2,6 +2,7 @@
 
 import { Body2, Frame, FrameScreen, Image } from "@/atoms";
 import { colors } from "@/styles";
+import { AnalyticsEventList, logEvent } from "@/utils/analytics";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -51,11 +52,9 @@ const Header = () => {
           <Link
             href="/"
             onClick={() => {
-              if (typeof window.gtag === "function") {
-                window.gtag("event", "menu_click", {
-                  menu_name: "home",
-                });
-              }
+              logEvent(AnalyticsEventList.MENU_CLICK, {
+                menu_name: "home_logo",
+              });
             }}
           >
             <Image
@@ -72,11 +71,9 @@ const Header = () => {
             className="items-center justify-center px-[4px] py-[19px] cursor-pointer"
             onClick={() => {
               scrollToSection("intro");
-              if (typeof window.gtag === "function") {
-                window.gtag("event", "menu_click", {
-                  menu_name: "intro",
-                });
-              }
+              logEvent(AnalyticsEventList.MENU_CLICK, {
+                menu_name: "intro",
+              });
             }}
           >
             <span
@@ -89,11 +86,9 @@ const Header = () => {
             className="items-center justify-center px-[4px] py-[19px] cursor-pointer"
             onClick={() => {
               scrollToSection("projects");
-              if (typeof window.gtag === "function") {
-                window.gtag("event", "menu_click", {
-                  menu_name: "projects",
-                });
-              }
+              logEvent(AnalyticsEventList.MENU_CLICK, {
+                menu_name: "projects",
+              });
             }}
           >
             <span
@@ -106,11 +101,9 @@ const Header = () => {
             className="items-center justify-center px-[4px] py-[19px] cursor-pointer"
             onClick={() => {
               scrollToSection("services");
-              if (typeof window.gtag === "function") {
-                window.gtag("event", "menu_click", {
-                  menu_name: "services",
-                });
-              }
+              logEvent(AnalyticsEventList.MENU_CLICK, {
+                menu_name: "services",
+              });
             }}
           >
             <span
@@ -130,11 +123,9 @@ const Header = () => {
             className="items-center justify-center px-[4px] py-[19px] cursor-pointer"
             onClick={() => {
               router.push("/cost-calculator");
-              if (typeof window.gtag === "function") {
-                window.gtag("event", "menu_click", {
-                  menu_name: "cost-calculator",
-                });
-              }
+              logEvent(AnalyticsEventList.MENU_CLICK, {
+                menu_name: "cost_calculator",
+              });
             }}
           >
             <span
@@ -147,11 +138,9 @@ const Header = () => {
             className="items-center justify-center px-[4px] py-[19px] cursor-pointer"
             onClick={() => {
               router.push("/question");
-              if (typeof window.gtag === "function") {
-                window.gtag("event", "menu_click", {
-                  menu_name: "question",
-                });
-              }
+              logEvent(AnalyticsEventList.MENU_CLICK, {
+                menu_name: "question",
+              });
             }}
           >
             <span

@@ -6,6 +6,8 @@ import ArrowRight from "@/assets/icons/line/arrow-right.svg?react";
 import { colors } from "@/styles";
 import { Heading6, Text, Frame } from "@/atoms";
 import { useResponsiveType } from "@/hooks";
+import { logEvent, AnalyticsEventList } from "@/utils/analytics";
+
 export default function Hero() {
   // 마운트 여부 상태 추가
   const [hasMounted, setHasMounted] = useState(false);
@@ -95,7 +97,9 @@ export default function Hero() {
               bg={colors.neutral[900]}
               radius={500}
               onClick={() => {
-                console.log("빠른 프로젝트 견적내기");
+                logEvent(AnalyticsEventList.BUTTON_CLICK, {
+                  button_name: "cost_calculator_hero",
+                });
               }}
             >
               <Frame

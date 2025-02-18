@@ -4,6 +4,7 @@ import { Frame, Text } from "@/atoms";
 import { ProjectCard } from "@/components";
 import { colors } from "@/styles";
 import useResponsiveType from "@/hooks/useResponsiveType";
+import { AnalyticsEventList, logEvent } from "@/utils/analytics";
 
 const Projects = () => {
   const { responsiveType } = useResponsiveType();
@@ -19,28 +20,44 @@ const Projects = () => {
       title: "나의 올해 사주는? 루리즈",
       type: "Interactive Web",
       boldTexts: ["루리즈"],
-      onClick: () => console.log("루리즈 클릭됨"),
+      onClick: () => {
+        logEvent(AnalyticsEventList.BUTTON_CLICK, {
+          button_name: "project_luriz",
+        });
+      },
     },
     {
       image: "/images/hero/whale.jpg", // 실제 이미지 경로로 수정 필요
       title: "흰고래컴퍼니 자체 디자인시스템",
       type: "Interactive Web",
       boldTexts: ["디자인시스템"],
-      onClick: () => console.log("디자인시스템 클릭됨"),
+      onClick: () => {
+        logEvent(AnalyticsEventList.BUTTON_CLICK, {
+          button_name: "project_design_system",
+        });
+      },
     },
     {
       image: "/images/hero/whale.jpg", // 실제 이미지 경로로 수정 필요
       title: "인도네시아에도 당근마켓이? 이너서클",
       type: "Interactive Web",
       boldTexts: ["이너서클"],
-      onClick: () => console.log("이너서클 클릭됨"),
+      onClick: () => {
+        logEvent(AnalyticsEventList.BUTTON_CLICK, {
+          button_name: "project_inner_circle",
+        });
+      },
     },
     {
       image: "/images/hero/whale.jpg", // 실제 이미지 경로로 수정 필요
       title: "탈중앙 암호화폐 거래소, 블록덱스",
       type: "Interactive Web",
       boldTexts: ["블록덱스"],
-      onClick: () => console.log("블록렉스 클릭됨"),
+      onClick: () => {
+        logEvent(AnalyticsEventList.BUTTON_CLICK, {
+          button_name: "project_blockdex",
+        });
+      },
     },
   ];
 

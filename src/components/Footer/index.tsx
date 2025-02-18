@@ -6,6 +6,7 @@ import Button from "../Button";
 import Divider from "../Divider";
 
 import ArrowRight from "@/assets/icons/line/arrow-right.svg?react";
+import { AnalyticsEventList, logEvent } from "@/utils/analytics";
 
 const Footer = () => {
   return (
@@ -66,7 +67,9 @@ const Footer = () => {
                   bg={colors.main[600]}
                   radius={500}
                   onClick={() => {
-                    console.log("빠른 프로젝트 견적내기");
+                    logEvent(AnalyticsEventList.BUTTON_CLICK, {
+                      button_name: "cost_calculator_footer",
+                    });
                   }}
                 >
                   <Frame
