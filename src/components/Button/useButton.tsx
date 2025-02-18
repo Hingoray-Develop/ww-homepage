@@ -119,7 +119,6 @@ export default function useButton({
   loadingStyle = {},
   iconStyle = {},
   iconActiveStyle = {},
-  iconLoadingStyle = {},
   color = "main",
   style = "none",
   active = "none",

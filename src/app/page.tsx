@@ -1,7 +1,4 @@
-"use client";
-
-import { useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 import { Frame, FrameScreen } from "@/atoms";
 import { Footer } from "@/components";
 import {
@@ -12,33 +9,25 @@ import {
   CooperateList,
   WhyChooseUs,
 } from "@/containers";
+import ScrollToSection from "@/components/ScrollToSection";
 
 export default function Home() {
-  const searchParams = useSearchParams();
-
-  useEffect(() => {
-    const section = searchParams.get("section");
-    if (section) {
-      const element = document.getElementById(section);
-      if (element) {
-        setTimeout(() => {
-          element.scrollIntoView({ behavior: "smooth" });
-        }, 100);
-      }
-    }
-  }, [searchParams]);
-
   return (
-    <FrameScreen overflow="hidden">
-      <Frame w="100%" h={"100%"} col>
-        <Hero />
-        <Intro />
-        <Services />
-        <Projects />
-        <WhyChooseUs />
-        <CooperateList />
-        <Footer />
-      </Frame>
-    </FrameScreen>
+    <>
+      <Suspense fallback={<div>로딩중...</div>}>
+        <FrameScreen overflow="hidden">
+          <Frame w="100%" h={"100%"} col>
+            <Hero />
+            <Intro />
+            <Services />
+            <Projects />
+            <WhyChooseUs />
+            <CooperateList />
+            <Footer />
+          </Frame>
+        </FrameScreen>
+        <ScrollToSection />
+      </Suspense>
+    </>
   );
 }

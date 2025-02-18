@@ -63,7 +63,6 @@ export default function useFrame(props: UseFrameProps) {
       ...getTransStyle,
       ...getDimensionStyle,
       ...getBackgroundStyle,
-      margin: props.m,
     };
   }, [
     getFlexStyle,
