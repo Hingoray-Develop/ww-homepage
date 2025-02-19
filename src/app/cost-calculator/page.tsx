@@ -12,11 +12,7 @@ import { useInitialLoading } from "@/hooks/useInitialLoading";
 import CodeIcon from "@/assets/icons/line/code.svg?react";
 import { Text } from "@/atoms";
 
-interface CostCalculatorProps {
-  temp?: string;
-}
-
-export default function CostCalculator({}: CostCalculatorProps) {
+export default function CostCalculator() {
   const [selectedOptions, setSelectedOptions] = useState<
     CostCalculatorOption[]
   >([]);
