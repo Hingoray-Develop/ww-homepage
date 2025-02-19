@@ -1,6 +1,6 @@
 "use client";
 
-import Lottie from "lottie-react";
+import dynamic from "next/dynamic";
 import loadingAnimation from "@/assets/lottie/loading2.json";
 import { Frame } from "@/atoms";
 import { useEffect, useState } from "react";
@@ -9,6 +9,8 @@ interface LoadingSpinnerProps {
   width?: number;
   height?: number;
 }
+
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
 const LoadingSpinner = ({ width = 100, height = 100 }: LoadingSpinnerProps) => {
   const [isVisible, setIsVisible] = useState(true);

@@ -18,6 +18,7 @@ export default function Hero() {
   }, []);
 
   const { responsiveType } = useResponsiveType();
+
   const isMobile = responsiveType === "mobile";
   const isTablet = responsiveType === "tablet";
 
