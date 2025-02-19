@@ -3,7 +3,10 @@ import "./globals.css";
 import { Header } from "@/components";
 import localFont from "next/font/local";
 import { GoogleAnalytics } from "@next/third-parties/google";
+import ScrollToTop from "@/components/ScrollToTop";
+import BackgroundTransition from "@/components/BackgroundTransition";
 import { LoadingProvider } from "@/contexts/LoadingContext";
+import { DarkModeProvider } from "@/contexts/DarkModeContext";
 
 export const metadata: Metadata = {
   title: "흰고래컴퍼니 | 맞춤형 소프트웨어 개발 및 IT 솔루션",
@@ -35,10 +38,14 @@ export default function RootLayout({
   return (
     <html lang="en" className={pretendard.variable}>
       <body className={` ${pretendard.variable}`}>
-        <LoadingProvider>
-          <Header />
-          <div style={{ paddingTop: "88px" }}>{children}</div>
-        </LoadingProvider>
+        <DarkModeProvider>
+          <BackgroundTransition />
+          <LoadingProvider>
+            <ScrollToTop />
+            <Header />
+            <div style={{ paddingTop: "88px" }}>{children}</div>
+          </LoadingProvider>
+        </DarkModeProvider>
         {/* <Footer /> */}
         <GoogleAnalytics gaId="G-RSB381YFK5" />
       </body>

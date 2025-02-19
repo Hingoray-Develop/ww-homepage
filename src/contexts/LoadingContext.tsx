@@ -20,7 +20,7 @@ export const LoadingProvider = ({ children }: { children: ReactNode }) => {
   const [isLoading, setIsLoadingState] = useState(true);
   const [loadingStartTime, setLoadingStartTime] = useState<number | null>(null);
   const [isVisible, setIsVisible] = useState(true);
-  const MIN_LOADING_TIME = 1500; // 최소 2.5초 (최소 재생시간)
+  const MIN_LOADING_TIME = 2000; // 최소 2초 (최소 재생시간)
   const FADE_DURATION = 500; // fade-out 애니메이션 시간
 
   const setIsLoading = (loading: boolean) => {

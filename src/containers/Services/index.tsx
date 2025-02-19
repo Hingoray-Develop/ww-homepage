@@ -1,18 +1,37 @@
 "use client";
 
 import { Frame, Text } from "@/atoms";
-import { ServiceCard } from "@/components";
+
 import { colors } from "@/styles";
 import PlanningIcon from "@/assets/icons/line/planning.svg?react";
 import DesignIcon from "@/assets/icons/line/design.svg?react";
 import DevelopIcon from "@/assets/icons/line/develop.svg?react";
 import MaintenanceIcon from "@/assets/icons/line/maintenance.svg?react";
 import useResponsiveType from "@/hooks/useResponsiveType";
+import { useEffect } from "react";
+import { useDarkMode } from "@/contexts/DarkModeContext";
+import { ServiceCard } from "@/components";
 
 const Services = () => {
   const { responsiveType } = useResponsiveType();
   const isMobile = responsiveType === "mobile";
   const isTablet = responsiveType === "tablet";
+  const { isDarkMode, setIsDarkMode } = useDarkMode();
+
+  useEffect(() => {
+    function onScroll() {
+      const servicesSection = document.getElementById("services");
+      if (!servicesSection) return;
+
+      const rect = servicesSection.getBoundingClientRect();
+      const threshold = window.innerHeight * 0.5;
+
+      setIsDarkMode(rect.top > threshold);
+    }
+
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [setIsDarkMode]);
 
   const paddingX = isMobile ? 16 : isTablet ? 30 : 40;
   const paddingY = isMobile ? 80 : isTablet ? 120 : 160;
@@ -81,8 +100,11 @@ const Services = () => {
   return (
     <div
       id="services"
+      className={`transition-colors duration-500 ${
+        isDarkMode ? "dark-mode" : "light-mode"
+      }`}
       style={{
-        backgroundColor: colors.white,
+        backgroundColor: isDarkMode ? colors.neutral[950] : colors.white,
         paddingLeft: paddingX,
         paddingRight: paddingX,
         paddingTop: paddingY,
@@ -92,7 +114,7 @@ const Services = () => {
     >
       <Frame w={"100%"} alignment="center" pb={80}>
         <Text
-          fontColor={colors.neutral[900]}
+          fontColor={isDarkMode ? colors.white : colors.neutral[950]}
           fontSize={52}
           lineHeight={"72px"}
           fontWeight={700}

@@ -5,6 +5,7 @@ import { ChatBubble, Divider } from "@/components";
 import { colors } from "@/styles";
 import { useEffect, useMemo, useState } from "react";
 import useResponsiveType from "@/hooks/useResponsiveType";
+import { useDarkMode } from "@/contexts/DarkModeContext";
 
 // 텍스트 픽셀 길이를 재는 헬퍼 함수
 function measureTextWidth(text: string, font = "16px sans-serif"): number {
@@ -16,12 +17,14 @@ function measureTextWidth(text: string, font = "16px sans-serif"): number {
 }
 
 const Intro = () => {
-  // 클라이언트에서 마운트되었는지 확인
   const [hasMounted, setHasMounted] = useState(false);
-
   const { responsiveType } = useResponsiveType();
+  const { isDarkMode } = useDarkMode();
   const isMobile = responsiveType === "mobile";
   const isTablet = responsiveType === "tablet";
+
+  // 외부 컨테이너 여백 (초기값 설정)
+  const containerPy = isMobile ? 80 : isTablet ? 100 : 120;
 
   const messages = useMemo(
     () => [
@@ -60,7 +63,6 @@ const Intro = () => {
 
   // 외부 컨테이너 여백
   const containerPx = isMobile ? 16 : isTablet ? 30 : 40;
-  const containerPy = isMobile ? 80 : isTablet ? 100 : 120;
 
   // 우측(또는 단일) 텍스트 영역 설정
 
@@ -71,26 +73,42 @@ const Intro = () => {
   if (isMobile || isTablet) {
     // 모바일 또는 태블릿: 채팅 말풍선은 숨기고 텍스트들만 중앙 정렬하여 표시
     return (
-      <FrameScreen overflow="hidden">
+      <div
+        id="intro"
+        className={`transition-colors duration-500 ${
+          isDarkMode ? "dark-mode" : "light-mode"
+        }`}
+        style={{
+          backgroundColor: isDarkMode ? colors.neutral[950] : colors.white,
+        }}
+      >
         <Frame
           col
           w="100%"
           px={containerPx}
           py={containerPy}
-          bg={colors.neutral[950]}
+          bg={isDarkMode ? colors.neutral[950] : colors.white}
         >
-          <Heading4 fontColor={colors.white} fontWeight={700}>
+          <Heading4
+            fontColor={isDarkMode ? colors.white : colors.neutral[950]}
+            fontWeight={700}
+          >
             모르는 게 많아도,
           </Heading4>
-          <Heading4 fontColor={colors.white} fontWeight={700}>
+          <Heading4
+            fontColor={isDarkMode ? colors.white : colors.neutral[950]}
+            fontWeight={700}
+          >
             어디서부터 시작해야 할지 몰라도 괜찮습니다.
           </Heading4>
           <Frame w="100%" py={dividerPy}>
-            <Divider color={colors.neutral[700]} />
+            <Divider
+              color={isDarkMode ? colors.neutral[700] : colors.neutral[200]}
+            />
           </Frame>
           <Frame>
             <Text
-              fontColor={colors.neutral[200]}
+              fontColor={isDarkMode ? colors.neutral[200] : colors.neutral[600]}
               fontSize={descriptionFontSize}
               lineHeight={descriptionLineHeight}
               fontWeight={400}
@@ -99,7 +117,7 @@ const Intro = () => {
               지원하는 IT 솔루션 에이전시입니다.
             </Text>
             <Text
-              fontColor={colors.neutral[200]}
+              fontColor={isDarkMode ? colors.neutral[200] : colors.neutral[600]}
               fontSize={descriptionFontSize}
               lineHeight={descriptionLineHeight}
               fontWeight={400}
@@ -108,7 +126,7 @@ const Intro = () => {
               성공적으로 출시할 수 있도록 돕습니다.
             </Text>
             <Text
-              fontColor={colors.neutral[200]}
+              fontColor={isDarkMode ? colors.neutral[200] : colors.neutral[600]}
               fontSize={descriptionFontSize}
               lineHeight={descriptionLineHeight}
               fontWeight={400}
@@ -118,27 +136,39 @@ const Intro = () => {
             </Text>
           </Frame>
         </Frame>
-      </FrameScreen>
+      </div>
     );
   } else {
     // 데스크탑: 채팅 말풍선과 텍스트들을 좌측/우측에 배치
     return (
-      <FrameScreen overflow="hidden">
+      <div
+        id="intro"
+        className={`transition-colors duration-500 ${
+          isDarkMode ? "dark-mode" : "light-mode"
+        }`}
+        style={{
+          backgroundColor: isDarkMode ? colors.neutral[950] : colors.white,
+        }}
+      >
         <Frame
           row
           w="100%"
           h="100%"
           px={containerPx}
           py={containerPy}
-          bg={colors.neutral[950]}
+          bg={isDarkMode ? colors.neutral[950] : colors.white}
         >
           {/* 채팅 메시지 영역 */}
           <Frame col w="40%" h="100%" alignment="top-left">
             {messages.map((msg, i) => (
               <Frame key={i} pb={24} opacity={Math.max(1 - i * 0.15, 0)}>
                 <ChatBubble
-                  bgColor={colors.neutral[700]}
-                  textColor={colors.main[200]}
+                  bgColor={
+                    isDarkMode ? colors.neutral[700] : colors.neutral[200]
+                  }
+                  textColor={
+                    isDarkMode ? colors.main[200] : colors.neutral[600]
+                  }
                   width={widths[i]}
                   text={msg}
                 />
@@ -154,18 +184,28 @@ const Intro = () => {
             pt={textAreaPt}
             gap={textAreaGap}
           >
-            <Heading2 fontColor={colors.white} fontWeight={700}>
+            <Heading2
+              fontColor={isDarkMode ? colors.white : colors.neutral[950]}
+              fontWeight={700}
+            >
               모르는 게 많아도,
             </Heading2>
-            <Heading2 fontColor={colors.white} fontWeight={700}>
+            <Heading2
+              fontColor={isDarkMode ? colors.white : colors.neutral[950]}
+              fontWeight={700}
+            >
               어디서부터 시작해야 할지 몰라도 괜찮습니다.
             </Heading2>
             <Frame w="100%" py={dividerPy}>
-              <Divider color={colors.neutral[700]} />
+              <Divider
+                color={isDarkMode ? colors.neutral[700] : colors.neutral[200]}
+              />
             </Frame>
             <Frame>
               <Text
-                fontColor={colors.neutral[200]}
+                fontColor={
+                  isDarkMode ? colors.neutral[200] : colors.neutral[600]
+                }
                 fontSize={descriptionFontSize}
                 lineHeight={descriptionLineHeight}
                 fontWeight={400}
@@ -174,7 +214,9 @@ const Intro = () => {
                 지원하는 IT 솔루션 에이전시입니다.
               </Text>
               <Text
-                fontColor={colors.neutral[200]}
+                fontColor={
+                  isDarkMode ? colors.neutral[200] : colors.neutral[600]
+                }
                 fontSize={descriptionFontSize}
                 lineHeight={descriptionLineHeight}
                 fontWeight={400}
@@ -183,7 +225,9 @@ const Intro = () => {
                 성공적으로 출시할 수 있도록 돕습니다.
               </Text>
               <Text
-                fontColor={colors.neutral[200]}
+                fontColor={
+                  isDarkMode ? colors.neutral[200] : colors.neutral[600]
+                }
                 fontSize={descriptionFontSize}
                 lineHeight={descriptionLineHeight}
                 fontWeight={400}
@@ -194,7 +238,7 @@ const Intro = () => {
             </Frame>
           </Frame>
         </Frame>
-      </FrameScreen>
+      </div>
     );
   }
 };
