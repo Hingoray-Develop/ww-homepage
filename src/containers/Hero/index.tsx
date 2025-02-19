@@ -36,7 +36,7 @@ export default function Hero() {
   return (
     <div
       id="intro"
-      className={`bg-[#0C111D] pt-[88px]`}
+      className={`bg-[#0C111D] `}
       style={{
         paddingLeft: containerPx,
         paddingRight: containerPx,

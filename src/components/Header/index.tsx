@@ -1,11 +1,11 @@
 "use client";
 
-import { Body2, Frame, FrameScreen, Image } from "@/atoms";
+import { Body2, Frame, FrameScreen } from "@/atoms";
 import { colors } from "@/styles";
 import { AnalyticsEventList, logEvent } from "@/utils/analytics";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-
+import Image from "next/image";
 const Header = () => {
   const router = useRouter();
 
@@ -45,8 +45,7 @@ const Header = () => {
         position="fixed"
         top={0}
         left={0}
-        right={0}
-        zIndex={1000}
+        zIndex={40}
       >
         <Frame>
           <Link
@@ -62,6 +61,7 @@ const Header = () => {
               alt="logo"
               width={64}
               height={64}
+              priority
             />
           </Link>
         </Frame>

@@ -1,13 +1,13 @@
 "use client";
 
-import { Frame, FrameScreen, Image, Text } from "@/atoms";
+import { Frame, FrameScreen, Text } from "@/atoms";
 import { colors } from "@/styles";
 import Button from "../Button";
 import Divider from "../Divider";
 
 import ArrowRight from "@/assets/icons/line/arrow-right.svg?react";
 import { AnalyticsEventList, logEvent } from "@/utils/analytics";
-
+import Image from "next/image";
 const Footer = () => {
   return (
     <FrameScreen overflow="hidden">

@@ -1,3 +1,5 @@
+"use client";
+
 import { Suspense } from "react";
 import { Frame, FrameScreen } from "@/atoms";
 import { Footer } from "@/components";
@@ -10,8 +12,11 @@ import {
   WhyChooseUs,
 } from "@/containers";
 import ScrollToSection from "@/components/ScrollToSection";
+import { useInitialLoading } from "@/hooks/useInitialLoading";
 
 export default function Home() {
+  useInitialLoading();
+
   return (
     <>
       <Suspense fallback={<div>로딩중...</div>}>
