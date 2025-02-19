@@ -7,25 +7,22 @@ import { colors } from "@/styles";
 import { Heading6, Text, Frame } from "@/atoms";
 import { useResponsiveType } from "@/hooks";
 import { logEvent, AnalyticsEventList } from "@/utils/analytics";
+import { useRouter } from "next/navigation";
 
 export default function Hero() {
-  // 마운트 여부 상태 추가
+  const router = useRouter();
   const [hasMounted, setHasMounted] = useState(false);
 
   useEffect(() => {
     setHasMounted(true);
   }, []);
 
-  // 창 크기를 반영할 상태 (초기값은 1024 사용)
-
   const { responsiveType } = useResponsiveType();
   const isMobile = responsiveType === "mobile";
   const isTablet = responsiveType === "tablet";
 
-  // 마운트 전에는 아무것도 렌더링하지 않음으로써 SSR과 클라이언트의 초기 HTML 불일치를 방지
   if (!hasMounted) return null;
 
-  // 반응형 텍스트 설정
   const mainHeadingFontSize = isMobile ? 32 : 56;
   const mainHeadingLineHeight = isMobile ? "44px" : "76px";
   const subTextFontSize = isMobile ? 16 : 20;
@@ -36,7 +33,7 @@ export default function Hero() {
   return (
     <div
       id="intro"
-      className={`bg-[#0C111D] `}
+      className={`bg-[#0C111D]`}
       style={{
         paddingLeft: containerPx,
         paddingRight: containerPx,
@@ -46,7 +43,7 @@ export default function Hero() {
         style={{
           position: "relative",
           width: "100%",
-          height: "840px", // 원하는 고정 높이
+          height: "840px",
           backgroundImage: "url('/images/hero/whale.jpg')",
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
@@ -54,7 +51,6 @@ export default function Hero() {
           borderRadius: "32px",
         }}
       >
-        {/* 컨텐츠 영역 */}
         <Frame col alignment="center" gap={24} w="100%" h="100%">
           <Frame col alignment="center">
             <Text
@@ -71,7 +67,7 @@ export default function Hero() {
               lineHeight={mainHeadingLineHeight}
               fontWeight={700}
             >
-              흰고래컴퍼니와 함께하세요!
+              <span className="highlight-text">흰고래컴퍼니</span>와 함께하세요!
             </Text>
           </Frame>
           <Frame col alignment="center">
@@ -100,6 +96,7 @@ export default function Hero() {
                 logEvent(AnalyticsEventList.BUTTON_CLICK, {
                   button_name: "cost_calculator_hero",
                 });
+                router.push("/cost-calculator");
               }}
             >
               <Frame

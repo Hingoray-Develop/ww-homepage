@@ -1,16 +1,16 @@
 "use client";
 
-import { Body1, Frame, Heading3 } from "@/atoms";
+import React from "react";
+import { Text } from "@/atoms";
 import { colors } from "@/styles";
-import { ReactNode } from "react";
-import Divider from "../Divider";
+import { useDarkMode } from "@/contexts/DarkModeContext";
 
 /**
  * ServiceCardProps 인터페이스에 minH 옵션을 추가합니다.
  * 기본값은 300 (데스크탑/태블릿)으로 유지하고, 필요시 외부에서 override할 수 있습니다.
  */
 export interface ServiceCardProps {
-  icon: ReactNode;
+  icon: React.ReactNode;
   title: string;
   descriptions: string[];
   // onMoreClick?: () => void;
@@ -18,41 +18,64 @@ export interface ServiceCardProps {
   minH?: number;
 }
 
-const ServiceCard = ({
+export default function ServiceCard({
   icon,
   title,
   descriptions,
   // onMoreClick,
   minH = 300,
-}: ServiceCardProps) => {
-  return (
-    <Frame
-      col
-      pl={24}
-      pt={24}
-      pb={20}
-      pr={24}
-      gap={24}
-      bg={colors.neutral[100]}
-      radius={16}
-      w="100%"
-      minH={minH}
-    >
-      <Frame>{icon}</Frame>
+}: ServiceCardProps) {
+  const { isDarkMode } = useDarkMode();
 
-      <Frame col w={"100%"} gap={20}>
-        <Heading3 fontColor={colors.neutral[900]}>{title}</Heading3>
-        <Frame w={"100%"}>
-          <Divider color={colors.neutral[200]} />
-        </Frame>
-        <Frame col gap={8}>
-          {descriptions.map((desc, index) => (
-            <Body1 key={index} fontColor={colors.neutral[500]}>
-              {desc}
-            </Body1>
-          ))}
-        </Frame>
-      </Frame>
+  return (
+    <div
+      className="transition-colors duration-500"
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        width: "100%",
+        minHeight: minH,
+        padding: 24,
+        gap: 24,
+        backgroundColor: isDarkMode ? colors.neutral[900] : colors.neutral[100],
+        border: isDarkMode ? `1px solid ${colors.neutral[800]}` : undefined,
+        borderRadius: "24px",
+      }}
+    >
+      {/* 아이콘 */}
+      <div
+        style={{
+          width: 64,
+          height: 64,
+        }}
+      >
+        {icon}
+      </div>
+
+      {/* 제목 */}
+      <Text
+        fontSize={24}
+        lineHeight="34px"
+        fontWeight={700}
+        fontColor={isDarkMode ? colors.white : colors.neutral[950]}
+      >
+        {title}
+      </Text>
+
+      {/* 설명 목록 */}
+      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        {descriptions.map((desc, index) => (
+          <Text
+            key={index}
+            fontSize={16}
+            lineHeight="26px"
+            fontWeight={400}
+            fontColor={isDarkMode ? colors.neutral[300] : colors.neutral[600]}
+          >
+            {desc}
+          </Text>
+        ))}
+      </div>
 
       {/* <Frame
         w={"100%"}
@@ -62,8 +85,6 @@ const ServiceCard = ({
       >
         <Body1 fontColor={colors.neutral[500]}>더보기 →</Body1>
       </Frame> */}
-    </Frame>
+    </div>
   );
-};
-
-export default ServiceCard;
+}

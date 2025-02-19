@@ -38,7 +38,9 @@ const Header = () => {
         row
         w="100%"
         py={12}
-        px={40}
+        desktop={{ px: 40 }}
+        tablet={{ px: 24 }}
+        mobile={{ px: 16 }}
         bg={colors.neutral[950]}
         gap={"auto"}
         overflow="hidden"
@@ -85,21 +87,6 @@ const Header = () => {
           <div
             className="items-center justify-center px-[4px] py-[19px] cursor-pointer"
             onClick={() => {
-              scrollToSection("projects");
-              logEvent(AnalyticsEventList.MENU_CLICK, {
-                menu_name: "projects",
-              });
-            }}
-          >
-            <span
-              className={`py-[19px] font-[600] text-[16px] items-center justify-center text-[#CED3D8] hover:text-[#344054]`}
-            >
-              포트폴리오
-            </span>
-          </div>
-          <div
-            className="items-center justify-center px-[4px] py-[19px] cursor-pointer"
-            onClick={() => {
               scrollToSection("services");
               logEvent(AnalyticsEventList.MENU_CLICK, {
                 menu_name: "services",
@@ -112,6 +99,22 @@ const Header = () => {
               서비스 제공 범위
             </span>
           </div>
+          <div
+            className="items-center justify-center px-[4px] py-[19px] cursor-pointer"
+            onClick={() => {
+              scrollToSection("projects");
+              logEvent(AnalyticsEventList.MENU_CLICK, {
+                menu_name: "projects",
+              });
+            }}
+          >
+            <span
+              className={`py-[19px] font-[600] text-[16px] items-center justify-center text-[#CED3D8] hover:text-[#344054]`}
+            >
+              포트폴리오
+            </span>
+          </div>
+
           <div className="items-center justify-center px-[4px] py-[19px] cursor-pointer">
             <span
               className={`py-[19px] font-[600] text-[16px] items-center justify-center text-[#CED3D8]`}

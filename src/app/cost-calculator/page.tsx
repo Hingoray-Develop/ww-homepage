@@ -73,7 +73,7 @@ export default function CostCalculator({}: CostCalculatorProps) {
   };
 
   return (
-    <div className="pt-[48px] px-[40px]">
+    <div className="pt-[48px] px-[40px] bg-white">
       {costCalculatorOptions.map((section: CostCalculatorSection) => (
         <div key={section.title} className="mb-8">
           <h2 className="text-2xl font-bold mb-4">{section.title}</h2>

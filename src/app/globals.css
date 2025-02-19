@@ -19,3 +19,111 @@ body {
   background: var(--background);
   font-family: var(--font-pretendard), Arial, Helvetica, sans-serif;
 }
+
+/* 섹션 전환 효과 */
+/* 다크 모드 (초기 상태) */
+.dark-mode {
+  background-color: var(--neutral-900);
+  color: var(--white);
+  transition: background-color 0.5s ease-in-out;
+}
+
+/* 라이트 모드 (스크롤 후) */
+.light-mode {
+  background-color: var(--white);
+  color: var(--neutral-900);
+}
+
+/* 컨텐츠 내부의 텍스트 색상도 자동 반전 */
+.dark-mode .content {
+  color: #ffffff;
+}
+
+.light-mode .content {
+  color: #000000;
+}
+
+.transition-colors {
+  transition: background-color 0.5s ease-in-out;
+}
+
+/* 다크 모드 전환 효과 */
+.dark-mode,
+.light-mode {
+  transition: background-color 0.5s ease-in-out;
+}
+
+.dark-mode *,
+.light-mode * {
+  transition: color 0.5s ease-in-out, background-color 0.5s ease-in-out,
+    border-color 0.5s ease-in-out;
+}
+
+/* 특정 요소는 transition 제외 (필요한 경우) */
+.no-transition,
+.no-transition * {
+  transition: none !important;
+}
+
+/* 텍스트 하이라이트 효과 */
+.highlight-text {
+  position: relative;
+  display: inline-block;
+  z-index: 1;
+  opacity: 1;
+  animation: fadeInHighlight 0.5s ease-out forwards;
+  animation-delay: 2.5s;
+}
+
+.highlight-text::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0; /* 시작은 width 0에서 */
+  height: 100%;
+  /* background-color: rgba(82, 109, 249, 0.15); */
+  background-color: red;
+  z-index: -1;
+  animation: highlightSlide 0.5s ease-in-out forwards;
+  animation-delay: 2.5s;
+}
+
+@keyframes fadeInHighlight {
+  from {
+    opacity: 1;
+    /* transform: translateY(100px); */
+  }
+  to {
+    opacity: 1;
+    /* transform: translateY(0); */
+  }
+}
+
+@keyframes highlightSlide {
+  0% {
+    width: 0;
+    left: 0;
+  }
+  50% {
+    width: 100%;
+    left: 0;
+  }
+  100% {
+    width: 0;
+    left: 100%;
+  }
+}
+
+/* 애니메이션 완료 후 hover 효과 */
+.highlight-text.animated::after {
+  animation: none;
+  width: calc(100% + 4px);
+  left: -2px;
+  height: 30%;
+  transition: height 0.3s ease-in-out;
+}
+
+.highlight-text.animated:hover::after {
+  height: 100%;
+}
