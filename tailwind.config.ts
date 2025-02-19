@@ -16,6 +16,15 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      keyframes: {
+        fadeOut: {
+          "0%": { opacity: "1" },
+          "100%": { opacity: "0" },
+        },
+      },
+      animation: {
+        fadeOut: "fadeOut 0.5s ease-out forwards",
+      },
     },
   },
   plugins: [],
