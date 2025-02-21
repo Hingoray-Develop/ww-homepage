@@ -11,6 +11,7 @@ import { colors } from "@/styles";
 import { useResponsiveType } from "@/hooks";
 import { Divider } from "@/components";
 import { AnalyticsEventList, logEvent } from "@/utils/analytics";
+import { useDarkMode } from "@/contexts/DarkModeContext";
 
 /**
  * 아이콘 위치를 지정할 수 있도록 iconPosition 필드를 만듭니다.
@@ -43,6 +44,7 @@ function ReasonCard({
   iconAboveText = false,
 }: ReasonCardProps) {
   const { responsiveType } = useResponsiveType();
+  const { isDarkMode } = useDarkMode();
 
   const isDesktop = responsiveType === "desktop";
 
@@ -57,9 +59,9 @@ function ReasonCard({
         };
       case "white":
         return {
-          bg: "bg-white",
-          titleColor: colors.neutral[950],
-          descriptionColor: colors.neutral[950],
+          bg: isDarkMode ? "bg-white" : "bg-[#475467]",
+          titleColor: isDarkMode ? colors.neutral[950] : colors.white,
+          descriptionColor: isDarkMode ? colors.neutral[950] : colors.white,
         };
       case "main300":
         return {
@@ -178,6 +180,8 @@ function ReasonCard({
  * - 작은 화면에서는 1~2열로 표시
  */
 export default function WhyChooseUs() {
+  const { isDarkMode } = useDarkMode();
+
   /** 카드 5개. iconPosition을 카드마다 다르게 지정 */
   const reasons: ReasonCardProps[] = [
     {
@@ -232,17 +236,28 @@ export default function WhyChooseUs() {
 
   return (
     <section
-      className=" px-[40px] pt-[160px] rounded-t-[44px]"
+      id="why-choose-us"
+      className={`transition-colors duration-500 px-[40px] pt-[160px]  ${
+        isDarkMode ? "dark-mode" : "light-mode"
+      }`}
       style={{
-        backgroundColor: "#0C111D",
+        backgroundColor: isDarkMode ? colors.neutral[950] : colors.white,
       }}
     >
       {/* 타이틀 영역 (상단 여백 최소화) */}
       <div className="text-center pt-4">
-        <h2 className="text-white text-4xl md:text-5xl font-bold leading-tight">
+        <h2
+          className={`${
+            isDarkMode ? "text-white" : "text-neutral[950]"
+          } text-4xl md:text-5xl font-bold leading-tight`}
+        >
           흰고래컴퍼니를
         </h2>
-        <h2 className="text-white text-4xl md:text-5xl font-bold leading-tight">
+        <h2
+          className={`${
+            isDarkMode ? "text-white" : "text-neutral[950]"
+          } text-4xl md:text-5xl font-bold leading-tight`}
+        >
           이용해야하는 이유
         </h2>
       </div>

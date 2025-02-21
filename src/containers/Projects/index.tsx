@@ -5,9 +5,11 @@ import { ProjectCard } from "@/components";
 import { colors } from "@/styles";
 import useResponsiveType from "@/hooks/useResponsiveType";
 import { AnalyticsEventList, logEvent } from "@/utils/analytics";
+import { useDarkMode } from "@/contexts/DarkModeContext";
 
 const Projects = () => {
   const { responsiveType } = useResponsiveType();
+  const { isDarkMode } = useDarkMode();
   const isMobile = responsiveType === "mobile";
   const isTablet = responsiveType === "tablet";
 
@@ -81,8 +83,11 @@ const Projects = () => {
   return (
     <div
       id="projects"
+      className={`transition-colors duration-500 ${
+        isDarkMode ? "dark-mode" : "light-mode"
+      }`}
       style={{
-        backgroundColor: colors.white,
+        backgroundColor: isDarkMode ? colors.neutral[950] : colors.white,
         paddingLeft: paddingX,
         paddingRight: paddingX,
         paddingTop: paddingY,

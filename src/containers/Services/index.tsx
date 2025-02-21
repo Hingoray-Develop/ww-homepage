@@ -21,12 +21,25 @@ const Services = () => {
   useEffect(() => {
     function onScroll() {
       const servicesSection = document.getElementById("services");
-      if (!servicesSection) return;
+      const whyChooseUsSection = document.getElementById("why-choose-us");
+      if (!servicesSection || !whyChooseUsSection) return;
 
-      const rect = servicesSection.getBoundingClientRect();
+      const servicesRect = servicesSection.getBoundingClientRect();
+      const whyChooseUsRect = whyChooseUsSection.getBoundingClientRect();
       const threshold = window.innerHeight * 0.5;
 
-      setIsDarkMode(rect.top > threshold);
+      // Services 섹션이 화면 중앙을 지나면 라이트 모드로
+      if (servicesRect.top <= threshold && whyChooseUsRect.top > threshold) {
+        setIsDarkMode(false);
+      }
+      // WhyChooseUs 섹션이 화면 중앙을 지나면 다크 모드로
+      else if (whyChooseUsRect.top <= threshold) {
+        setIsDarkMode(true);
+      }
+      // 그 외의 경우 (위로 스크롤하여 Intro 섹션으로 돌아갈 때)
+      else {
+        setIsDarkMode(true);
+      }
     }
 
     window.addEventListener("scroll", onScroll);
