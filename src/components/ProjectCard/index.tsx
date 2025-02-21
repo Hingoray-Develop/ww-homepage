@@ -1,6 +1,7 @@
 "use client";
 
 import { Frame, Text } from "@/atoms";
+import { useDarkMode } from "@/contexts/DarkModeContext";
 import { colors } from "@/styles";
 import Image from "next/image";
 import React from "react";
@@ -20,6 +21,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   boldTexts = [],
   onClick,
 }) => {
+  const { isDarkMode } = useDarkMode();
   const renderTitle = (text: string) => {
     // 텍스트를 boldTexts를 기준으로 분할
     let parts: { text: string; isBold: boolean }[] = [{ text, isBold: false }];
@@ -50,7 +52,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
               key={index}
               fontSize={24}
               lineHeight="32px"
-              fontColor={colors.neutral[900]}
+              fontColor={isDarkMode ? colors.white : colors.neutral[900]}
               fontWeight={part.isBold ? 700 : 400}
             >
               {content}
@@ -85,7 +87,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
       </div>
       <div style={{ paddingTop: 16 }}>
         {renderTitle(title)}
-        <Text fontSize={16} lineHeight="24px" fontColor={colors.neutral[500]}>
+        <Text
+          fontSize={16}
+          lineHeight="24px"
+          fontColor={isDarkMode ? colors.white : colors.neutral[950]}
+        >
           {type}
         </Text>
       </div>

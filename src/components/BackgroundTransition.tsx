@@ -9,8 +9,9 @@ export default function BackgroundTransition() {
   useEffect(() => {
     const introSection = document.getElementById("intro");
     const servicesSection = document.getElementById("services");
+    const whyChooseUsSection = document.getElementById("why-choose-us");
 
-    if (!introSection || !servicesSection) return;
+    if (!introSection || !servicesSection || !whyChooseUsSection) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -18,6 +19,12 @@ export default function BackgroundTransition() {
           if (entry.target.id === "services" && entry.isIntersecting) {
             console.log("services");
             setIsDarkMode(false);
+          } else if (
+            entry.target.id === "why-choose-us" &&
+            entry.isIntersecting
+          ) {
+            console.log("why-choose-us");
+            setIsDarkMode(true);
           } else if (entry.target.id === "intro" && entry.isIntersecting) {
             console.log("intro");
             setIsDarkMode(true);
@@ -29,6 +36,7 @@ export default function BackgroundTransition() {
 
     observer.observe(introSection);
     observer.observe(servicesSection);
+    observer.observe(whyChooseUsSection);
 
     return () => {
       observer.disconnect();
