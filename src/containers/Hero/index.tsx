@@ -45,9 +45,9 @@ export default function Hero() {
           position: "relative",
           width: "100%",
           height: "840px",
-          backgroundImage: "url('/images/hero/whale.jpg')",
+          backgroundImage: "url('/images/hero/whale.webp')",
           backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
+          backgroundSize: "100% auto",
           backgroundPosition: "center",
           borderRadius: "32px",
         }}
