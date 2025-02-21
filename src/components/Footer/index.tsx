@@ -8,7 +8,9 @@ import Divider from "../Divider";
 import ArrowRight from "@/assets/icons/line/arrow-right.svg?react";
 import { AnalyticsEventList, logEvent } from "@/utils/analytics";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 const Footer = () => {
+  const router = useRouter();
   return (
     <FrameScreen overflow="hidden">
       <Frame
@@ -70,6 +72,7 @@ const Footer = () => {
                     logEvent(AnalyticsEventList.BUTTON_CLICK, {
                       button_name: "cost_calculator_footer",
                     });
+                    router.push("/cost-calculator");
                   }}
                 >
                   <Frame
