@@ -35,9 +35,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // NOTE: Removed "use client" and useInitialLoading from this file.
+  // If client-only hooks (e.g. useInitialLoading) are needed, create a separate client component to wrap children.
+
   return (
     <html lang="en" className={pretendard.variable}>
-      <body className={` ${pretendard.variable}`}>
+      <body className={pretendard.variable}>
         <DarkModeProvider>
           <BackgroundTransition />
           <LoadingProvider>
@@ -47,7 +50,7 @@ export default function RootLayout({
           </LoadingProvider>
         </DarkModeProvider>
         {/* <Footer /> */}
-        <GoogleAnalytics gaId="G-RSB381YFK5" />
+        <GoogleAnalytics gaId="G-TDM1P9673B" />
       </body>
     </html>
   );

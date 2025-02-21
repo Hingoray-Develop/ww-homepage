@@ -1,111 +1,196 @@
 "use client";
 
 import { useState } from "react";
+import useClearLoading from "@/hooks/useClearLoading";
+import CostCalculatorLeft from "./CostCalculatorLeft";
+import StepOne from "./StepOne";
+import StepTwo from "./StepTwo";
+import StepThree from "./StepThree";
+import StepFour from "./StepFour";
+import { CostCalculatorOption } from "@/data/costCalculatorOptions";
+import { Body3, Frame } from "@/atoms";
 
-import {
-  costCalculatorOptions,
-  CostCalculatorSection,
-  CostCalculatorOption,
-} from "@/data/costCalculatorOptions";
-import { useLoading } from "@/contexts/LoadingContext";
-import { useInitialLoading } from "@/hooks/useInitialLoading";
-import CodeIcon from "@/assets/icons/line/code.svg?react";
-import { Text } from "@/atoms";
+/**
+ * <ai_context>
+ * Main cost-calculator page redesigned to 4-step wizard + left panel.
+ * Updated to reset step after email is submitted and pass scopes/budgetRange to StepFour.
+ * Now updated to give the left panel ~50% width, and the right panel ~50%.
+ * Next update: disallow forward navigation if prior steps not completed,
+ * but allow backward navigation from later steps.
+ * Also store step completion states so previous selections remain.
+ * And show disabled style (reduced opacity/cursor) for steps that are not yet allowed.
+ * </ai_context>
+ */
 
 export default function CostCalculator() {
+  // Clear any lingering loading state for this page
+  useClearLoading();
+
+  const [step, setStep] = useState(1);
+
+  // Track which steps are "completed"
+  const [stepComplete, setStepComplete] = useState<{
+    1: boolean;
+    2: boolean;
+    3: boolean;
+    4: boolean;
+  }>({
+    1: false,
+    2: false,
+    3: false,
+    4: false,
+  });
+
+  // StepOne state
+  const [scopes, setScopes] = useState<string[]>(["기획", "디자인", "개발"]); // default all selected
+
+  // StepTwo: min & max budget or null if don't know
+  const [budgetRange, setBudgetRange] = useState<[number, number] | null>([
+    3000, 7000,
+  ]);
+
+  // StepThree state
   const [selectedOptions, setSelectedOptions] = useState<
     CostCalculatorOption[]
   >([]);
-  const { setIsLoading } = useLoading();
 
-  // 초기 로딩 상태 관리
-  useInitialLoading();
+  const canGoForward = (targetStep: number) => {
+    // can always go backward
+    if (targetStep < step) return true;
 
-  const toggleOptionSelection = (option: CostCalculatorOption) => {
-    if (selectedOptions.includes(option)) {
-      setSelectedOptions(selectedOptions.filter((o) => o !== option));
-    } else {
-      setSelectedOptions([...selectedOptions, option]);
+    // else, check if all steps up to (targetStep - 1) are complete
+    for (let i = 1; i < targetStep; i++) {
+      if (!stepComplete[i as 1 | 2 | 3 | 4]) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  // stepOne "Next"
+  const handleNextFromStepOne = () => {
+    // must ensure stepOne is valid
+    if (scopes.length > 0) {
+      setStepComplete((prev) => ({ ...prev, 1: true }));
+      setStep(2);
     }
   };
 
-  const totalDuration = selectedOptions.reduce(
-    (sum, option) => sum + option.duration,
-    0
-  );
-  const totalCost = selectedOptions.reduce(
-    (sum, option) => sum + option.cost,
-    0
-  );
+  // stepTwo "Next"
+  const handleNextFromStepTwo = () => {
+    // no condition required to "complete" step two
+    setStepComplete((prev) => ({ ...prev, 2: true }));
+    setStep(3);
+  };
 
-  const handleCheckEstimate = async () => {
-    try {
-      setIsLoading(true); // 전체 페이지 로딩 시작
+  // stepThree "Next"
+  const handleNextFromStepThree = () => {
+    // no condition for step three
+    setStepComplete((prev) => ({ ...prev, 3: true }));
+    setStep(4);
+  };
 
-      // 이메일 전송
-      const response = await fetch("/api/send-estimate", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: "blood8879@naver.com",
-          totalDuration,
-          totalCost,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("이메일 전송에 실패했습니다.");
-      }
-
-      alert("견적서가 메일로 발송되었어요");
-    } catch (error) {
-      console.error("견적서 전송 실패:", error);
-      alert("견적서 전송에 실패했습니다. 다시 시도해주세요.");
-    } finally {
-      setIsLoading(false); // 전체 페이지 로딩 종료
-    }
+  // finalize => StepFour
+  const handleComplete = () => {
+    // after sending email, reset
+    setScopes(["기획", "디자인", "개발"]);
+    setBudgetRange([1000, 5000]);
+    setSelectedOptions([]);
+    setStepComplete({ 1: false, 2: false, 3: false, 4: false });
+    setStep(1);
   };
 
   return (
-    <div className="pt-[48px] px-[40px] bg-white">
-      {costCalculatorOptions.map((section: CostCalculatorSection) => (
-        <div key={section.title} className="mb-8">
-          <h2 className="text-2xl font-bold mb-4">{section.title}</h2>
-          <div className="grid grid-cols-6 gap-4">
-            {section.options.map((option) => (
-              <button
-                key={option.label}
-                type="button"
-                className={`flex flex-col px-[32px] py-[18px] items-center justify-center border rounded-md transition-all ease-in duration-100 ${
-                  selectedOptions.includes(option) ? "bg-blue-200" : "bg-white"
-                }`}
-                onClick={() => toggleOptionSelection(option)}
-              >
-                <CodeIcon
-                  width={28}
-                  height={28}
-                  fill={
-                    selectedOptions.includes(option) ? "#007AFF" : "#000000"
-                  }
-                  stroke={selectedOptions.includes(option) ? "#007AFF" : "none"}
-                />
-                <Text fontSize={16} fontWeight={600} lineHeight={"26px"} pt={8}>
-                  {option.label}
-                </Text>
-              </button>
-            ))}
-          </div>
-        </div>
-      ))}
-      <button
-        type="button"
-        className="bg-blue-500 text-white p-4 rounded-md"
-        onClick={handleCheckEstimate}
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "row",
+        width: "100%",
+        paddingRight: 40,
+      }}
+    >
+      {/* Left panel now takes ~50% */}
+      <div style={{ flex: 1 }}>
+        <CostCalculatorLeft />
+      </div>
+
+      {/* Right panel (Steps) takes ~50% */}
+      <div
+        style={{
+          flex: 1,
+          backgroundColor: "#FFFFFF",
+          overflow: "hidden",
+          borderRadius: 16,
+          paddingLeft: 40,
+          paddingRight: 40,
+        }}
       >
-        기간 및 견적 확인
-      </button>
+        {/* Step indicator */}
+        <Frame col w="100%" pt={40} pb={48}>
+          <div
+            style={{ display: "flex", gap: 16, fontSize: 14, fontWeight: 600 }}
+          >
+            {[1, 2, 3, 4].map((n) => {
+              const disabled = !canGoForward(n);
+              return (
+                <div
+                  key={n}
+                  onClick={() => {
+                    if (!disabled) {
+                      setStep(n);
+                    }
+                  }}
+                  style={{
+                    borderRadius: 8,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    backgroundColor: step === n ? "#101828" : "#E5E7EB",
+                    color: step === n ? "#FFF" : "#000",
+                    cursor: disabled ? "not-allowed" : "pointer",
+                    opacity: disabled ? 0.5 : 1,
+                  }}
+                >
+                  <Body3 px={12} py={4}>
+                    {("0" + n).slice(-2)}
+                  </Body3>
+                </div>
+              );
+            })}
+          </div>
+        </Frame>
+
+        {/* Steps */}
+        {step === 1 && (
+          <StepOne
+            scopes={scopes}
+            setScopes={setScopes}
+            onNext={handleNextFromStepOne}
+          />
+        )}
+        {step === 2 && (
+          <StepTwo
+            budgetRange={budgetRange}
+            setBudgetRange={setBudgetRange}
+            onNext={handleNextFromStepTwo}
+          />
+        )}
+        {step === 3 && (
+          <StepThree
+            selectedOptions={selectedOptions}
+            setSelectedOptions={setSelectedOptions}
+            onNext={handleNextFromStepThree}
+          />
+        )}
+        {step === 4 && (
+          <StepFour
+            selectedOptions={selectedOptions}
+            scopes={scopes}
+            budgetRange={budgetRange}
+            onComplete={handleComplete}
+          />
+        )}
+      </div>
     </div>
   );
 }
