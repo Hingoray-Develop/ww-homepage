@@ -82,8 +82,8 @@ body {
   bottom: 0;
   width: 0; /* 시작은 width 0에서 */
   height: 100%;
-  /* background-color: rgba(82, 109, 249, 0.15); */
-  background-color: red;
+  background-color: rgba(82, 109, 249, 0.15);
+  /* background-color: red; */
   z-index: -1;
   animation: highlightSlide 0.5s ease-in-out forwards;
   animation-delay: 2.5s;
