@@ -10,6 +10,7 @@ import { colors } from "@/styles";
  * <ai_context>
  * StepFour: now sums minCost and maxCost from selectedOptions to show a range,
  * then sends that range in the request body. We'll show "x,xxx원~x,xxx원" style.
+ * Updated: add "additionalNotes" textarea so user can input more details.
  * </ai_context>
  */
 
@@ -28,6 +29,7 @@ export default function StepFour({
 }: StepFourProps) {
   const { setIsLoading } = useLoading();
   const [email, setEmail] = useState("");
+  const [additionalNotes, setAdditionalNotes] = useState("");
 
   const totalDuration = selectedOptions.reduce(
     (sum, option) => sum + option.duration,
@@ -53,6 +55,7 @@ export default function StepFour({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email,
+          additionalNotes,
           scopes,
           budgetRange,
           selectedOptions,
@@ -96,6 +99,35 @@ export default function StepFour({
           backgroundColor: colors.neutral[100],
           border: "1px solid transparent",
           outline: "none",
+          transition: "all 0.2s ease-in-out",
+        }}
+        onFocus={(e) => {
+          e.target.style.backgroundColor = "#FFFFFF";
+          e.target.style.borderColor = colors.neutral[300];
+        }}
+        onBlur={(e) => {
+          e.target.style.backgroundColor = colors.neutral[100];
+          e.target.style.borderColor = "transparent";
+        }}
+      />
+
+      <Body1 fontColor={colors.neutral[500]} pb={8}>
+        추가 문의 사항이 있으신가요?
+      </Body1>
+      <textarea
+        placeholder="프로젝트에 대해 더 자세히 설명해주시면 더 정확한 견적 산출이 가능해요."
+        value={additionalNotes}
+        onChange={(e) => setAdditionalNotes(e.target.value)}
+        style={{
+          width: "100%",
+          minHeight: 100,
+          padding: "16px 20px",
+          borderRadius: 8,
+          marginBottom: 24,
+          backgroundColor: colors.neutral[100],
+          border: "1px solid transparent",
+          outline: "none",
+          resize: "vertical",
           transition: "all 0.2s ease-in-out",
         }}
         onFocus={(e) => {

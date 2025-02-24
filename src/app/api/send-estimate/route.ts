@@ -4,6 +4,7 @@ import nodemailer from "nodemailer";
 /**
  * <ai_context>
  * Updated: formatting budgetRange and cost range as "xxx만원 ~ xxx만원" by dividing by 10000
+ * Also includes 'additionalNotes' in the email content
  * </ai_context>
  */
 
@@ -25,6 +26,7 @@ export async function POST(req: Request) {
       scopes,
       budgetRange,
       selectedOptions,
+      additionalNotes,
     } = await req.json();
 
     const scopesText =
@@ -85,6 +87,17 @@ export async function POST(req: Request) {
             <p style="color: #1a1a1a; font-size: 24px; font-weight: bold; margin: 0;">약 ${formattedMinCost} ~ ${formattedMaxCost}</p>
             <p style="color: #6b7280; font-size: 14px; margin-top: 5px;">(부가세 별도)</p>
           </div>
+
+          ${
+            additionalNotes
+              ? `
+              <div style="margin-top: 20px; padding: 16px; border-radius: 8px; background-color: #f1f5f9;">
+                <h3 style="margin: 0 0 8px 0; font-size: 18px;">추가 문의 사항</h3>
+                <p style="margin: 0; white-space: pre-line; color: #000;">${additionalNotes}</p>
+              </div>
+            `
+              : ""
+          }
 
           <div style="margin-top: 30px; color: #6b7280; font-size: 14px;">
             <p>* 본 견적은 기본적인 기준으로 산출된 예상 금액입니다.</p>
