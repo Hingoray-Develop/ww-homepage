@@ -6,16 +6,13 @@ import IdentityIcon from "@/assets/icons/line/identity.svg?react";
 import ConsultingIcon from "@/assets/icons/line/consulting.svg?react";
 import DesignSystemIcon from "@/assets/icons/line/design-system.svg?react";
 import PricingIcon from "@/assets/icons/line/pricing.svg?react";
-import { Body1, Frame, Heading4, Text } from "@/atoms";
+import { Body1, Frame, Heading2, Heading4, Text } from "@/atoms";
 import { colors } from "@/styles";
 import { useResponsiveType } from "@/hooks";
 import { Divider } from "@/components";
 import { AnalyticsEventList, logEvent } from "@/utils/analytics";
 import { useDarkMode } from "@/contexts/DarkModeContext";
 
-/**
- * 아이콘 위치를 지정할 수 있도록 iconPosition 필드를 만듭니다.
- */
 interface ReasonCardProps {
   icon: React.ReactNode;
   title: string;
@@ -28,10 +25,6 @@ interface ReasonCardProps {
   iconAboveText?: boolean;
 }
 
-/**
- * ReasonCard: 카드 하나의 UI
- * Tailwind로 스타일링, 아이콘은 absolute로 배치
- */
 function ReasonCard({
   icon,
   title,
@@ -48,7 +41,6 @@ function ReasonCard({
 
   const isDesktop = responsiveType === "desktop";
 
-  /** variant에 따른 배경/글자색 정의 */
   const getVariantStyles = () => {
     switch (variant) {
       case "neutral800":
@@ -92,7 +84,6 @@ function ReasonCard({
 
   const styles = getVariantStyles();
 
-  /** iconPosition에 따른 위치 클래스 */
   const iconPositionClass = (() => {
     switch (iconPosition) {
       case "top-left":
@@ -108,14 +99,11 @@ function ReasonCard({
     }
   })();
 
-  /** 카드 실제 내용 */
   const CardContent = () => (
     <div
       className={`relative w-full h-full p-[32px] rounded-[24px] ${styles.bg}`}
     >
-      {/* 아이콘 배치: lg 이상에서만 표시 */}
       {iconAboveText ? (
-        // 1) 아이콘을 텍스트 위에 (normal flow) - lg 이상에서만 표시
         <div
           className={`${
             isDesktop ? "flex" : "hidden"
@@ -124,7 +112,6 @@ function ReasonCard({
           {icon}
         </div>
       ) : (
-        // 2) 기존: 아이콘 절대 배치 - lg 이상에서만 표시
         <div
           className={`${isDesktop ? "block" : "hidden"} ${iconPositionClass}`}
         >
@@ -132,7 +119,6 @@ function ReasonCard({
         </div>
       )}
 
-      {/* 제목/설명 영역 */}
       <div
         style={{
           position: iconAboveText && isDesktop ? "absolute" : "relative",
@@ -174,15 +160,9 @@ function ReasonCard({
   return CardContent();
 }
 
-/**
- * 섹션 전체:
- * - 큰 화면에서는 2×2(왼쪽) + 오른쪽(2행) = 두 번째 스크린샷과 동일
- * - 작은 화면에서는 1~2열로 표시
- */
 export default function WhyChooseUs() {
   const { isDarkMode } = useDarkMode();
 
-  /** 카드 5개. iconPosition을 카드마다 다르게 지정 */
   const reasons: ReasonCardProps[] = [
     {
       icon: <CodeIcon width={86} height={86} />,
@@ -244,28 +224,21 @@ export default function WhyChooseUs() {
         backgroundColor: isDarkMode ? colors.neutral[950] : colors.white,
       }}
     >
-      {/* 타이틀 영역 (상단 여백 최소화) */}
       <div className="text-center pt-4">
-        <h2
-          className={`${
-            isDarkMode ? "text-white" : "text-neutral[950]"
-          } text-4xl md:text-5xl font-bold leading-tight`}
+        <Heading2
+          fontColor={isDarkMode ? colors.white : colors.neutral[950]}
+          fontWeight={700}
         >
           흰고래컴퍼니를
-        </h2>
-        <h2
-          className={`${
-            isDarkMode ? "text-white" : "text-neutral[950]"
-          } text-4xl md:text-5xl font-bold leading-tight`}
+        </Heading2>
+        <Heading2
+          fontColor={isDarkMode ? colors.white : colors.neutral[950]}
+          fontWeight={700}
         >
           이용해야하는 이유
-        </h2>
+        </Heading2>
       </div>
 
-      {/**
-       * [큰 화면] 3열 2행 (총 높이 800px)
-       * - 왼쪽 2×2 (4개 카드), 오른쪽(row-span-2) 카드 1개
-       */}
       <div
         className="hidden lg:grid grid-cols-3 grid-rows-2 gap-6 w-full h-[720px] pt-[60px]"
         style={{
@@ -276,32 +249,23 @@ export default function WhyChooseUs() {
           gridTemplateRows: "repeat(2, 1fr)",
         }}
       >
-        {/* 첫 행 왼쪽 첫 칸 (reasons[0]) */}
         <div className="w-full h-full">
           <ReasonCard {...reasons[0]} />
         </div>
-        {/* 첫 행 왼쪽 두 번째 칸 (reasons[1]) */}
         <div className="w-full h-full" style={{ height: "110%" }}>
           <ReasonCard {...reasons[1]} />
         </div>
-        {/* 오른쪽 큰 카드 (2행 차지) (reasons[4]) */}
         <div className="row-span-2 w-full h-full">
           <ReasonCard {...reasons[4]} />
         </div>
-        {/* 둘째 행 왼쪽 첫 칸 (reasons[2]) */}
         <div className="w-full h-full">
           <ReasonCard {...reasons[2]} />
         </div>
-        {/* 둘째 행 왼쪽 두 번째 칸 (reasons[3]) */}
         <div className="w-full" style={{ paddingTop: 35 }}>
           <ReasonCard {...reasons[3]} />
         </div>
       </div>
 
-      {/**
-       * [작은 화면] (lg 미만)
-       * - 1~2열로 모든 카드 표시
-       */}
       <div className="lg:hidden grid grid-cols-1 sm:grid-cols-2 gap-6 pt-[60px] px-4 pb-10">
         {reasons.map((reason, i) => (
           <div key={i} className="w-full h-full">

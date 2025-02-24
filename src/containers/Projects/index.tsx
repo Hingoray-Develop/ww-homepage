@@ -1,6 +1,6 @@
 "use client";
 
-import { Frame, Text } from "@/atoms";
+import { Frame, Heading2, Text } from "@/atoms";
 import { ProjectCard } from "@/components";
 import { colors } from "@/styles";
 import useResponsiveType from "@/hooks/useResponsiveType";
@@ -18,7 +18,7 @@ const Projects = () => {
 
   const projects = [
     {
-      image: "/images/projects/luriz.png", // 실제 이미지 경로로 수정 필요
+      image: "/images/projects/luriz.png",
       title: "나의 올해 사주는? 루리즈",
       type: "Interactive Web",
       boldTexts: ["루리즈"],
@@ -28,19 +28,8 @@ const Projects = () => {
         });
       },
     },
-    // {
-    //   image: "/images/hero/whale.jpg", // 실제 이미지 경로로 수정 필요
-    //   title: "흰고래컴퍼니 자체 디자인시스템",
-    //   type: "Interactive Web",
-    //   boldTexts: ["디자인시스템"],
-    //   onClick: () => {
-    //     logEvent(AnalyticsEventList.BUTTON_CLICK, {
-    //       button_name: "project_design_system",
-    //     });
-    //   },
-    // },
     {
-      image: "/images/projects/meo.png", // 실제 이미지 경로로 수정 필요
+      image: "/images/projects/meo.png",
       title: "올인원 전기배터리 솔루션, MEO",
       type: "Interactive Web",
       boldTexts: ["MEO"],
@@ -51,7 +40,7 @@ const Projects = () => {
       },
     },
     {
-      image: "/images/projects/blockdex.png", // 실제 이미지 경로로 수정 필요
+      image: "/images/projects/blockdex.png",
       title: "탈중앙 암호화폐 거래소, 블록덱스",
       type: "Interactive Web",
       boldTexts: ["블록덱스"],
@@ -97,14 +86,9 @@ const Projects = () => {
       }}
     >
       <Frame w={"100%"} alignment="center" pb={80}>
-        <Text
-          fontColor={colors.neutral[900]}
-          fontSize={52}
-          lineHeight={"72px"}
-          fontWeight={700}
-        >
+        <Heading2 fontColor={colors.neutral[900]} fontWeight={700}>
           프로젝트
-        </Text>
+        </Heading2>
         <Text
           fontColor={colors.neutral[700]}
           fontSize={20}

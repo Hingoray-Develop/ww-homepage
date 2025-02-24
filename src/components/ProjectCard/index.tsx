@@ -72,7 +72,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         borderRadius: 8,
       }}
     >
-      <div style={{ position: "relative", width: "100%", paddingTop: "100%" }}>
+      <div
+        style={{ position: "relative", width: "100%", paddingTop: "56.25%" }}
+      >
         <Image
           src={image}
           alt={title}

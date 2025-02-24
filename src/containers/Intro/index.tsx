@@ -1,6 +1,6 @@
 "use client";
 
-import { Frame, FrameScreen, Heading2, Heading4, Text } from "@/atoms";
+import { Frame, FrameScreen, Heading2, Text } from "@/atoms";
 import { ChatBubble, Divider } from "@/components";
 import { colors } from "@/styles";
 import { useEffect, useMemo, useState } from "react";
@@ -23,7 +23,6 @@ const Intro = () => {
   const isMobile = responsiveType === "mobile";
   const isTablet = responsiveType === "tablet";
 
-  // 외부 컨테이너 여백 (초기값 설정)
   const containerPy = isMobile ? 80 : isTablet ? 100 : 120;
 
   const messages = useMemo(
@@ -39,7 +38,6 @@ const Intro = () => {
     []
   );
 
-  // 채팅 말풍선의 너비 계산 (모바일: 최대 300, 태블릿: 최대 450, 데스크탑: 최대 600)
   const [widths, setWidths] = useState<number[]>([]);
   useEffect(() => {
     const newWidths = messages.map((msg) => {
@@ -56,22 +54,16 @@ const Intro = () => {
 
   if (!hasMounted) return null;
 
-  // 폰트 크기 및 줄 높이 설정
-
   const descriptionFontSize = isMobile ? 14 : isTablet ? 16 : 20;
   const descriptionLineHeight = isMobile ? "26px" : isTablet ? "28px" : "30px";
 
-  // 외부 컨테이너 여백
   const containerPx = isMobile ? 16 : isTablet ? 30 : 40;
-
-  // 우측(또는 단일) 텍스트 영역 설정
 
   const textAreaPt = isMobile ? 120 : isTablet ? 200 : 460;
   const textAreaGap = isMobile ? 8 : isTablet ? 12 : 16;
   const dividerPy = isMobile ? 16 : isTablet ? 20 : 24;
 
   if (isMobile || isTablet) {
-    // 모바일 또는 태블릿: 채팅 말풍선은 숨기고 텍스트들만 중앙 정렬하여 표시
     return (
       <div
         id="intro"
@@ -89,18 +81,18 @@ const Intro = () => {
           py={containerPy}
           bg={isDarkMode ? colors.neutral[950] : colors.white}
         >
-          <Heading4
+          <Heading2
             fontColor={isDarkMode ? colors.white : colors.neutral[950]}
             fontWeight={700}
           >
             모르는 게 많아도,
-          </Heading4>
-          <Heading4
+          </Heading2>
+          <Heading2
             fontColor={isDarkMode ? colors.white : colors.neutral[950]}
             fontWeight={700}
           >
             어디서부터 시작해야 할지 몰라도 괜찮습니다.
-          </Heading4>
+          </Heading2>
           <Frame w="100%" py={dividerPy}>
             <Divider
               color={isDarkMode ? colors.neutral[700] : colors.neutral[200]}
@@ -139,7 +131,6 @@ const Intro = () => {
       </div>
     );
   } else {
-    // 데스크탑: 채팅 말풍선과 텍스트들을 좌측/우측에 배치
     return (
       <div
         id="intro"
@@ -158,7 +149,6 @@ const Intro = () => {
           py={containerPy}
           bg={isDarkMode ? colors.neutral[950] : colors.white}
         >
-          {/* 채팅 메시지 영역 */}
           <Frame col w="40%" h="100%" alignment="top-left">
             {messages.map((msg, i) => (
               <Frame key={i} pb={24} opacity={Math.max(1 - i * 0.15, 0)}>
@@ -176,7 +166,6 @@ const Intro = () => {
             ))}
           </Frame>
 
-          {/* 우측 하단 텍스트 영역 */}
           <Frame
             col
             w="100%"

@@ -1,6 +1,6 @@
 "use client";
 
-import { Frame, Text } from "@/atoms";
+import { Frame, Heading2 } from "@/atoms";
 
 import { colors } from "@/styles";
 import PlanningIcon from "@/assets/icons/line/planning.svg?react";
@@ -28,16 +28,11 @@ const Services = () => {
       const whyChooseUsRect = whyChooseUsSection.getBoundingClientRect();
       const threshold = window.innerHeight * 0.5;
 
-      // Services 섹션이 화면 중앙을 지나면 라이트 모드로
       if (servicesRect.top <= threshold && whyChooseUsRect.top > threshold) {
         setIsDarkMode(false);
-      }
-      // WhyChooseUs 섹션이 화면 중앙을 지나면 다크 모드로
-      else if (whyChooseUsRect.top <= threshold) {
+      } else if (whyChooseUsRect.top <= threshold) {
         setIsDarkMode(true);
-      }
-      // 그 외의 경우 (위로 스크롤하여 Intro 섹션으로 돌아갈 때)
-      else {
+      } else {
         setIsDarkMode(true);
       }
     }
@@ -59,7 +54,6 @@ const Services = () => {
         "정보 구조 설계 (IA)",
         "프로젝트 계획 수립",
       ],
-      // onClick: () => console.log("기획 더보기 클릭"),
     },
     {
       icon: <DesignIcon width={64} height={64} fill={colors.neutral[300]} />,
@@ -70,7 +64,6 @@ const Services = () => {
         "UI 디자인",
         "프로토타입 제작",
       ],
-      // onClick: () => console.log("디자인 더보기 클릭"),
     },
     {
       icon: <DevelopIcon width={64} height={64} fill={colors.neutral[300]} />,
@@ -81,7 +74,6 @@ const Services = () => {
         "서버, API 개발",
         "성능 최적화",
       ],
-      // onClick: () => console.log("개발 더보기 클릭"),
     },
     {
       icon: (
@@ -94,11 +86,9 @@ const Services = () => {
         "정기 점검 및 최적화",
         "기능 업데이트*",
       ],
-      // onClick: () => console.log("유지보수 더보기 클릭"),
     },
   ];
 
-  // 반응형 Grid 레이아웃 스타일 (Grid 시스템이 없으므로 일반 <div> 사용)
   const gridStyle: React.CSSProperties = {
     display: "grid",
     gap: "24px",
@@ -126,17 +116,14 @@ const Services = () => {
       }}
     >
       <Frame w={"100%"} alignment="center" pb={80}>
-        <Text
+        <Heading2
           fontColor={isDarkMode ? colors.white : colors.neutral[950]}
-          fontSize={52}
-          lineHeight={"72px"}
           fontWeight={700}
         >
           서비스 제공 범위
-        </Text>
+        </Heading2>
       </Frame>
       <Frame col w="100%" gap={24}>
-        {/* 반응형 사이즈 변동에 따른 그리드 레이아웃은 일반 <div>로 감싸서 처리 */}
         <div style={gridStyle}>
           {services.map((service, index) => (
             <ServiceCard
@@ -144,7 +131,6 @@ const Services = () => {
               icon={service.icon}
               title={service.title}
               descriptions={service.descriptions}
-              // onMoreClick={service.onClick}
               minH={isMobile ? 220 : 300}
             />
           ))}
