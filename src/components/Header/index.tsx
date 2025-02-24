@@ -137,7 +137,7 @@ const Header = () => {
               프로젝트 견적내기
             </span>
           </div>
-          <div
+          {/* <div
             className="items-center justify-center px-[4px] py-[19px] cursor-pointer"
             onClick={() => {
               router.push("/question");
@@ -151,7 +151,7 @@ const Header = () => {
             >
               문의하기
             </span>
-          </div>
+          </div> */}
         </Frame>
 
         <Frame row desktop={{ hidden: true }}>
