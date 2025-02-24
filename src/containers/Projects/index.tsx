@@ -18,7 +18,7 @@ const Projects = () => {
 
   const projects = [
     {
-      image: "/images/hero/whale.jpg", // 실제 이미지 경로로 수정 필요
+      image: "/images/projects/luriz.png", // 실제 이미지 경로로 수정 필요
       title: "나의 올해 사주는? 루리즈",
       type: "Interactive Web",
       boldTexts: ["루리즈"],
@@ -28,30 +28,30 @@ const Projects = () => {
         });
       },
     },
+    // {
+    //   image: "/images/hero/whale.jpg", // 실제 이미지 경로로 수정 필요
+    //   title: "흰고래컴퍼니 자체 디자인시스템",
+    //   type: "Interactive Web",
+    //   boldTexts: ["디자인시스템"],
+    //   onClick: () => {
+    //     logEvent(AnalyticsEventList.BUTTON_CLICK, {
+    //       button_name: "project_design_system",
+    //     });
+    //   },
+    // },
     {
-      image: "/images/hero/whale.jpg", // 실제 이미지 경로로 수정 필요
-      title: "흰고래컴퍼니 자체 디자인시스템",
+      image: "/images/projects/meo.png", // 실제 이미지 경로로 수정 필요
+      title: "올인원 전기배터리 솔루션, MEO",
       type: "Interactive Web",
-      boldTexts: ["디자인시스템"],
+      boldTexts: ["MEO"],
       onClick: () => {
         logEvent(AnalyticsEventList.BUTTON_CLICK, {
-          button_name: "project_design_system",
+          button_name: "project_meo",
         });
       },
     },
     {
-      image: "/images/hero/whale.jpg", // 실제 이미지 경로로 수정 필요
-      title: "인도네시아에도 당근마켓이? 이너서클",
-      type: "Interactive Web",
-      boldTexts: ["이너서클"],
-      onClick: () => {
-        logEvent(AnalyticsEventList.BUTTON_CLICK, {
-          button_name: "project_inner_circle",
-        });
-      },
-    },
-    {
-      image: "/images/hero/whale.jpg", // 실제 이미지 경로로 수정 필요
+      image: "/images/projects/blockdex.png", // 실제 이미지 경로로 수정 필요
       title: "탈중앙 암호화폐 거래소, 블록덱스",
       type: "Interactive Web",
       boldTexts: ["블록덱스"],
@@ -72,6 +72,7 @@ const Projects = () => {
       ? "repeat(2, 1fr)"
       : "repeat(2, 1fr)",
     width: "100%",
+    aspectRatio: "auto",
   };
 
   const getCardStyle = (index: number): React.CSSProperties => ({

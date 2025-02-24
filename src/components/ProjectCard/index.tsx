@@ -78,8 +78,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           alt={title}
           fill
           style={{
-            objectFit: "cover",
-            objectPosition: "center center",
+            objectFit: "fill",
+            // objectPosition: "top center",
             borderRadius: 32,
           }}
           priority
