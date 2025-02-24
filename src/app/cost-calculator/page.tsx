@@ -9,6 +9,7 @@ import StepThree from "./StepThree";
 import StepFour from "./StepFour";
 import { CostCalculatorOption } from "@/data/costCalculatorOptions";
 import { Body3, Frame } from "@/atoms";
+import useResponsiveType from "@/hooks/useResponsiveType";
 
 /**
  * <ai_context>
@@ -23,6 +24,10 @@ import { Body3, Frame } from "@/atoms";
  */
 
 export default function CostCalculator() {
+  const { responsiveType } = useResponsiveType();
+  const isMobile = responsiveType === "mobile";
+  const isTablet = responsiveType === "tablet";
+
   // Clear any lingering loading state for this page
   useClearLoading();
 
@@ -100,35 +105,51 @@ export default function CostCalculator() {
     setStep(1);
   };
 
+  // 반응형 패딩 값 설정
+  const containerPx = isMobile ? 16 : isTablet ? 30 : 40;
+
   return (
     <div
       style={{
         display: "flex",
-        flexDirection: "row",
+        flexDirection: isMobile || isTablet ? "column" : "row",
         width: "100%",
-        paddingRight: 40,
+        paddingRight: containerPx,
+        paddingLeft: containerPx,
+        gap: isMobile || isTablet ? 24 : 0,
       }}
     >
-      {/* Left panel now takes ~50% */}
-      <div style={{ flex: 1 }}>
-        <CostCalculatorLeft />
-      </div>
+      {/* Left panel - 태블릿 이상에서만 표시 */}
+      {!isMobile && !isTablet && (
+        <div style={{ flex: 1, width: "auto" }}>
+          <CostCalculatorLeft />
+        </div>
+      )}
 
-      {/* Right panel (Steps) takes ~50% */}
+      {/* Right panel (Steps) */}
       <div
         style={{
-          flex: 1,
+          flex: isMobile || isTablet ? "none" : 1,
+          width: "100%",
           backgroundColor: "#FFFFFF",
           overflow: "hidden",
           borderRadius: 16,
-          paddingLeft: 40,
-          paddingRight: 40,
+          paddingLeft: isMobile ? 20 : 40,
+          paddingRight: isMobile ? 20 : 40,
+          margin: isMobile || isTablet ? "0 auto" : undefined,
+          maxWidth: isMobile || isTablet ? "600px" : undefined,
         }}
       >
         {/* Step indicator */}
-        <Frame col w="100%" pt={40} pb={48}>
+        <Frame col w="100%" pt={isMobile ? 24 : 40} pb={isMobile ? 32 : 48}>
           <div
-            style={{ display: "flex", gap: 16, fontSize: 14, fontWeight: 600 }}
+            style={{
+              display: "flex",
+              gap: isMobile ? 8 : 16,
+              fontSize: isMobile ? 12 : 14,
+              fontWeight: 600,
+              width: "100%",
+            }}
           >
             {[1, 2, 3, 4].map((n) => {
               const disabled = !canGoForward(n);
@@ -151,7 +172,7 @@ export default function CostCalculator() {
                     opacity: disabled ? 0.5 : 1,
                   }}
                 >
-                  <Body3 px={12} py={4}>
+                  <Body3 px={isMobile ? 8 : 12} py={isMobile ? 2 : 4}>
                     {("0" + n).slice(-2)}
                   </Body3>
                 </div>
