@@ -204,21 +204,22 @@ export default function StepTwo({
         {dontKnow ? <CheckedIcon /> : <UncheckedIcon />}
         아직 잘 모르겠어요.
       </label>
-
-      <button
-        onClick={onNext}
-        style={{
-          marginTop: 24,
-          backgroundColor: "#101828",
-          color: "#FFFFFF",
-          borderRadius: 8,
-          padding: "12px 24px",
-          cursor: "pointer",
-          fontSize: 16,
-        }}
-      >
-        다음
-      </button>
+      <Frame pb={40}>
+        <button
+          onClick={onNext}
+          style={{
+            marginTop: 24,
+            backgroundColor: "#101828",
+            color: "#FFFFFF",
+            borderRadius: 8,
+            padding: "12px 24px",
+            cursor: "pointer",
+            fontSize: 16,
+          }}
+        >
+          다음
+        </button>
+      </Frame>
     </div>
   );
 }

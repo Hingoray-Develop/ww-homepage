@@ -58,33 +58,30 @@ export default function StepOne({ scopes, setScopes, onNext }: StepOneProps) {
                 }}
               >
                 {checked ? <CheckedIcon /> : <UncheckedIcon />}
-                {/* <input
-                type="checkbox"
-                checked={checked}
-                onChange={() => toggleScope(opt)}
-                style={{ width: 16, height: 16 }}
-              /> */}
+
                 <Body1>{opt}</Body1>
               </label>
             );
           })}
         </Frame>
       </Frame>
-      <button
-        onClick={onNext}
-        disabled={isDisabled}
-        style={{
-          backgroundColor: isDisabled ? "#101828" : "#101828",
-          color: "#FFFFFF",
-          borderRadius: 8,
-          padding: "12px 24px",
-          cursor: isDisabled ? "default" : "pointer",
-          fontSize: "16px",
-          opacity: isDisabled ? 0.5 : 1,
-        }}
-      >
-        다음
-      </button>
+      <Frame pb={40}>
+        <button
+          onClick={onNext}
+          disabled={isDisabled}
+          style={{
+            backgroundColor: isDisabled ? "#101828" : "#101828",
+            color: "#FFFFFF",
+            borderRadius: 8,
+            padding: "12px 24px",
+            cursor: isDisabled ? "default" : "pointer",
+            fontSize: "16px",
+            opacity: isDisabled ? 0.5 : 1,
+          }}
+        >
+          다음
+        </button>
+      </Frame>
     </>
   );
 }

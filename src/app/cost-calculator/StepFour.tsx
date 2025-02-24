@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Body1, Heading2 } from "@/atoms";
+import { Body1, Frame, Heading2 } from "@/atoms";
 import { useLoading } from "@/contexts/LoadingContext";
 import { CostCalculatorOption } from "@/data/costCalculatorOptions";
 import { colors } from "@/styles";
@@ -108,19 +108,21 @@ export default function StepFour({
         }}
       />
 
-      <button
-        onClick={handleSubmit}
-        style={{
-          backgroundColor: "#101828",
-          color: "#FFFFFF",
-          borderRadius: 8,
-          padding: "12px 24px",
-          cursor: "pointer",
-          fontSize: "16px",
-        }}
-      >
-        제출
-      </button>
+      <Frame pb={40}>
+        <button
+          onClick={handleSubmit}
+          style={{
+            backgroundColor: "#101828",
+            color: "#FFFFFF",
+            borderRadius: 8,
+            padding: "12px 24px",
+            cursor: "pointer",
+            fontSize: "16px",
+          }}
+        >
+          제출
+        </button>
+      </Frame>
     </div>
   );
 }

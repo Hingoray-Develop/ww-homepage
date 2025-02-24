@@ -51,11 +51,19 @@ export default function CostCalculatorLeft() {
         <Body1 fontColor={colors.neutral[300]} fontWeight={400}>
           세부 진행과정이 궁금하시다면,
           <br />
-          흰고래컴퍼니 회사소개서를 다운받아보세요.
+          언제든지 문의하세요.
         </Body1>
       </Frame>
 
-      <a
+      {/* <Frame w="100%" pb={24}>
+        <Body1 fontColor={colors.neutral[300]} fontWeight={400}>
+          세부 진행과정이 궁금하시다면,
+          <br />
+          흰고래컴퍼니 회사소개서를 다운받아보세요.
+        </Body1>
+      </Frame> */}
+
+      {/* <a
         href="/whitewhale-company-profile.pdf"
         download
         style={{
@@ -71,7 +79,7 @@ export default function CostCalculatorLeft() {
           <Heading6>회사소개서 다운받기</Heading6>
           <IconArrowBottom />
         </Frame>
-      </a>
+      </a> */}
     </Frame>
   );
 }
