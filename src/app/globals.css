@@ -82,7 +82,6 @@ body {
   bottom: 0;
   width: 0; /* 시작은 width 0에서 */
   height: 100%;
-  /* background-color: rgba(82, 109, 249, 0.15); */
   background-color: #344054;
   z-index: -1;
   animation: highlightSlide 0.5s ease-in-out forwards;
@@ -92,11 +91,9 @@ body {
 @keyframes fadeInHighlight {
   from {
     opacity: 1;
-    /* transform: translateY(100px); */
   }
   to {
     opacity: 1;
-    /* transform: translateY(0); */
   }
 }
 
@@ -126,4 +123,13 @@ body {
 
 .highlight-text.animated:hover::after {
   height: 100%;
+}
+
+/* 스크롤바 숨기기 */
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE & Edge */
+  scrollbar-width: none; /* Firefox */
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }

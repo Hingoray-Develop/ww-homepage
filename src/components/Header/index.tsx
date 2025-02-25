@@ -6,6 +6,7 @@ import { AnalyticsEventList, logEvent } from "@/utils/analytics";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+
 const Header = () => {
   const router = useRouter();
 
@@ -137,12 +138,14 @@ const Header = () => {
               프로젝트 견적내기
             </span>
           </div>
-          {/* <div
+
+          {/* 문의하기 (새로 노출) */}
+          <div
             className="items-center justify-center px-[4px] py-[19px] cursor-pointer"
             onClick={() => {
-              router.push("/question");
+              router.push("/inquiry");
               logEvent(AnalyticsEventList.MENU_CLICK, {
-                menu_name: "question",
+                menu_name: "inquiry",
               });
             }}
           >
@@ -151,7 +154,7 @@ const Header = () => {
             >
               문의하기
             </span>
-          </div> */}
+          </div>
         </Frame>
 
         <Frame row desktop={{ hidden: true }}>

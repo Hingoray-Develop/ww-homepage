@@ -85,7 +85,6 @@ export interface SubCategory {
 export interface CostCategory {
   title: string;
   icon?: React.FunctionComponent<React.SVGProps<SVGSVGElement>>; // optional icon
-  categoryCost: number;
   subCategories: SubCategory[];
 }
 
@@ -94,12 +93,12 @@ export const costCalculatorOptions: CostCategory[] = [
   {
     title: "사용자 관리 및 인증",
     icon: LockIcon,
-    categoryCost: 500,
+
     subCategories: [
       {
         subtitle: "회원가입/로그인",
         icon: LockIcon,
-        subCategoryCost: 158 + 208 + 54, // 420
+        subCategoryCost: 500,
         items: [
           { label: "이메일 로그인 (이메일 인증)", cost: 158 },
           { label: "비밀번호 찾기", cost: 208 },
@@ -138,7 +137,7 @@ export const costCalculatorOptions: CostCategory[] = [
         icon: KeyIcon,
         subCategoryCost: 749, // 예시(749 ~ 2068 중 일단 749)
         items: [
-          { label: "회원 유형 분류(749~2068)", cost: 749 },
+          { label: "회원 유형 분류", cost: 749 },
           { label: "회원 등급 있음", cost: 749 },
         ],
       },
@@ -149,12 +148,11 @@ export const costCalculatorOptions: CostCategory[] = [
   {
     title: "커뮤니티 및 소셜 인터랙션",
     icon: FeedIcon,
-    categoryCost: 354,
     subCategories: [
       {
         subtitle: "게시글 / 댓글, 피드",
         icon: FeedIcon,
-        subCategoryCost: 256 + 205 + 79 + 51 + 130, // 721
+        subCategoryCost: 354,
         items: [
           { label: "게시글 생성,수정 및 삭제", cost: 256 },
           { label: "내가 작성한 게시글 목록", cost: 0 },
@@ -223,7 +221,8 @@ export const costCalculatorOptions: CostCategory[] = [
         items: [
           { label: "채팅 API 연결", cost: 0 },
           { label: "신고 대상 차단하기", cost: 0 },
-          { label: "1:1 채팅(333) 또는 그룹 채팅(440)", cost: 440 },
+          { label: "1:1 채팅", cost: 333 },
+          { label: "그룹 채팅", cost: 440 },
         ],
         optionalItems: [
           { label: "채팅 검색", cost: 642 },
@@ -254,23 +253,22 @@ export const costCalculatorOptions: CostCategory[] = [
   {
     title: "컨텐츠 및 미디어 관리",
     icon: FeedIcon,
-    categoryCost: 0, // 임의
     subCategories: [
       {
         subtitle: "사진,동영상 업로드/공유",
         icon: GalleryIcon,
-        subCategoryCost: 354 + 1514 + 106, // 임의 1974
+        subCategoryCost: 354,
         items: [
-          { label: "사진 콘텐츠", cost: 354 },
-          { label: "동영상 콘텐츠(1분기준)", cost: 1514 },
-          { label: "다중 업로드", cost: 106 },
+          { label: "사진 콘텐츠", cost: 0 },
+          { label: "다중 업로드", cost: 105 },
         ],
         optionalItems: [
           { label: "사진 편집", cost: 94 },
           { label: "확대", cost: 38 },
           { label: "태그", cost: 122 },
-          { label: "영상 길이(1시간)", cost: 711 },
-          { label: "음성 재생", cost: 239 },
+          { label: "동영상 콘텐츠(1분 내외)", cost: 1160 },
+          { label: "동영상 콘텐츠(1시간 이상)", cost: 1574 },
+          { label: "음성 재생", cost: 1102 },
           { label: "재생 기능(목록 셔플)", cost: 141 },
           { label: "재생 기능(종료 타이머)", cost: 154 },
           { label: "재생 기능(자동 재생)", cost: 141 },
@@ -290,7 +288,7 @@ export const costCalculatorOptions: CostCategory[] = [
       {
         subtitle: "VOD 업로드/관리",
         icon: ClipBoardIcon,
-        subCategoryCost: 1514,
+        subCategoryCost: 0,
         items: [
           { label: "동영상 콘텐츠(1분기준) 업로드/삭제", cost: 1514 },
           { label: "조회수 관리", cost: 0 },
@@ -319,12 +317,12 @@ export const costCalculatorOptions: CostCategory[] = [
   {
     title: "결제 및 거래 시스템",
     icon: HeartIcon,
-    categoryCost: 395,
+
     subCategories: [
       {
         subtitle: "상품 등록/관리",
         icon: ShopIcon,
-        subCategoryCost: 907,
+        subCategoryCost: 395,
         items: [
           { label: "상품 글+사진 등록/수정/삭제", cost: 907 },
           { label: "주문 리스트 관리", cost: 0 },
@@ -334,7 +332,7 @@ export const costCalculatorOptions: CostCategory[] = [
       {
         subtitle: "장바구니/결제",
         icon: CartIcon,
-        subCategoryCost: 146 + 171 + 147 + 170, // 634
+        subCategoryCost: 0, // 634
         items: [
           { label: "장바구니(회원전용)", cost: 146 },
           { label: "카드 결제(PG)", cost: 171 },
@@ -353,7 +351,7 @@ export const costCalculatorOptions: CostCategory[] = [
       {
         subtitle: "인앱 결제",
         icon: InboxIcon,
-        subCategoryCost: 331 + 331,
+        subCategoryCost: 0,
         items: [
           { label: "구글 인앱결제", cost: 331 },
           { label: "애플 인앱결제", cost: 331 },
@@ -362,7 +360,7 @@ export const costCalculatorOptions: CostCategory[] = [
       {
         subtitle: "정기 후원 결제",
         icon: HandIcon,
-        subCategoryCost: 170,
+        subCategoryCost: 0,
         items: [{ label: "정기 후원 결제", cost: 170 }],
       },
       {
@@ -380,13 +378,13 @@ export const costCalculatorOptions: CostCategory[] = [
       {
         subtitle: "결제 취소,환불 프로세스",
         icon: WalletMoneyIcon,
-        subCategoryCost: 354,
+        subCategoryCost: 0,
         items: [{ label: "환불 및 결제취소 모듈", cost: 354 }],
       },
       {
         subtitle: "할인 쿠폰/프로모션",
         icon: CouponIcon,
-        subCategoryCost: 40 + 117 + 293, // 450
+        subCategoryCost: 0, // 450
         items: [
           { label: "할인 쿠폰/프로모션(-n%, -n원)", cost: 40 },
           { label: "프로모션 코드 등록", cost: 117 },
@@ -396,7 +394,7 @@ export const costCalculatorOptions: CostCategory[] = [
       {
         subtitle: "재고 및 배송 추적 관리",
         icon: StockIcon,
-        subCategoryCost: 305 + 359,
+        subCategoryCost: 0,
         items: [
           { label: "배송지 관리", cost: 305 },
           { label: "배송 추적", cost: 359 },
@@ -409,12 +407,12 @@ export const costCalculatorOptions: CostCategory[] = [
   {
     title: "예약 및 스케쥴 관리",
     icon: PersonIcon,
-    categoryCost: 498,
+
     subCategories: [
       {
         subtitle: "달력 기반 예약",
         icon: CalendarIcon,
-        subCategoryCost: 51 + 76 + 39,
+        subCategoryCost: 498,
         items: [
           { label: "날짜 인풋", cost: 51 },
           { label: "달력", cost: 76 },
@@ -424,13 +422,13 @@ export const costCalculatorOptions: CostCategory[] = [
       {
         subtitle: "직원 스케쥴링 관리",
         icon: ClockIcon,
-        subCategoryCost: 146,
+        subCategoryCost: 0,
         items: [{ label: "일정 확인", cost: 146 }],
       },
       {
         subtitle: "고객 예약 이력 관리",
         icon: CallChatIcon,
-        subCategoryCost: 146,
+        subCategoryCost: 0,
         items: [{ label: "예약 내역 확인", cost: 146 }],
       },
       {
@@ -449,7 +447,7 @@ export const costCalculatorOptions: CostCategory[] = [
   {
     title: "교육 및 학습 관리",
     icon: PersonIcon,
-    categoryCost: 283,
+
     subCategories: [
       {
         subtitle: "라이브 강의 및 화상 강의",
@@ -491,7 +489,6 @@ export const costCalculatorOptions: CostCategory[] = [
   {
     title: "구인/구직 및 매칭",
     icon: PersonIcon,
-    categoryCost: 1179, // 임의
     subCategories: [
       {
         subtitle: "이력서 및 프로필 등록",
@@ -542,7 +539,7 @@ export const costCalculatorOptions: CostCategory[] = [
   {
     title: "기업용 관리 및 운영 도구",
     icon: PersonIcon,
-    categoryCost: 0,
+
     subCategories: [
       {
         subtitle: "CRM (고객 관리)",
@@ -574,7 +571,7 @@ export const costCalculatorOptions: CostCategory[] = [
   {
     title: "AI, 챗봇 및 IOT",
     icon: PersonIcon,
-    categoryCost: 0,
+
     subCategories: [
       {
         subtitle: "FAQ 자동응답 챗봇",
@@ -607,7 +604,7 @@ export const costCalculatorOptions: CostCategory[] = [
   {
     title: "메타버스 및 3D 가상 공간",
     icon: PersonIcon,
-    categoryCost: 0,
+
     subCategories: [
       {
         subtitle: "아바타 생성, 커스터마이징",
@@ -640,7 +637,7 @@ export const costCalculatorOptions: CostCategory[] = [
   {
     title: "블록체인 및 암호화폐",
     icon: HeartIcon,
-    categoryCost: 0,
+
     subCategories: [
       {
         subtitle: "스마트 컨트랙트",
@@ -674,7 +671,7 @@ export const costCalculatorOptions: CostCategory[] = [
   {
     title: "게이미피케이션",
     icon: FeedIcon,
-    categoryCost: 0,
+
     subCategories: [
       {
         subtitle: "리더보드/랭킹 시스템",
@@ -701,7 +698,7 @@ export const costCalculatorOptions: CostCategory[] = [
   {
     title: "부동산/매물 관리",
     icon: PersonIcon,
-    categoryCost: 0,
+
     subCategories: [
       {
         subtitle: "매물 등록/관리",
@@ -740,7 +737,7 @@ export const costCalculatorOptions: CostCategory[] = [
   {
     title: "크라우드 펀딩",
     icon: HeartIcon,
-    categoryCost: 0,
+
     subCategories: [
       {
         subtitle: "프로젝트 등록(목표 금액)",

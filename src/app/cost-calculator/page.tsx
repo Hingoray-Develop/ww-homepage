@@ -20,6 +20,7 @@ import useResponsiveType from "@/hooks/useResponsiveType";
  * but allow backward navigation from later steps.
  * Also store step completion states so previous selections remain.
  * And show disabled style (reduced opacity/cursor) for steps that are not yet allowed.
+ * Updated again: pass 'scopes' to StepThree so it can detect if only BI/CI 디자인 was chosen.
  * </ai_context>
  */
 
@@ -47,7 +48,11 @@ export default function CostCalculator() {
   });
 
   // StepOne state
-  const [scopes, setScopes] = useState<string[]>(["기획", "디자인", "개발"]); // default all selected
+  const [scopes, setScopes] = useState<string[]>([
+    "기획",
+    "UX/UI 디자인",
+    "개발",
+  ]); // default selected
 
   // StepTwo: min & max budget or null if don't know
   const [budgetRange, setBudgetRange] = useState<[number, number] | null>([
@@ -83,14 +88,12 @@ export default function CostCalculator() {
 
   // stepTwo "Next"
   const handleNextFromStepTwo = () => {
-    // no condition required to "complete" step two
     setStepComplete((prev) => ({ ...prev, 2: true }));
     setStep(3);
   };
 
   // stepThree "Next"
   const handleNextFromStepThree = () => {
-    // no condition for step three
     setStepComplete((prev) => ({ ...prev, 3: true }));
     setStep(4);
   };
@@ -98,7 +101,7 @@ export default function CostCalculator() {
   // finalize => StepFour
   const handleComplete = () => {
     // after sending email, reset
-    setScopes(["기획", "디자인", "개발"]);
+    setScopes(["기획", "UX/UI 디자인", "개발"]);
     setBudgetRange([1000, 5000]);
     setSelectedOptions([]);
     setStepComplete({ 1: false, 2: false, 3: false, 4: false });
@@ -198,9 +201,10 @@ export default function CostCalculator() {
         )}
         {step === 3 && (
           <StepThree
+            onNext={handleNextFromStepThree}
             selectedOptions={selectedOptions}
             setSelectedOptions={setSelectedOptions}
-            onNext={handleNextFromStepThree}
+            scopes={scopes}
           />
         )}
         {step === 4 && (

@@ -20,7 +20,12 @@ interface StepOneProps {
   onNext: () => void;
 }
 
-const STEP_OPTIONS = ["기획", "디자인", "개발"];
+const STEP_OPTIONS = [
+  "기획",
+  "UX/UI 디자인",
+  "BI/CI 디자인(로고, 브랜딩 등)",
+  "개발",
+];
 
 export default function StepOne({ scopes, setScopes, onNext }: StepOneProps) {
   const toggleScope = (scope: string) => {
