@@ -19,8 +19,8 @@ const Projects = () => {
   const projects = [
     {
       image: "/images/projects/luriz.png",
-      title: "나의 올해 사주는? 루리즈",
-      type: "Interactive Web",
+      title: "신년 사주 운세 프로젝트, 루리즈",
+      type: "Brand Consulting, Interactive Web",
       boldTexts: ["루리즈"],
       onClick: () => {
         logEvent(AnalyticsEventList.BUTTON_CLICK, {
@@ -29,9 +29,20 @@ const Projects = () => {
       },
     },
     {
+      image: "/images/projects/hcube.png",
+      title: "통합 재고관리 솔루션, HCUBE",
+      type: "Brand Consulting, Interactive Application",
+      boldTexts: ["HCUBE"],
+      onClick: () => {
+        logEvent(AnalyticsEventList.BUTTON_CLICK, {
+          button_name: "project_hcube",
+        });
+      },
+    },
+    {
       image: "/images/projects/meo.png",
-      title: "올인원 전기배터리 솔루션, MEO",
-      type: "Interactive Web",
+      title: "전기배터리 솔루션, MEO",
+      type: "Interactive Application",
       boldTexts: ["MEO"],
       onClick: () => {
         logEvent(AnalyticsEventList.BUTTON_CLICK, {

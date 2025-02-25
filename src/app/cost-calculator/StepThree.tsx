@@ -1,39 +1,78 @@
 "use client";
 
-import React from "react";
+import React, { useState, useRef, useMemo } from "react";
+import { Body1, Body3, Frame, Heading2, Text } from "@/atoms";
 import {
   costCalculatorOptions,
-  CostCalculatorOption,
+  CostCategory,
 } from "@/data/costCalculatorOptions";
-import { Body1, Frame, Heading2, Text } from "@/atoms";
 import { colors } from "@/styles";
 
 /**
  * <ai_context>
- * StepThree: user picks functionalities from the existing costCalculatorOptions,
- * now uses the item.icon directly, which is a React SVG component.
- * Also no changes needed for cost logic here aside from the icons usage.
+ * StepThree now handles hierarchical data:
+ * - For each category(H2) => subCategories(H3)
+ * - On hover of a subCategory, after 1s, show bullet points (items + optionalItems).
+ * - subCategory.icon is now displayed inside the button.
+ * - Clicking each subCategory toggles selection, changing background/border color to #5288F9.
+ * - Displays total selected subCategories count in the bottom right.
+ * - Also shows total cost of all selected subCategories next to the selected count.
  * </ai_context>
  */
 
 interface StepThreeProps {
-  selectedOptions: CostCalculatorOption[];
-  setSelectedOptions: (val: CostCalculatorOption[]) => void;
   onNext: () => void;
 }
 
-export default function StepThree({
-  selectedOptions,
-  setSelectedOptions,
-  onNext,
-}: StepThreeProps) {
-  const toggleOptionSelection = (option: CostCalculatorOption) => {
-    if (selectedOptions.includes(option)) {
-      setSelectedOptions(selectedOptions.filter((o) => o !== option));
-    } else {
-      setSelectedOptions([...selectedOptions, option]);
-    }
+export default function StepThree({ onNext }: StepThreeProps) {
+  const [hoveredSubCategory, setHoveredSubCategory] = useState<string | null>(
+    null
+  );
+  const [selectedSubCategories, setSelectedSubCategories] = useState<string[]>(
+    []
+  );
+  const hoverTimerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const handleSubCategoryMouseEnter = (subCategoryKey: string) => {
+    hoverTimerRef.current = setTimeout(() => {
+      setHoveredSubCategory(subCategoryKey);
+    }, 500);
   };
+
+  const handleSubCategoryMouseLeave = () => {
+    if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
+    setHoveredSubCategory(null);
+  };
+
+  const toggleSubCategorySelection = (subCategoryKey: string) => {
+    setSelectedSubCategories((prev) => {
+      if (prev.includes(subCategoryKey)) {
+        return prev.filter((item) => item !== subCategoryKey);
+      } else {
+        return [...prev, subCategoryKey];
+      }
+    });
+  };
+
+  const totalSelectedCount = selectedSubCategories.length;
+
+  // 선택된 subCategory들의 비용 합산
+  const totalSelectedCost = useMemo(() => {
+    let costSum = 0;
+    costCalculatorOptions.forEach((category: CostCategory) => {
+      category.subCategories.forEach((subcat) => {
+        const subcatKey = category.title + " > " + subcat.subtitle;
+        if (selectedSubCategories.includes(subcatKey)) {
+          costSum += subcat.subCategoryCost;
+        }
+      });
+    });
+    return costSum;
+  }, [selectedSubCategories]);
+
+  const formattedCost = new Intl.NumberFormat("ko-KR").format(
+    totalSelectedCost
+  );
 
   return (
     <div>
@@ -42,72 +81,148 @@ export default function StepThree({
         필요한 기능들을 고를수록 정확한 견적을 보내드려요.
       </Body1>
 
-      {costCalculatorOptions.map((section) => (
-        <div key={section.title} style={{ marginBottom: 24 }}>
-          <Text fontSize={20} fontWeight={600} pb={8}>
-            {section.title}
+      {costCalculatorOptions.map((category: CostCategory) => (
+        <div key={category.title} style={{ marginBottom: 32 }}>
+          {/* 대분류(H2) */}
+          <Text fontSize={18} fontWeight={700} pb={12}>
+            {category.title}
           </Text>
+
+          {/* 소분류(H3) 목록 */}
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(3, 1fr)",
+              gridTemplateColumns: "repeat(2, 1fr)",
               gap: 16,
             }}
           >
-            {section.options.map((option) => {
-              const isSelected = selectedOptions.includes(option);
-              const IconComp = option.icon;
+            {category.subCategories.map((subcat) => {
+              const subCategoryKey = category.title + " > " + subcat.subtitle;
+              const isHovered = hoveredSubCategory === subCategoryKey;
+              const isSelected = selectedSubCategories.includes(subCategoryKey);
+              const IconComp = subcat.icon;
 
               return (
-                <button
-                  key={option.label}
-                  type="button"
-                  onClick={() => toggleOptionSelection(option)}
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    gap: 12,
-                    borderRadius: 8,
-                    border: isSelected
-                      ? `1px solid ${colors.main[500]}`
-                      : `1px solid ${colors.neutral[100]}`,
-                    padding: "12px",
-                    backgroundColor: isSelected
-                      ? "rgba(0,122,255,0.1)"
-                      : colors.neutral[100],
-                    cursor: "pointer",
-                  }}
+                <div
+                  key={subcat.subtitle}
+                  style={{ position: "relative" }}
+                  onMouseEnter={() =>
+                    handleSubCategoryMouseEnter(subCategoryKey)
+                  }
+                  onMouseLeave={handleSubCategoryMouseLeave}
                 >
-                  <IconComp
-                    width={28}
-                    height={28}
-                    fill={isSelected ? "#007AFF" : "#000"}
-                  />
-                  <Text fontSize={14} fontWeight={500}>
-                    {option.label}
-                  </Text>
-                </button>
+                  <button
+                    type="button"
+                    onClick={() => toggleSubCategorySelection(subCategoryKey)}
+                    style={{
+                      width: "100%",
+                      padding: "16px",
+                      borderRadius: 8,
+                      backgroundColor: isSelected
+                        ? colors.main[100]
+                        : "#F5F6F7",
+                      boxShadow: isSelected
+                        ? `0 0 0 2px ${colors.main[400]} inset`
+                        : undefined,
+                      textAlign: "left",
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 8,
+                    }}
+                  >
+                    {IconComp && (
+                      <IconComp
+                        width={20}
+                        height={20}
+                        fill={isSelected ? "#FFFFFF" : "#666"}
+                      />
+                    )}
+                    <Text
+                      fontSize={14}
+                      fontWeight={600}
+                      fontColor={colors.neutral[900]}
+                    >
+                      {subcat.subtitle}
+                    </Text>
+                  </button>
+
+                  {/* 호버 시 나타나는 tooltip - 0.5초 딜레이 */}
+                  {isHovered && (
+                    <div
+                      style={{
+                        position: "absolute",
+                        top: "calc(100% + 4px)",
+                        left: 0,
+                        backgroundColor: "#333",
+                        color: "#fff",
+                        padding: "12px",
+                        borderRadius: 6,
+                        fontSize: 13,
+                        width: "280px",
+                        zIndex: 100,
+                      }}
+                    >
+                      {/* 필수 기능 */}
+                      <Text fontWeight={600} pb={8} fontColor="#FFD700">
+                        필수 기능
+                      </Text>
+                      <ul style={{ paddingLeft: 16, marginBottom: 12 }}>
+                        {subcat.items.map((it) => (
+                          <li key={it.label} style={{ marginBottom: 4 }}>
+                            {it.label}
+                          </li>
+                        ))}
+                      </ul>
+
+                      {/* 선택 기능이 있을 경우 */}
+                      {subcat.optionalItems &&
+                        subcat.optionalItems.length > 0 && (
+                          <>
+                            <Text fontWeight={600} pb={8} fontColor="#ADD8E6">
+                              선택 옵션
+                            </Text>
+                            <ul style={{ paddingLeft: 16 }}>
+                              {subcat.optionalItems.map((oit) => (
+                                <li key={oit.label} style={{ marginBottom: 4 }}>
+                                  {oit.label}
+                                </li>
+                              ))}
+                            </ul>
+                          </>
+                        )}
+                    </div>
+                  )}
+                </div>
               );
             })}
           </div>
         </div>
       ))}
 
-      <Frame pt={32} pb={40}>
-        <button
-          onClick={onNext}
-          style={{
-            backgroundColor: "#101828",
-            color: "#FFFFFF",
-            borderRadius: 8,
-            padding: "12px 24px",
-            cursor: "pointer",
-            fontSize: "16px",
-          }}
-        >
-          다음
-        </button>
+      <Frame w="100%" pt={32} pb={40} row alignment="center" gap="auto">
+        <Frame>
+          <button
+            onClick={onNext}
+            style={{
+              backgroundColor: "#101828",
+              color: "#FFFFFF",
+              borderRadius: 8,
+              padding: "12px 24px",
+              cursor: "pointer",
+              fontSize: "16px",
+            }}
+          >
+            다음
+          </button>
+        </Frame>
+        {totalSelectedCount > 0 && (
+          <Frame bg={colors.main[400]} radius={4} row alignment="center">
+            <Body3 px={8} py={5} fontWeight={500} fontColor={colors.white}>
+              {totalSelectedCount}개 선택됨 (약 {formattedCost}원)
+            </Body3>
+          </Frame>
+        )}
       </Frame>
     </div>
   );
