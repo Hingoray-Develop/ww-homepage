@@ -66,6 +66,9 @@ import FolderFavoritesIcon from "@/assets/icons/pricing/solar_folder-favourite-b
  * preserving icons from the original code, and now structured as
  * Category(H2) -> subCategories(H3) -> items & optionalItems
  * Each item has { label, cost }, cost is hidden from user display but used in calculations.
+ * Updated: each subCategory now includes `durationMin` and `durationMax` fields (in months),
+ * referencing typical complexity: 하=1~2, 중=2~4, 상=3~6, 최상=4~8 등. 
+ * (Exact numeric values are example-based.)
  * </ai_context>
  */
 
@@ -76,29 +79,31 @@ export interface CostItem {
 
 export interface SubCategory {
   subtitle: string;
-  icon?: React.FunctionComponent<React.SVGProps<SVGSVGElement>>; // optional icon
+  icon?: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
   subCategoryCost: number;
   items: CostItem[];
   optionalItems?: CostItem[];
+  durationMin?: number;
+  durationMax?: number;
 }
 
 export interface CostCategory {
   title: string;
-  icon?: React.FunctionComponent<React.SVGProps<SVGSVGElement>>; // optional icon
+  icon?: React.FunctionComponent<React.SVGProps<SVGSVGElement>>;
   subCategories: SubCategory[];
 }
 
 export const costCalculatorOptions: CostCategory[] = [
-  // 1) 사용자 관리 및 인증
   {
     title: "사용자 관리 및 인증",
     icon: LockIcon,
-
     subCategories: [
       {
         subtitle: "회원가입/로그인",
         icon: LockIcon,
         subCategoryCost: 500,
+        durationMin: 2,
+        durationMax: 4, 
         items: [
           { label: "이메일 로그인 (이메일 인증)", cost: 158 },
           { label: "비밀번호 찾기", cost: 208 },
@@ -117,6 +122,8 @@ export const costCalculatorOptions: CostCategory[] = [
         subtitle: "프로필/권한 관리",
         icon: PersonIcon,
         subCategoryCost: 500,
+        durationMin: 1,
+        durationMax: 2,
         items: [
           { label: "닉네임 (중복체크 없음)", cost: 39 },
           { label: "프로필 정보 수정", cost: 170 },
@@ -135,7 +142,9 @@ export const costCalculatorOptions: CostCategory[] = [
       {
         subtitle: "사용자 권한 / 역할 설정",
         icon: KeyIcon,
-        subCategoryCost: 749, // 예시(749 ~ 2068 중 일단 749)
+        subCategoryCost: 749, 
+        durationMin: 3,
+        durationMax: 6,
         items: [
           { label: "회원 유형 분류", cost: 749 },
           { label: "회원 등급 있음", cost: 749 },
@@ -143,8 +152,6 @@ export const costCalculatorOptions: CostCategory[] = [
       },
     ],
   },
-
-  // 2) 커뮤니티 및 소셜 인터랙션
   {
     title: "커뮤니티 및 소셜 인터랙션",
     icon: FeedIcon,
@@ -153,6 +160,8 @@ export const costCalculatorOptions: CostCategory[] = [
         subtitle: "게시글 / 댓글, 피드",
         icon: FeedIcon,
         subCategoryCost: 354,
+        durationMin: 2,
+        durationMax: 4,
         items: [
           { label: "게시글 생성,수정 및 삭제", cost: 256 },
           { label: "내가 작성한 게시글 목록", cost: 0 },
@@ -195,7 +204,7 @@ export const costCalculatorOptions: CostCategory[] = [
           { label: "공개 설정(팔로워)", cost: 215 },
           { label: "공개 설정(회원유형·등급별)", cost: 102 },
           { label: "2~3단 카테고리", cost: 102 },
-          { label: "카테고리 2~3단(확장)", cost: 167 }, // 임의
+          { label: "카테고리 2~3단(확장)", cost: 167 },
           { label: "신고(사유 선택)", cost: 107 },
           { label: "신고(대상 차단)", cost: 215 },
           { label: "필터/정렬(범위)", cost: 79 },
@@ -207,6 +216,8 @@ export const costCalculatorOptions: CostCategory[] = [
         subtitle: "팔로우 / 좋아요",
         icon: HeartIcon,
         subCategoryCost: 837,
+        durationMin: 2,
+        durationMax: 4,
         items: [
           { label: "팔로우 신청 없이", cost: 332 },
           { label: "좋아요 목록", cost: 248 },
@@ -218,6 +229,8 @@ export const costCalculatorOptions: CostCategory[] = [
         subtitle: "개인 / 그룹 채팅",
         icon: MessageIcon,
         subCategoryCost: 1017,
+        durationMin: 3,
+        durationMax: 6,
         items: [
           { label: "채팅 API 연결", cost: 0 },
           { label: "신고 대상 차단하기", cost: 0 },
@@ -238,18 +251,20 @@ export const costCalculatorOptions: CostCategory[] = [
         subtitle: "SNS 공유/홍보기능",
         icon: ShareIcon,
         subCategoryCost: 66,
+        durationMin: 1,
+        durationMax: 2,
         items: [{ label: "SNS 공유 기능", cost: 66 }],
       },
       {
         subtitle: "메타버스 내 커뮤니티 요소",
         icon: NearbyIcon,
         subCategoryCost: 0,
+        durationMin: 4,
+        durationMax: 8,
         items: [{ label: "(문서 외 신규 기능)", cost: 0 }],
       },
     ],
   },
-
-  // 3) 컨텐츠 및 미디어 관리
   {
     title: "컨텐츠 및 미디어 관리",
     icon: FeedIcon,
@@ -258,6 +273,8 @@ export const costCalculatorOptions: CostCategory[] = [
         subtitle: "사진,동영상 업로드/공유",
         icon: GalleryIcon,
         subCategoryCost: 354,
+        durationMin: 2,
+        durationMax: 4,
         items: [
           { label: "사진 콘텐츠", cost: 0 },
           { label: "다중 업로드", cost: 105 },
@@ -279,6 +296,8 @@ export const costCalculatorOptions: CostCategory[] = [
         subtitle: "라이브 스트리밍/관리",
         icon: CameraIcon,
         subCategoryCost: 4001 + 338 + 245,
+        durationMin: 4,
+        durationMax: 8,
         items: [
           { label: "스트리밍 화면 공유", cost: 4001 },
           { label: "시청자 수 카운팅", cost: 338 },
@@ -289,6 +308,8 @@ export const costCalculatorOptions: CostCategory[] = [
         subtitle: "VOD 업로드/관리",
         icon: ClipBoardIcon,
         subCategoryCost: 0,
+        durationMin: 3,
+        durationMax: 6,
         items: [
           { label: "동영상 콘텐츠(1분기준) 업로드/삭제", cost: 1514 },
           { label: "조회수 관리", cost: 0 },
@@ -298,6 +319,8 @@ export const costCalculatorOptions: CostCategory[] = [
         subtitle: "실시간 채팅 / 댓글",
         icon: ChatIcon,
         subCategoryCost: 1017,
+        durationMin: 3,
+        durationMax: 6,
         items: [
           { label: "채팅 API 연결", cost: 0 },
           { label: "신고 대상 차단하기", cost: 0 },
@@ -308,21 +331,22 @@ export const costCalculatorOptions: CostCategory[] = [
         subtitle: "동영상 재생 통계",
         icon: PresentationIcon,
         subCategoryCost: 0,
+        durationMin: 2,
+        durationMax: 4,
         items: [{ label: "(옵션 - 조회수, 시청 시간 등)", cost: 0 }],
       },
     ],
   },
-
-  // 4) 결제 및 거래 시스템
   {
     title: "결제 및 거래 시스템",
     icon: HeartIcon,
-
     subCategories: [
       {
         subtitle: "상품 등록/관리",
         icon: ShopIcon,
         subCategoryCost: 395,
+        durationMin: 2,
+        durationMax: 4,
         items: [
           { label: "상품 글+사진 등록/수정/삭제", cost: 907 },
           { label: "주문 리스트 관리", cost: 0 },
@@ -332,7 +356,9 @@ export const costCalculatorOptions: CostCategory[] = [
       {
         subtitle: "장바구니/결제",
         icon: CartIcon,
-        subCategoryCost: 0, // 634
+        subCategoryCost: 0,
+        durationMin: 3,
+        durationMax: 6,
         items: [
           { label: "장바구니(회원전용)", cost: 146 },
           { label: "카드 결제(PG)", cost: 171 },
@@ -352,6 +378,8 @@ export const costCalculatorOptions: CostCategory[] = [
         subtitle: "인앱 결제",
         icon: InboxIcon,
         subCategoryCost: 0,
+        durationMin: 3,
+        durationMax: 6,
         items: [
           { label: "구글 인앱결제", cost: 331 },
           { label: "애플 인앱결제", cost: 331 },
@@ -361,30 +389,40 @@ export const costCalculatorOptions: CostCategory[] = [
         subtitle: "정기 후원 결제",
         icon: HandIcon,
         subCategoryCost: 0,
+        durationMin: 2,
+        durationMax: 3,
         items: [{ label: "정기 후원 결제", cost: 170 }],
       },
       {
         subtitle: "크라우드펀딩 결제",
         icon: HandMoneyIcon,
         subCategoryCost: 0,
+        durationMin: 3,
+        durationMax: 6,
         items: [{ label: "(문서 외 신규 기능)", cost: 0 }],
       },
       {
         subtitle: "블록체인 기반 결제",
         icon: RoundMoneyIcon,
         subCategoryCost: 0,
+        durationMin: 4,
+        durationMax: 8,
         items: [{ label: "(문서 외 신규 기능)", cost: 0 }],
       },
       {
         subtitle: "결제 취소,환불 프로세스",
         icon: WalletMoneyIcon,
         subCategoryCost: 0,
+        durationMin: 2,
+        durationMax: 4,
         items: [{ label: "환불 및 결제취소 모듈", cost: 354 }],
       },
       {
         subtitle: "할인 쿠폰/프로모션",
         icon: CouponIcon,
-        subCategoryCost: 0, // 450
+        subCategoryCost: 0,
+        durationMin: 3,
+        durationMax: 4,
         items: [
           { label: "할인 쿠폰/프로모션(-n%, -n원)", cost: 40 },
           { label: "프로모션 코드 등록", cost: 117 },
@@ -395,6 +433,8 @@ export const costCalculatorOptions: CostCategory[] = [
         subtitle: "재고 및 배송 추적 관리",
         icon: StockIcon,
         subCategoryCost: 0,
+        durationMin: 2,
+        durationMax: 4,
         items: [
           { label: "배송지 관리", cost: 305 },
           { label: "배송 추적", cost: 359 },
@@ -402,17 +442,16 @@ export const costCalculatorOptions: CostCategory[] = [
       },
     ],
   },
-
-  // 5) 예약 및 스케쥴 관리
   {
     title: "예약 및 스케쥴 관리",
     icon: PersonIcon,
-
     subCategories: [
       {
         subtitle: "달력 기반 예약",
         icon: CalendarIcon,
         subCategoryCost: 498,
+        durationMin: 2,
+        durationMax: 4,
         items: [
           { label: "날짜 인풋", cost: 51 },
           { label: "달력", cost: 76 },
@@ -423,18 +462,24 @@ export const costCalculatorOptions: CostCategory[] = [
         subtitle: "직원 스케쥴링 관리",
         icon: ClockIcon,
         subCategoryCost: 0,
+        durationMin: 2,
+        durationMax: 3,
         items: [{ label: "일정 확인", cost: 146 }],
       },
       {
         subtitle: "고객 예약 이력 관리",
         icon: CallChatIcon,
         subCategoryCost: 0,
+        durationMin: 2,
+        durationMax: 3,
         items: [{ label: "예약 내역 확인", cost: 146 }],
       },
       {
         subtitle: "자동 알림/리마인더",
         icon: BellIcon,
         subCategoryCost: 134 + 146,
+        durationMin: 2,
+        durationMax: 4,
         items: [
           { label: "예약 완료 알림", cost: 134 },
           { label: "리마인더 알림", cost: 146 },
@@ -442,17 +487,16 @@ export const costCalculatorOptions: CostCategory[] = [
       },
     ],
   },
-
-  // 6) 교육 및 학습 관리
   {
     title: "교육 및 학습 관리",
     icon: PersonIcon,
-
     subCategories: [
       {
         subtitle: "라이브 강의 및 화상 강의",
         icon: ClipBoardIcon,
         subCategoryCost: 4001 + 213,
+        durationMin: 4,
+        durationMax: 8,
         items: [
           { label: "라이브 강의 및 화상 강의(전체 화면 공유)", cost: 4001 },
           { label: "듣기 음량 조절", cost: 213 },
@@ -461,7 +505,9 @@ export const costCalculatorOptions: CostCategory[] = [
       {
         subtitle: "시험 / 과제 제출, 퀴즈",
         icon: DocumentIcon,
-        subCategoryCost: 418 + 418 + 418 + 249 + 249, // 임의 1752
+        subCategoryCost: 418 + 418 + 418 + 249 + 249,
+        durationMin: 3,
+        durationMax: 6,
         items: [
           { label: "시험-객관식", cost: 418 },
           { label: "시험-주관식", cost: 418 },
@@ -474,18 +520,20 @@ export const costCalculatorOptions: CostCategory[] = [
         subtitle: "학습 진도 추적",
         icon: ArrowUpIcon,
         subCategoryCost: 0,
+        durationMin: 2,
+        durationMax: 3,
         items: [{ label: "(옵션)", cost: 0 }],
       },
       {
         subtitle: "성적/수료증 관리",
         icon: MedalIcon,
         subCategoryCost: 0,
+        durationMin: 2,
+        durationMax: 3,
         items: [{ label: "(문서 내 별도 견적 없음)", cost: 0 }],
       },
     ],
   },
-
-  // 7) 구인/구직 및 매칭
   {
     title: "구인/구직 및 매칭",
     icon: PersonIcon,
@@ -494,18 +542,24 @@ export const costCalculatorOptions: CostCategory[] = [
         subtitle: "이력서 및 프로필 등록",
         icon: PenIcon,
         subCategoryCost: 0,
+        durationMin: 2,
+        durationMax: 3,
         items: [{ label: "(회원 정보 확장, 별도 구체 견적 미제시)", cost: 0 }],
       },
       {
         subtitle: "채용 공고/프로젝트 의뢰",
         icon: NoteIcon,
         subCategoryCost: 0,
+        durationMin: 2,
+        durationMax: 3,
         items: [{ label: "(게시글 확장)", cost: 0 }],
       },
       {
         subtitle: "매칭 추천 및 알림 기능",
         icon: CityIcon,
         subCategoryCost: 83 + 79 + 120 + 139,
+        durationMin: 4,
+        durationMax: 8,
         items: [
           { label: "자유(29)/조건(83)", cost: 83 },
           { label: "신청·수락(54~83)", cost: 54 },
@@ -517,12 +571,16 @@ export const costCalculatorOptions: CostCategory[] = [
         subtitle: "포트폴리오 관리",
         icon: NoteIcon,
         subCategoryCost: 0,
+        durationMin: 2,
+        durationMax: 3,
         items: [{ label: "(게시글 확장)", cost: 0 }],
       },
       {
         subtitle: "리뷰 시스템",
         icon: LikeIcon,
         subCategoryCost: 378 + 71 + 106 + 166 + 167 + 40,
+        durationMin: 3,
+        durationMax: 6,
         items: [
           { label: "평판/리뷰", cost: 378 },
           { label: "별점", cost: 71 },
@@ -534,227 +592,260 @@ export const costCalculatorOptions: CostCategory[] = [
       },
     ],
   },
-
-  // 8) 기업용 관리 및 운영 도구
   {
     title: "기업용 관리 및 운영 도구",
     icon: PersonIcon,
-
     subCategories: [
       {
         subtitle: "CRM (고객 관리)",
         icon: SmileIcon,
         subCategoryCost: 0,
+        durationMin: 4,
+        durationMax: 8,
         items: [{ label: "(문서 외 신규 기능)", cost: 0 }],
       },
       {
         subtitle: "ERP (업무 관리)",
         icon: FolderIcon,
         subCategoryCost: 0,
+        durationMin: 4,
+        durationMax: 8,
         items: [{ label: "(문서 외 신규 기능)", cost: 0 }],
       },
       {
         subtitle: "BI 대시보드/통계",
         icon: CheckReadIcon,
         subCategoryCost: 0,
+        durationMin: 4,
+        durationMax: 8,
         items: [{ label: "(문서 외 신규 기능)", cost: 0 }],
       },
       {
         subtitle: "협업 도구",
         icon: ChatSquareIcon,
         subCategoryCost: 0,
+        durationMin: 4,
+        durationMax: 8,
         items: [{ label: "(문서 외 신규 기능)", cost: 0 }],
       },
     ],
   },
-
   {
     title: "AI, 챗봇 및 IOT",
     icon: PersonIcon,
-
     subCategories: [
       {
         subtitle: "FAQ 자동응답 챗봇",
         icon: DialogIcon,
         subCategoryCost: 0,
+        durationMin: 4,
+        durationMax: 8,
         items: [{ label: "(문서 외 신규 기능)", cost: 0 }],
       },
       {
         subtitle: "AI 고객지원",
         icon: HeadPhoneIcon,
         subCategoryCost: 0,
+        durationMin: 4,
+        durationMax: 8,
         items: [{ label: "(문서 외 신규 기능)", cost: 0 }],
       },
       {
         subtitle: "IoT 디바이스 연동",
         icon: DevicesIcon,
         subCategoryCost: 0,
+        durationMin: 4,
+        durationMax: 8,
         items: [{ label: "(문서 외 신규 기능)", cost: 0 }],
       },
       {
         subtitle: "실시간 모니터링 및 알림",
         icon: DisplayIcon,
         subCategoryCost: 0,
+        durationMin: 4,
+        durationMax: 8,
         items: [{ label: "(문서 외 신규 기능)", cost: 0 }],
       },
     ],
   },
-
-  // 9) 메타버스 및 3D 가상 공간
   {
     title: "메타버스 및 3D 가상 공간",
     icon: PersonIcon,
-
     subCategories: [
       {
         subtitle: "아바타 생성, 커스터마이징",
         icon: SmileIcon,
         subCategoryCost: 0,
+        durationMin: 4,
+        durationMax: 8,
         items: [{ label: "(문서 외 신규 기능)", cost: 0 }],
       },
       {
         subtitle: "실시간 음성, 텍스트 채팅",
         icon: MicrophoneIcon,
         subCategoryCost: 0,
+        durationMin: 4,
+        durationMax: 8,
         items: [{ label: "(문서 일부 채팅+통화 확장)", cost: 0 }],
       },
       {
         subtitle: "3D 공간 디자인 및 이벤트",
         icon: FlipIcon,
         subCategoryCost: 0,
+        durationMin: 4,
+        durationMax: 8,
         items: [{ label: "(문서 외 신규 기능)", cost: 0 }],
       },
       {
         subtitle: "가상 화폐 및 포인트 연동",
         icon: CopyRightIcon,
         subCategoryCost: 0,
+        durationMin: 4,
+        durationMax: 8,
         items: [{ label: "(문서 외 신규 기능 / 블록체인 연동)", cost: 0 }],
       },
     ],
   },
-
-  // 10) 블록체인 및 암호화폐
   {
     title: "블록체인 및 암호화폐",
     icon: HeartIcon,
-
     subCategories: [
       {
         subtitle: "스마트 컨트랙트",
         icon: DocumentsIcon,
         subCategoryCost: 0,
+        durationMin: 4,
+        durationMax: 8,
         items: [{ label: "(문서 외 신규 기능)", cost: 0 }],
       },
       {
         subtitle: "NFT 발행 및 거래 마켓플레이스",
         icon: DollarIcon,
         subCategoryCost: 0,
+        durationMin: 4,
+        durationMax: 8,
         items: [{ label: "(문서 외 신규 기능)", cost: 0 }],
       },
-
       {
         subtitle: "토큰화 (토큰 발행 및 분배)",
         icon: DountIcon,
         subCategoryCost: 0,
+        durationMin: 4,
+        durationMax: 8,
         items: [{ label: "(문서 외 신규 기능)", cost: 0 }],
       },
       {
         subtitle: "탈중앙화 앱(DApp) 연동",
         icon: TransferIcon,
         subCategoryCost: 0,
+        durationMin: 4,
+        durationMax: 8,
         items: [{ label: "(문서 외 신규 기능)", cost: 0 }],
       },
     ],
   },
-
-  // 11) 게이미피케이션
   {
     title: "게이미피케이션",
     icon: FeedIcon,
-
     subCategories: [
       {
         subtitle: "리더보드/랭킹 시스템",
         icon: ThrohpyIcon,
         subCategoryCost: 0,
+        durationMin: 3,
+        durationMax: 6,
         items: [{ label: "(문서 외 신규 기능)", cost: 0 }],
       },
       {
         subtitle: "업적/보상 시스템",
         icon: MedalIcon,
         subCategoryCost: 0,
+        durationMin: 3,
+        durationMax: 6,
         items: [{ label: "(문서 외 신규 기능)", cost: 0 }],
       },
       {
         subtitle: "이벤트/업데이트 알림",
         icon: MailBoxIcon,
         subCategoryCost: 0,
+        durationMin: 2,
+        durationMax: 4,
         items: [{ label: "(문서 외 신규 기능)", cost: 0 }],
       },
     ],
   },
-
-  // 12) 부동산/매물 관리
   {
     title: "부동산/매물 관리",
     icon: PersonIcon,
-
     subCategories: [
       {
         subtitle: "매물 등록/관리",
         icon: DeliveryIcon,
         subCategoryCost: 0,
+        durationMin: 3,
+        durationMax: 5,
         items: [{ label: "(문서 외 신규 기능)", cost: 0 }],
       },
       {
         subtitle: "매물 문의 / 예약",
         icon: HouseIcon,
         subCategoryCost: 0,
+        durationMin: 2,
+        durationMax: 4,
         items: [{ label: "(문서 외 신규 기능)", cost: 0 }],
       },
       {
         subtitle: "지도 기반 검색",
         icon: MapPinIcon,
         subCategoryCost: 0,
+        durationMin: 3,
+        durationMax: 5,
         items: [{ label: "(문서 외 신규 기능)", cost: 0 }],
       },
       {
         subtitle: "가상 투어(VR/3D)",
         icon: GlobalIcon,
         subCategoryCost: 0,
+        durationMin: 4,
+        durationMax: 8,
         items: [{ label: "(문서 외 신규 기능)", cost: 0 }],
       },
       {
         subtitle: "거래 이력/계약 관리",
         icon: BillIcon,
         subCategoryCost: 0,
+        durationMin: 2,
+        durationMax: 4,
         items: [{ label: "(문서 외 신규 기능)", cost: 0 }],
       },
     ],
   },
-
-  // 13) 크라우드 펀딩
   {
     title: "크라우드 펀딩",
     icon: HeartIcon,
-
     subCategories: [
       {
         subtitle: "프로젝트 등록(목표 금액)",
         icon: GolfIcon,
         subCategoryCost: 0,
+        durationMin: 2,
+        durationMax: 4,
         items: [{ label: "(문서 외 신규 기능)", cost: 0 }],
       },
       {
         subtitle: "리워드(선물) 옵션 관리",
         icon: GiftIcon,
         subCategoryCost: 0,
+        durationMin: 2,
+        durationMax: 4,
         items: [{ label: "(문서 외 신규 기능)", cost: 0 }],
       },
       {
         subtitle: "프로젝트 진행 현황",
         icon: FolderFavoritesIcon,
         subCategoryCost: 0,
+        durationMin: 3,
+        durationMax: 6,
         items: [{ label: "(문서 외 신규 기능)", cost: 0 }],
       },
     ],
