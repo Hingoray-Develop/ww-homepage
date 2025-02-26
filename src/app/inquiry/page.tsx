@@ -64,7 +64,9 @@ export default function InquiryPage() {
         padding: "40px",
       }}
     >
-      <Heading2 pb={8}>문의하기</Heading2>
+      <Heading2 fontColor={colors.neutral[950]} pb={8}>
+        문의하기
+      </Heading2>
       <Body1 fontColor={colors.neutral[500]} pb={32}>
         문의하실 이메일과 문의 내용을 작성해주세요. 담당자가 확인 후 답변
         드리겠습니다.
