@@ -91,7 +91,9 @@ export default function StepTwo({
 
   return (
     <div>
-      <Heading2 pb={8}>예산 범위를 알려주세요.</Heading2>
+      <Heading2 fontColor={colors.neutral[950]} pb={8}>
+        예산 범위를 알려주세요.
+      </Heading2>
       <Body1 fontColor={colors.neutral[500]}>
         대략적인 예산의 범위를 알려주세요.
       </Body1>
@@ -199,7 +201,12 @@ export default function StepTwo({
 
       <label
         onClick={() => handleDontKnow(!dontKnow)}
-        style={{ display: "flex", alignItems: "center", gap: 8 }}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: 8,
+          color: colors.neutral[950],
+        }}
       >
         {dontKnow ? <CheckedIcon /> : <UncheckedIcon />}
         아직 잘 모르겠어요.

@@ -87,7 +87,9 @@ export default function StepFour({
 
   return (
     <div>
-      <Heading2 pb={8}>연락처를 알려주세요.</Heading2>
+      <Heading2 fontColor={colors.neutral[950]} pb={8}>
+        연락처를 알려주세요.
+      </Heading2>
       <Body1 fontColor={colors.neutral[500]} pb={32}>
         작성하신 이메일로 견적서가 보내질 예정이에요.
       </Body1>
