@@ -44,7 +44,7 @@ type ResponsiveTextProps = UsePaddingStyleProps &
   TextProps &
   UsePaddingStyleProps &
   UseBackgroundStyleProps &
-  Pick<React.HTMLAttributes<HTMLElement>, "onClick" | "style"> &
+  Pick<React.HTMLAttributes<HTMLElement>, "onClick"> &
   UseFontStyleProps & {
     children: React.ReactNode;
     numberOfLine?: NumberOfLineType;
@@ -93,7 +93,6 @@ const Text = React.forwardRef<HTMLElement, ResponsiveTextProps>(
           ...getPaddingStyle,
           ...getFontStyle,
           ...getBackgroundStyle,
-          ...props.style,
         },
       },
       children
