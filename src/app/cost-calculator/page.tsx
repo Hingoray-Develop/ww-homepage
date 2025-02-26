@@ -111,7 +111,12 @@ export default function CostCalculator() {
   // finalize => StepFour
   const handleComplete = () => {
     // after sending email, reset
-    setScopes(["기획", "UX/UI 디자인", "개발"]);
+    setScopes([
+      "기획",
+      "UX/UI 디자인",
+      "BI/CI 디자인(로고, 브랜딩 등)",
+      "개발",
+    ]);
     setBudgetRange([1000, 5000]);
     setSelectedOptions([]);
     setStepComplete({ 1: false, 2: false, 3: false, 4: false });

@@ -3,8 +3,9 @@ import nodemailer from "nodemailer";
 
 /**
  * <ai_context>
- * Updated: formatting budgetRange and cost range as "xxx만원 ~ xxx만원" by dividing by 10000
- * Also includes 'additionalNotes' in the email content
+ * 스크린샷에 맞게 이메일 템플릿을 업데이트했습니다.
+ * 로고, 예상 기간, 예상 견적, 개발 범위, 예산 범위, 상세 기능 범위, 경력자 참고사항 등을 포함합니다.
+ * 이미지 경로를 수정했습니다.
  * </ai_context>
  */
 
@@ -51,60 +52,170 @@ export async function POST(req: Request) {
     const formattedMinCost = minMan.toLocaleString("ko-KR") + "만원";
     const formattedMaxCost = maxMan.toLocaleString("ko-KR") + "만원";
 
+    // 평균 비용 계산 (스크린샷에 표시된 단일 값)
+    const avgCost = Math.round((minMan + maxMan) / 2);
+    const formattedAvgCost = avgCost.toLocaleString("ko-KR");
+
     const mailOptions = {
       from: process.env.EMAIL_USER,
       to: email,
-      subject: "웹사이트 개발 견적 안내",
+      subject: "흰고래 컴퍼니에 요청하신 개발 견적을 보내드립니다. 📝",
       html: `
-        <div style="font-family: 'Apple SD Gothic Neo', sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-          <h1 style="color: #1a1a1a; font-size: 24px; margin-bottom: 30px;">웹사이트 개발 견적 안내</h1>
-
-          <div style="background-color: #f1f5f9; padding: 16px; border-radius: 8px; margin-bottom: 16px;">
-            <h3 style="margin: 0 0 8px 0; font-size: 18px;">선택하신 개발 범위</h3>
-            <p style="margin: 0; color: #000;">${scopesText}</p>
+        <div style="font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; color: #101828;">
+          <!-- 로고 -->
+          <div style="margin-bottom: 16px;">
+            <img src="cid:logoblack" alt="흰고래 로고" width="45" height="20" />
           </div>
-
-          <div style="background-color: #f1f5f9; padding: 16px; border-radius: 8px; margin-bottom: 16px;">
-            <h3 style="margin: 0 0 8px 0; font-size: 18px;">선택하신 예산 범위</h3>
-            <p style="margin: 0; color: #000;">${budgetText}</p>
+          
+          <!-- 메인 타이틀 -->
+          <h1 style="font-size: 24px; font-weight: 700; margin-bottom: 32px; line-height: 1.4;">
+            흰고래 컴퍼니에<br />
+            요청하신 개발 견적을 보내드립니다. 📝
+          </h1>
+          
+          <!-- 견적 정보 카드 -->
+          <div style="display: flex; flex-direction: row; gap: 16px; margin-bottom: 24px;">
+            <!-- 예상 기간 카드 -->
+            <div style="flex: 1; background-color: #F2F4F7; border-radius: 12px; padding: 20px;">
+              <p style="color: #6B7280; font-size: 14px; margin: 0 0 8px 0;">예상 기간</p>
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 20px; font-weight: 700;">약 ${totalDuration}개월</span>
+                <img src="cid:calendar" alt="캘린더" width="40" height="40" />
+              </div>
+              <p style="color: #6B7280; font-size: 14px; margin: 8px 0 0 0;">*개발 난이도 및 범위에 따라 변동될 수 있습니다.</p>
+            </div>
+            
+            <!-- 예상 견적 카드 -->
+            <div style="flex: 1; background-color: #F2F4F7; border-radius: 12px; padding: 20px;">
+              <p style="color: #6B7280; font-size: 14px; margin: 0 0 8px 0;">예상 견적</p>
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <span style="font-size: 20px; font-weight: 700;">약 ${formattedAvgCost}만 원</span>
+                  <span style="font-size: 14px; color: #6B7280;">(부가세 별도)</span>
+                </div>
+                <img src="cid:money" alt="돈" width="40" height="40" />
+              </div>
+              <p style="color: #6B7280; font-size: 14px; margin: 8px 0 0 0;">*실제 계약시 요구사항에 따라 변동될 수 있습니다.</p>
+            </div>
           </div>
-
-          <div style="background-color: #f1f5f9; padding: 16px; border-radius: 8px; margin-bottom: 16px;">
-            <h3 style="margin: 0 0 8px 0; font-size: 18px;">선택하신 상세 기능</h3>
-            <p style="margin: 0; color: #000;">${
-              selectedOptionsText || "없음"
-            }</p>
+          
+          <!-- 자세한 내용이 궁금하시다면 -->
+          <div style="background-color: #2167F7; border-radius: 8px; padding: 19px 16px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+            <p style="font-size: 14px; font-weight: 500; margin: 0; color: #FFFFFF;">자세한 내용이 궁금하시다면!</p>
+            <a href="https://hingoray.com/inquiry" style="background-color: #000000; color: #FFFFFF; border-radius: 6px; padding: 7px 12px; text-decoration: none; font-size: 14px; font-weight: 600;">커피챗 신청하기</a>
           </div>
-
-          <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-            <h2 style="color: #1a1a1a; font-size: 18px; margin-bottom: 15px;">예상 기간</h2>
-            <p style="color: #1a1a1a; font-size: 24px; font-weight: bold; margin: 0;">약 ${totalDuration}개월</p>
-            <p style="color: #6b7280; font-size: 14px; margin-top: 5px;">(개발 난이도 및 범위에 따라 변동 가능)</p>
-          </div>
-
-          <div style="background-color: #f8f9fa; padding: 20px; border-radius: 8px;">
-            <h2 style="color: #1a1a1a; font-size: 18px; margin-bottom: 15px;">예상 견적 범위</h2>
-            <p style="color: #1a1a1a; font-size: 24px; font-weight: bold; margin: 0;">약 ${formattedMinCost} ~ ${formattedMaxCost}</p>
-            <p style="color: #6b7280; font-size: 14px; margin-top: 5px;">(부가세 별도)</p>
-          </div>
+          
+          <!-- 개발 범위 -->
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #F0F3F8; border-radius: 12px; margin-bottom: 16px;">
+            <tr>
+              <td style="padding: 20px; position: relative;">
+                <!-- 개발 범위 내용 -->
+                <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td style="width: 85%;">
+                      <!-- 개발 범위 -->
+                      <p style="font-size: 14px; font-weight: 600; color: #101828; margin: 0 0 8px 0;">개발 범위:</p>
+                      <ul style="margin: 0 0 16px 0; padding-left: 20px;">
+                        <li style="color: #101828; font-size: 12px;">${scopesText}</li>
+                      </ul>
+                      
+                      <!-- 예산 범위 -->
+                      <p style="font-size: 14px; font-weight: 600; color: #101828; margin: 0 0 8px 0;">예산 범위:</p>
+                      <ul style="margin: 0 0 16px 0; padding-left: 20px;">
+                        <li style="color: #101828; font-size: 12px;">${budgetText}</li>
+                      </ul>
+                      
+                      <!-- 상세 기능 범위 -->
+                      <p style="font-size: 14px; font-weight: 600; color: #101828; margin: 0 0 8px 0;">상세 기능 범위:</p>
+                      <ul style="margin: 0; padding-left: 20px;">
+                        <li style="color: #101828; font-size: 12px;">${
+                          selectedOptionsText || "없음"
+                        }</li>
+                      </ul>
+                    </td>
+                    <td style="width: 15%; vertical-align: top; text-align: right;">
+                      <!-- 스탬프 로고 -->
+                      <img src="cid:stamp" alt="스탬프" width="54" height="44" style="margin-top: 0;" />
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
 
           ${
             additionalNotes
               ? `
-              <div style="margin-top: 20px; padding: 16px; border-radius: 8px; background-color: #f1f5f9;">
+              <div style="margin-top: 20px; padding: 16px; border-radius: 8px; background-color: #f1f5f9; margin-bottom: 20px;">
                 <h3 style="margin: 0 0 8px 0; font-size: 18px;">추가 문의 사항</h3>
                 <p style="margin: 0; white-space: pre-line; color: #000;">${additionalNotes}</p>
               </div>
             `
               : ""
           }
-
-          <div style="margin-top: 30px; color: #6b7280; font-size: 14px;">
-            <p>* 본 견적은 기본적인 기준으로 산출된 예상 금액입니다.</p>
-            <p>* 실제 계약 시 요구사항에 따라 금액이 변동될 수 있습니다.</p>
+          
+          <!-- 견적시 참고하세요 -->
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #FFFFFF; border: 1px solid #D0D5DD; border-radius: 12px; margin-bottom: 24px;">
+            <tr>
+              <td style="padding: 16px;">
+                <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td style="vertical-align: top; width: 24px;">
+                      <img src="cid:warning" alt="경고" width="20" height="20" />
+                    </td>
+                    <td style="padding-left: 4px;">
+                      <p style="font-size: 16px; font-weight: 600; margin: 0 0 8px 0;">견적시 참고하세요!</p>
+                      <ul style="margin: 0; padding-left: 20px;">
+                        <li style="color: #4B5563; font-size: 14px; margin-bottom: 4px;">
+                          본 견적은 인건비, 제경비, 기술료 기술 포함도가 포함된 예상 금액으로 실제 금액과 상이할 수 있습니다.
+                        </li>
+                        <li style="color: #4B5563; font-size: 14px;">
+                          PM 1명, UX/UI 디자이너 1명, 프론트엔드 1명, 백엔드 1명 기준으로 예상기간을 산정합니다.
+                        </li>
+                      </ul>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+          
+          
+          
+          <!-- 푸터 -->
+          <div style="border-top: 1px solid #E5E7EB; padding-top: 16px; font-size: 12px; color: #6B7280; margin-top: 24px;">
+            Hingoray Company | 71, Banpo-daero 14-gil, Seocho-gu, Seoul | info@hingoray.com | +82 10 8407 2469 | © 2024 Hingoray Company.
           </div>
+        
         </div>
       `,
+      attachments: [
+        {
+          filename: "logoblack.png",
+          path: "./public/images/logo/logoblack.png",
+          cid: "logoblack",
+        },
+        {
+          filename: "stamp.png",
+          path: "./public/images/logo/stamp.png",
+          cid: "stamp",
+        },
+        {
+          filename: "warning.png",
+          path: "./public/images/logo/warning.png",
+          cid: "warning",
+        },
+        {
+          filename: "calendar.png",
+          path: "./public/images/logo/calendar.png",
+          cid: "calendar",
+        },
+        {
+          filename: "money.png",
+          path: "./public/images/logo/money.png",
+          cid: "money",
+        },
+      ],
     };
 
     await transporter.sendMail(mailOptions);

@@ -35,6 +35,7 @@ export default function StepOne({ scopes, setScopes, onNext }: StepOneProps) {
     if (scopes.length === 0) {
       setScopes(DEFAULT_SCOPES);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const toggleScope = (scope: string) => {
