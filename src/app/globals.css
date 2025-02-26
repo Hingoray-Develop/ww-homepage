@@ -133,3 +133,15 @@ body {
 .hide-scrollbar::-webkit-scrollbar {
   display: none; /* Chrome, Safari, Opera */
 }
+
+/* 툴팁 스크롤바 스타일 */
+.custom-tooltip-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-tooltip-scrollbar::-webkit-scrollbar-track {
+  background: #333;
+}
+.custom-tooltip-scrollbar::-webkit-scrollbar-thumb {
+  background: #666;
+  border-radius: 3px;
+}
