@@ -19,7 +19,7 @@ import { colors } from "@/styles";
  * - Also shows total cost of all selected subCategories next to the selected count.
  * Updated: we wrap the list area in a scrollable container with hidden scrollbar.
  * Also if "BI/CI 디자인(로고, 브랜딩 등)" alone is selected in StepOne, skip feature selection.
- * 
+ *
  * Updated again:
  * - Sum up durationMin, durationMax from all selected subCategories,
  *   and display them alongside the total cost in the bottom summary.
@@ -124,32 +124,33 @@ export default function StepThree({
   const totalSelectedCount = selectedSubCategories.length;
 
   // 선택된 subCategory들의 비용 합산
-  const { totalSelectedCost, totalMinDuration, totalMaxDuration } = useMemo(() => {
-    let costSum = 0;
-    let minDurationSum = 0;
-    let maxDurationSum = 0;
+  const { totalSelectedCost, totalMinDuration, totalMaxDuration } =
+    useMemo(() => {
+      let costSum = 0;
+      let minDurationSum = 0;
+      let maxDurationSum = 0;
 
-    costCalculatorOptions.forEach((category: CostCategory) => {
-      category.subCategories.forEach((subcat) => {
-        const subcatKey = category.title + " > " + subcat.subtitle;
-        if (selectedSubCategories.includes(subcatKey)) {
-          costSum += subcat.subCategoryCost;
-          if (subcat.durationMin) {
-            minDurationSum += subcat.durationMin;
+      costCalculatorOptions.forEach((category: CostCategory) => {
+        category.subCategories.forEach((subcat) => {
+          const subcatKey = category.title + " > " + subcat.subtitle;
+          if (selectedSubCategories.includes(subcatKey)) {
+            costSum += subcat.subCategoryCost;
+            if (subcat.durationMin) {
+              minDurationSum += subcat.durationMin;
+            }
+            if (subcat.durationMax) {
+              maxDurationSum += subcat.durationMax;
+            }
           }
-          if (subcat.durationMax) {
-            maxDurationSum += subcat.durationMax;
-          }
-        }
+        });
       });
-    });
 
-    return {
-      totalSelectedCost: costSum,
-      totalMinDuration: minDurationSum,
-      totalMaxDuration: maxDurationSum,
-    };
-  }, [selectedSubCategories]);
+      return {
+        totalSelectedCost: costSum,
+        totalMinDuration: minDurationSum,
+        totalMaxDuration: maxDurationSum,
+      };
+    }, [selectedSubCategories]);
 
   const formattedCost = new Intl.NumberFormat("ko-KR").format(
     totalSelectedCost
@@ -158,7 +159,9 @@ export default function StepThree({
   if (isOnlyBiCi) {
     return (
       <div>
-        <Heading2 pb={8}>구현이 필요한 기능을 골라주세요.</Heading2>
+        <Heading2 fontColor={colors.neutral[950]} pb={8}>
+          구현이 필요한 기능을 골라주세요.
+        </Heading2>
         <Body1 fontColor={colors.neutral[500]} pb={32}>
           BI/CI 디자인만 선택했을 경우, 기능을 선택하실 필요가 없어요
         </Body1>
@@ -183,7 +186,9 @@ export default function StepThree({
 
   return (
     <div>
-      <Heading2 pb={8}>구현이 필요한 기능을 골라주세요.</Heading2>
+      <Heading2 fontColor={colors.neutral[950]} pb={8}>
+        구현이 필요한 기능을 골라주세요.
+      </Heading2>
       <Body1 fontColor={colors.neutral[500]} pb={16}>
         필요한 기능들을 고를수록 정확한 견적을 보내드려요.
       </Body1>
@@ -197,7 +202,12 @@ export default function StepThree({
       >
         {costCalculatorOptions.map((category: CostCategory) => (
           <div key={category.title} style={{ marginBottom: 32 }}>
-            <Text fontSize={18} fontWeight={700} pb={12}>
+            <Text
+              fontColor={colors.neutral[950]}
+              fontSize={18}
+              fontWeight={700}
+              pb={12}
+            >
               {category.title}
             </Text>
             <div
@@ -286,7 +296,12 @@ export default function StepThree({
                         }
                         onMouseLeave={handleTooltipMouseLeave}
                       >
-                        <Text fontWeight={600} pb={8} fontColor="#FFD700">
+                        <Text
+                          fontWeight={600}
+                          pb={8}
+                          fontSize={14}
+                          fontColor={colors.main[300]}
+                        >
                           필수 기능
                         </Text>
                         <ul style={{ paddingLeft: 16, marginBottom: 12 }}>
@@ -301,9 +316,10 @@ export default function StepThree({
                           subcat.optionalItems.length > 0 && (
                             <>
                               <Text
+                                fontSize={14}
                                 fontWeight={600}
                                 pb={8}
-                                fontColor="#ADD8E6"
+                                fontColor="#FFB358"
                               >
                                 선택 옵션
                               </Text>

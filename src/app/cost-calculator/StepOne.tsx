@@ -51,7 +51,9 @@ export default function StepOne({ scopes, setScopes, onNext }: StepOneProps) {
   return (
     <>
       <Frame col w="100%">
-        <Heading2 pb={8}>프로젝트 범위를 알려주세요.</Heading2>
+        <Heading2 fontColor={colors.neutral[950]} pb={8}>
+          프로젝트 범위를 알려주세요.
+        </Heading2>
         <Body1 fontColor={colors.neutral[500]}>
           프로젝트에 필요한 부분을 전부 체크해주세요.
         </Body1>
@@ -73,7 +75,7 @@ export default function StepOne({ scopes, setScopes, onNext }: StepOneProps) {
                 }}
               >
                 {checked ? <CheckedIcon /> : <UncheckedIcon />}
-                <Body1>{opt}</Body1>
+                <Body1 fontColor={colors.neutral[950]}>{opt}</Body1>
               </label>
             );
           })}
