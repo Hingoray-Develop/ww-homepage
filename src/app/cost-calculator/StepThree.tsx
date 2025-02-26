@@ -196,7 +196,7 @@ export default function StepThree({
       <div
         className="hide-scrollbar"
         style={{
-          maxHeight: 550,
+          maxHeight: 450,
           overflowY: "scroll",
         }}
       >
