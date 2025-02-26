@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import Button from "@/components/Button";
 import ArrowRight from "@/assets/icons/line/arrow-right.svg?react";
 import { colors } from "@/styles";
-import { Heading1, Heading6, Text, Frame } from "@/atoms";
+import { Heading6, Text, Frame } from "@/atoms";
 import { useResponsiveType } from "@/hooks";
 import { logEvent, AnalyticsEventList } from "@/utils/analytics";
 import { useRouter } from "next/navigation";
@@ -24,6 +24,7 @@ export default function Hero() {
 
   if (!hasMounted) return null;
 
+  const mainHeadingFontSize = isMobile ? 32 : 56;
   const mainHeadingLineHeight = isMobile ? "44px" : "76px";
   const subTextFontSize = isMobile ? 16 : 20;
   const subTextLineHeight = isMobile ? "24px" : "30px";
@@ -46,17 +47,29 @@ export default function Hero() {
           height: "840px",
           backgroundImage: "url('/images/hero/whale.webp')",
           backgroundRepeat: "no-repeat",
-          backgroundSize: "100% auto",
+          backgroundSize: "cover",
           backgroundPosition: "center",
           borderRadius: "32px",
         }}
       >
         <Frame col alignment="center" gap={24} w="100%" h="100%">
           <Frame col alignment="center">
-            <Heading1 fontColor={colors.white} fontWeight={700}>
-              막막했던 외주 개발, <br />
+            <Text
+              fontColor={colors.white}
+              fontSize={mainHeadingFontSize}
+              lineHeight={mainHeadingLineHeight}
+              fontWeight={200}
+            >
+              막막했던 외주 개발,
+            </Text>
+            <Text
+              fontColor={colors.white}
+              fontSize={mainHeadingFontSize}
+              lineHeight={mainHeadingLineHeight}
+              fontWeight={700}
+            >
               <span className="highlight-text">흰고래컴퍼니</span>와 함께하세요!
-            </Heading1>
+            </Text>
           </Frame>
           <Frame col alignment="center">
             <Text
