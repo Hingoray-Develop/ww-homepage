@@ -4,7 +4,7 @@ import { Frame, Text } from "@/atoms";
 import { useDarkMode } from "@/contexts/DarkModeContext";
 import { colors } from "@/styles";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 
 interface ProjectCardProps {
   image: string;
@@ -22,6 +22,8 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   onClick,
 }) => {
   const { isDarkMode } = useDarkMode();
+  const [isHovered, setIsHovered] = useState(false);
+
   const renderTitle = (text: string) => {
     // 텍스트를 boldTexts를 기준으로 분할
     let parts: { text: string; isBold: boolean }[] = [{ text, isBold: false }];
@@ -66,26 +68,42 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   return (
     <div
       onClick={onClick}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       style={{
-        cursor: "pointer",
+        // cursor: "pointer",
         overflow: "hidden",
-        borderRadius: 8,
+        borderRadius: 32,
       }}
     >
-      <div style={{ position: "relative", width: "100%", paddingTop: "80%" }}>
+      <div
+        style={{
+          position: "relative",
+          width: "100%",
+          paddingTop: "80%",
+          overflow: "hidden",
+          borderRadius: 32,
+        }}
+      >
         <Image
           src={image}
           alt={title}
           fill
           style={{
             objectFit: "fill",
-            // objectPosition: "top center",
             borderRadius: 32,
+            transition: "all 0.5s ease",
+            transform: isHovered ? "scale(1.02)" : "scale(1)",
+            filter: isHovered ? "brightness(1.05)" : "brightness(1)",
           }}
           priority
         />
       </div>
-      <div style={{ paddingTop: 16 }}>
+      <div
+        style={{
+          paddingTop: 16,
+        }}
+      >
         {renderTitle(title)}
         <Text
           fontSize={16}
