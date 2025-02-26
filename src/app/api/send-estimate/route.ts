@@ -64,7 +64,7 @@ export async function POST(req: Request) {
         <div style="font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; color: #101828;">
           <!-- 로고 -->
           <div style="margin-bottom: 16px;">
-            <img src="cid:blackwhale" alt="흰고래 로고" width="45" height="20" />
+            <img src="https://hingoray.com/images/logo/blackwhale.png" alt="흰고래 로고" width="45" height="20" />
           </div>
           
           <!-- 메인 타이틀 -->
@@ -80,7 +80,7 @@ export async function POST(req: Request) {
               <p style="color: #6B7280; font-size: 14px; margin: 0 0 8px 0;">예상 기간</p>
               <div style="display: flex; justify-content: space-between; align-items: center;">
                 <span style="font-size: 20px; font-weight: 700;">약 ${totalDuration}개월</span>
-                <img src="cid:calendar" alt="캘린더" width="40" height="40" />
+                <img src="https://hingoray.com/images/logo/calendar.png" alt="캘린더" width="40" height="40" />
               </div>
               <p style="color: #6B7280; font-size: 14px; margin: 8px 0 0 0;">*개발 난이도 및 범위에 따라 변동될 수 있습니다.</p>
             </div>
@@ -93,7 +93,7 @@ export async function POST(req: Request) {
                   <span style="font-size: 20px; font-weight: 700;">약 ${formattedAvgCost}만 원</span>
                   <span style="font-size: 14px; color: #6B7280;">(부가세 별도)</span>
                 </div>
-                <img src="cid:money" alt="돈" width="40" height="40" />
+                <img src="https://hingoray.com/images/logo/money.png" alt="돈" width="40" height="40" />
               </div>
               <p style="color: #6B7280; font-size: 14px; margin: 8px 0 0 0;">*실제 계약시 요구사항에 따라 변동될 수 있습니다.</p>
             </div>
@@ -135,7 +135,7 @@ export async function POST(req: Request) {
                     </td>
                     <td style="width: 15%; vertical-align: top; text-align: right;">
                       <!-- 스탬프 로고 -->
-                      <img src="cid:stamp" alt="스탬프" width="54" height="44" style="margin-top: 0;" />
+                      <img src="https://hingoray.com/images/logo/stamp.png" alt="스탬프" width="54" height="44" style="margin-top: 0;" />
                     </td>
                   </tr>
                 </table>
@@ -161,7 +161,7 @@ export async function POST(req: Request) {
                 <table width="100%" cellpadding="0" cellspacing="0" border="0">
                   <tr>
                     <td style="vertical-align: top; width: 24px;">
-                      <img src="cid:warning" alt="경고" width="20" height="20" />
+                      <img src="https://hingoray.com/images/logo/warning.png" alt="경고" width="20" height="20" />
                     </td>
                     <td style="padding-left: 4px;">
                       <p style="font-size: 16px; font-weight: 600; margin: 0 0 8px 0;">견적시 참고하세요!</p>
@@ -189,33 +189,6 @@ export async function POST(req: Request) {
         
         </div>
       `,
-      attachments: [
-        {
-          filename: "blackwhale.png",
-          path: "./public/images/logo/blackwhale.png",
-          cid: "blackwhale",
-        },
-        {
-          filename: "stamp.png",
-          path: "./public/images/logo/stamp.png",
-          cid: "stamp",
-        },
-        {
-          filename: "warning.png",
-          path: "./public/images/logo/warning.png",
-          cid: "warning",
-        },
-        {
-          filename: "calendar.png",
-          path: "./public/images/logo/calendar.png",
-          cid: "calendar",
-        },
-        {
-          filename: "money.png",
-          path: "./public/images/logo/money.png",
-          cid: "money",
-        },
-      ],
     };
 
     await transporter.sendMail(mailOptions);
