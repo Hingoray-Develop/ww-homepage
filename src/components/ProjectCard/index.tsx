@@ -64,10 +64,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
               lineHeight="32px"
               fontColor={isDarkMode ? colors.white : colors.neutral[900]}
               fontWeight={part.isBold ? 700 : 400}
-              style={{
-                wordBreak: "keep-all",
-                whiteSpace: "pre-wrap",
-              }}
             >
               {content}
             </Text>
@@ -128,12 +124,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
             fontSize={16}
             lineHeight="24px"
             fontColor={isDarkMode ? colors.white : colors.neutral[950]}
-            style={{
-              opacity: isHovered ? 0.9 : 0.7,
-              transition: `opacity ${animations.hover.transitionDuration} ${animations.hover.transitionTimingFunction}`,
-              wordBreak: "keep-all",
-              whiteSpace: "pre-wrap",
-            }}
           >
             {type}
           </Text>
