@@ -21,44 +21,72 @@ export async function POST(req: Request) {
   try {
     const {
       email,
-      totalDuration,
+      minDuration,
+      maxDuration,
       totalMinCost,
       totalMaxCost,
       scopes,
-      budgetRange,
+
       selectedOptions,
       additionalNotes,
     } = await req.json();
 
-    const scopesText =
-      scopes && scopes.length > 0 ? scopes.join(", ") : "선택안됨";
+    // 쉼표로 구분된 텍스트 대신 HTML 리스트 아이템으로 변환
+    const scopesHtml =
+      scopes && scopes.length > 0
+        ? scopes
+            .map(
+              (scope: string) =>
+                `<li style="color: #101828; font-size: 12px; margin-bottom: 4px;">${scope}</li>`
+            )
+            .join("\n")
+        : '<li style="color: #101828; font-size: 12px;">선택안됨</li>';
 
     // 예산 범위 (만원 단위)
     let budgetText = "아직 모르겠어요.";
-    if (budgetRange) {
-      const [rawMin, rawMax] = budgetRange;
-      const formattedMinBudget = rawMin.toLocaleString("ko-KR") + "만원";
-      const formattedMaxBudget = rawMax.toLocaleString("ko-KR") + "만원";
+    if (totalMinCost && totalMaxCost) {
+      const formattedMinBudget = totalMinCost.toLocaleString("ko-KR") + "만원";
+      const formattedMaxBudget = totalMaxCost.toLocaleString("ko-KR") + "만원";
       budgetText = `${formattedMinBudget} ~ ${formattedMaxBudget}`;
     }
 
-    const selectedOptionsText = (selectedOptions || [])
-      .map((opt: any) => opt.label)
-      .join(", ");
+    // 선택된 옵션들을 쉼표로 구분하는 대신 HTML 리스트 아이템으로 변환
+    const selectedOptionsHtml =
+      (selectedOptions || []).length > 0
+        ? (selectedOptions || [])
+            .map(
+              (opt: any) =>
+                `<li style="color: #101828; font-size: 12px; margin-bottom: 4px;">${opt.label.replace(
+                  /,\s*/g,
+                  ",<br/>"
+                )}</li>`
+            )
+            .join("\n")
+        : '<li style="color: #101828; font-size: 12px;">없음</li>';
 
-    // 총 비용 범위 (만원 단위)
-    const minMan = Math.round(totalMinCost / 10000);
-    const maxMan = Math.round(totalMaxCost / 10000);
-    const formattedMinCost = minMan.toLocaleString("ko-KR") + "만원";
-    const formattedMaxCost = maxMan.toLocaleString("ko-KR") + "만원";
+    // 기간 범위 계산
+    let durationRangeText = "약 " + minDuration + "~" + maxDuration + "개월";
 
-    // 평균 비용 계산 (스크린샷에 표시된 단일 값)
-    const avgCost = Math.round((minMan + maxMan) / 2);
-    const formattedAvgCost = avgCost.toLocaleString("ko-KR");
+    // selectedOptions에서 durationMin과 durationMax 추출
+    if (selectedOptions && selectedOptions.length > 0) {
+      const durationMin = selectedOptions[0].durationMin;
+      const durationMax = selectedOptions[0].durationMax;
+
+      if (durationMin && durationMax) {
+        durationRangeText = `약 ${durationMin}~${durationMax}개월`;
+      } else if (
+        durationRangeText === "약 0~0개월" ||
+        !durationMin ||
+        !durationMax
+      ) {
+        durationRangeText = "약 13~26개월";
+      }
+    }
 
     const mailOptions = {
       from: process.env.EMAIL_USER,
-      to: email,
+      // to: "jihwan.yun@hingoray.com, msj@hingoray.com",
+      to: "blood8879@naver.com",
       subject: "흰고래 컴퍼니에 요청하신 개발 견적을 보내드립니다. 📝",
       html: `
         <div style="font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; color: #101828;">
@@ -66,6 +94,8 @@ export async function POST(req: Request) {
           <div style="margin-bottom: 16px;">
             <img src="https://hingoray.com/images/logo/blackwhale.png" alt="흰고래 로고" width="45" height="20" />
           </div>
+
+          <h1>from: ${email} 고객님</h1>
           
           <!-- 메인 타이틀 -->
           <h1 style="font-size: 24px; font-weight: 700; margin-bottom: 32px; line-height: 1.4;">
@@ -79,7 +109,7 @@ export async function POST(req: Request) {
             <div style="flex: 1; background-color: #F2F4F7; border-radius: 12px; padding: 20px;">
               <p style="color: #6B7280; font-size: 14px; margin: 0 0 8px 0;">예상 기간</p>
               <div style="display: flex; justify-content: space-between; align-items: center;">
-                <span style="font-size: 20px; font-weight: 700;">약 ${totalDuration}개월</span>
+                <span style="font-size: 20px; font-weight: 700;">${durationRangeText}</span>
                 <img src="https://hingoray.com/images/logo/calendar.png" alt="캘린더" width="40" height="40" />
               </div>
               <p style="color: #6B7280; font-size: 14px; margin: 8px 0 0 0;">*개발 난이도 및 범위에 따라 변동될 수 있습니다.</p>
@@ -90,7 +120,7 @@ export async function POST(req: Request) {
               <p style="color: #6B7280; font-size: 14px; margin: 0 0 8px 0;">예상 견적</p>
               <div style="display: flex; justify-content: space-between; align-items: center;">
                 <div>
-                  <span style="font-size: 20px; font-weight: 700;">약 ${formattedAvgCost}만 원</span>
+                  <span style="font-size: 20px; font-weight: 700;">${budgetText}</span>
                   <span style="font-size: 14px; color: #6B7280;">(부가세 별도)</span>
                 </div>
                 <img src="https://hingoray.com/images/logo/money.png" alt="돈" width="40" height="40" />
@@ -116,7 +146,7 @@ export async function POST(req: Request) {
                       <!-- 개발 범위 -->
                       <p style="font-size: 14px; font-weight: 600; color: #101828; margin: 0 0 8px 0;">개발 범위:</p>
                       <ul style="margin: 0 0 16px 0; padding-left: 20px;">
-                        <li style="color: #101828; font-size: 12px;">${scopesText}</li>
+                        ${scopesHtml}
                       </ul>
                       
                       <!-- 예산 범위 -->
@@ -128,9 +158,7 @@ export async function POST(req: Request) {
                       <!-- 상세 기능 범위 -->
                       <p style="font-size: 14px; font-weight: 600; color: #101828; margin: 0 0 8px 0;">상세 기능 범위:</p>
                       <ul style="margin: 0; padding-left: 20px;">
-                        <li style="color: #101828; font-size: 12px;">${
-                          selectedOptionsText || "없음"
-                        }</li>
+                        ${selectedOptionsHtml}
                       </ul>
                     </td>
                     <td style="width: 15%; vertical-align: top; text-align: right;">

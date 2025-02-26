@@ -18,6 +18,7 @@ interface CostCalculatorOption {
   durationMax: number;
   minCost: number;
   maxCost: number;
+  label?: string;
 }
 
 interface StepFourProps {
@@ -30,31 +31,22 @@ interface StepFourProps {
 export default function StepFour({
   selectedOptions,
   scopes,
-  budgetRange,
+
   onComplete,
 }: StepFourProps) {
   const { setIsLoading } = useLoading();
   const [email, setEmail] = useState("");
   const [additionalNotes, setAdditionalNotes] = useState("");
+  console.log("selectedOptions", selectedOptions);
 
-  const totalDuration = selectedOptions.reduce(
-    (sum, option) => sum + (option.durationMin + option.durationMax) / 2,
-    0
-  );
-
-  // sum minCost and maxCost
-  const totalMinCost = selectedOptions.reduce(
-    (sum, option) => sum + option.minCost,
-    0
-  );
-  const totalMaxCost = selectedOptions.reduce(
-    (sum, option) => sum + option.maxCost,
-    0
-  );
+  // 평균 기간 계산 (StepThree에서 계산된 durationMin, durationMax 사용)
 
   async function handleSubmit() {
     try {
       setIsLoading(true);
+
+      // 만약 selectedOptions가 비어있다면 기본값 설정
+      const optionsToSend = [...selectedOptions];
 
       const response = await fetch("/api/send-estimate", {
         method: "POST",
@@ -63,11 +55,12 @@ export default function StepFour({
           email,
           additionalNotes,
           scopes,
-          budgetRange,
-          selectedOptions,
-          totalDuration,
-          totalMinCost,
-          totalMaxCost,
+
+          selectedOptions: optionsToSend,
+          minDuration: selectedOptions[0].durationMin,
+          maxDuration: selectedOptions[0].durationMax,
+          totalMinCost: selectedOptions[0].minCost,
+          totalMaxCost: selectedOptions[0].maxCost,
         }),
       });
 

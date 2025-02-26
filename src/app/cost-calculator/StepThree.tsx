@@ -156,6 +156,43 @@ export default function StepThree({
     totalSelectedCost
   );
 
+  // 가격의 +/- 10% 계산
+  const minCost = Math.round(totalSelectedCost * 0.9);
+  const maxCost = Math.round(totalSelectedCost * 1.1);
+
+  // 다음 단계로 넘어갈 때 선택된 옵션과 계산된 가격, 기간 정보를 전달
+  const handleNext = () => {
+    // 선택된 subCategory들을 기반으로 옵션 객체 생성
+    let options;
+
+    if (isOnlyBiCi || selectedSubCategories.length === 0) {
+      // BI/CI 디자인만 선택되었거나 선택된 기능이 없는 경우 기본값 설정
+      const baseAmount = 27660000; // 2,766만원
+      options = {
+        label: isOnlyBiCi ? "BI/CI 디자인(로고, 브랜딩 등)" : "선택된 기능",
+        durationMin: 13,
+        durationMax: 26,
+        minCost: Math.round(baseAmount * 0.9),
+        maxCost: Math.round(baseAmount * 1.1),
+      };
+    } else {
+      // 선택된 기능이 있는 경우
+      options = {
+        label: selectedSubCategories.join(", "),
+        durationMin: totalMinDuration || 13,
+        durationMax: totalMaxDuration || 26,
+        minCost: minCost || Math.round(27660000 * 0.9),
+        maxCost: maxCost || Math.round(27660000 * 1.1),
+      };
+    }
+
+    // 선택된 옵션 설정
+    setSelectedOptions([options]);
+
+    // 다음 단계로 이동
+    onNext();
+  };
+
   if (isOnlyBiCi) {
     return (
       <div>
@@ -167,7 +204,7 @@ export default function StepThree({
         </Body1>
         <Frame pb={40}>
           <button
-            onClick={onNext}
+            onClick={handleNext}
             style={{
               backgroundColor: "#101828",
               color: "#FFFFFF",
@@ -348,7 +385,7 @@ export default function StepThree({
       <Frame w="100%" alignment="center" gap="auto" pt={20} pb={40} row>
         <Frame>
           <button
-            onClick={onNext}
+            onClick={handleNext}
             style={{
               backgroundColor: "#101828",
               color: "#FFFFFF",
