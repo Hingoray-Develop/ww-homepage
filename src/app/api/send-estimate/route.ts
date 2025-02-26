@@ -64,7 +64,7 @@ export async function POST(req: Request) {
         <div style="font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; color: #101828;">
           <!-- 로고 -->
           <div style="margin-bottom: 16px;">
-            <img src="cid:logoblack" alt="흰고래 로고" width="45" height="20" />
+            <img src="cid:blackwhale" alt="흰고래 로고" width="45" height="20" />
           </div>
           
           <!-- 메인 타이틀 -->
@@ -191,9 +191,9 @@ export async function POST(req: Request) {
       `,
       attachments: [
         {
-          filename: "logoblack.png",
-          path: "./public/images/logo/logoblack.png",
-          cid: "logoblack",
+          filename: "blackwhale.png",
+          path: "./public/images/logo/blackwhale.png",
+          cid: "blackwhale",
         },
         {
           filename: "stamp.png",
