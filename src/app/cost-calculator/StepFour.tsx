@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import { Body1, Frame, Heading2 } from "@/atoms";
 import { useLoading } from "@/contexts/LoadingContext";
-import { CostCalculatorOption } from "@/data/costCalculatorOptions";
 import { colors } from "@/styles";
 
 /**
@@ -13,6 +12,13 @@ import { colors } from "@/styles";
  * Updated: add "additionalNotes" textarea so user can input more details.
  * </ai_context>
  */
+
+interface CostCalculatorOption {
+  durationMin: number;
+  durationMax: number;
+  minCost: number;
+  maxCost: number;
+}
 
 interface StepFourProps {
   selectedOptions: CostCalculatorOption[];
@@ -32,7 +38,7 @@ export default function StepFour({
   const [additionalNotes, setAdditionalNotes] = useState("");
 
   const totalDuration = selectedOptions.reduce(
-    (sum, option) => sum + option.duration,
+    (sum, option) => sum + (option.durationMin + option.durationMax) / 2,
     0
   );
 

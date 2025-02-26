@@ -3,7 +3,9 @@
 import { Body1, Frame, Heading2, Heading6, Text } from "@/atoms";
 import { colors } from "@/styles";
 import Image from "next/image";
-import IconArrowBottom from "@/assets/icons/line/arrow-down.svg?react";
+import MailIcon from "@/assets/icons/line/mail.svg?react";
+import Link from "next/link";
+import { Button } from "@/components";
 
 /**
  * <ai_context>
@@ -48,11 +50,27 @@ export default function CostCalculatorLeft() {
       </Frame>
 
       <Frame w="100%" pb={24}>
-        <Body1 fontColor={colors.neutral[300]} fontWeight={400}>
+        <Body1 fontColor={colors.neutral[300]} fontWeight={400} pb={18}>
           세부 진행과정이 궁금하시다면,
           <br />
           언제든지 문의하세요.
         </Body1>
+        <Button
+          bg={colors.neutral[950]}
+          stroke={{
+            size: 1,
+            color: colors.white,
+            perSide: ["all"],
+          }}
+          radius={32}
+        >
+          <Link href="/inquiry">
+            <Frame row px={40} py={18} gap={8} alignment="center">
+              <Heading6 fontColor={colors.white}>이메일로 문의하기</Heading6>
+              <MailIcon />
+            </Frame>
+          </Link>
+        </Button>
       </Frame>
 
       {/* <Frame w="100%" pb={24}>

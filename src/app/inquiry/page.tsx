@@ -5,6 +5,7 @@ import { useLoading } from "@/contexts/LoadingContext";
 import { useRouter } from "next/navigation";
 import { Frame, Heading2, Body1 } from "@/atoms";
 import { colors } from "@/styles";
+import useClearLoading from "@/hooks/useClearLoading";
 
 /**
  * <ai_context>
@@ -16,6 +17,9 @@ import { colors } from "@/styles";
 export default function InquiryPage() {
   const { setIsLoading } = useLoading();
   const router = useRouter();
+
+  // 페이지 로딩 시 로딩 상태 초기화
+  useClearLoading();
 
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
@@ -62,7 +66,8 @@ export default function InquiryPage() {
     >
       <Heading2 pb={8}>문의하기</Heading2>
       <Body1 fontColor={colors.neutral[500]} pb={32}>
-        문의하실 이메일과 문의 내용을 작성해주세요. 담당자가 확인 후 답변 드리겠습니다.
+        문의하실 이메일과 문의 내용을 작성해주세요. 담당자가 확인 후 답변
+        드리겠습니다.
       </Body1>
 
       {/* 이메일 입력 */}

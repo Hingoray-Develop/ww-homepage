@@ -14,20 +14,30 @@ import UncheckedIcon from "@/assets/icons/line/unchecked.svg?react";
  * </ai_context>
  */
 
-interface StepOneProps {
-  scopes: string[];
-  setScopes: (val: string[]) => void;
-  onNext: () => void;
-}
-
-const STEP_OPTIONS = [
+const DEFAULT_SCOPES = [
   "기획",
   "UX/UI 디자인",
   "BI/CI 디자인(로고, 브랜딩 등)",
   "개발",
 ];
 
+interface StepOneProps {
+  scopes: string[];
+  setScopes: (val: string[]) => void;
+  onNext: () => void;
+}
+
+const STEP_OPTIONS = DEFAULT_SCOPES;
+
 export default function StepOne({ scopes, setScopes, onNext }: StepOneProps) {
+  // 컴포넌트 마운트 시 초기값 설정
+  React.useEffect(() => {
+    if (scopes.length === 0) {
+      setScopes(DEFAULT_SCOPES);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const toggleScope = (scope: string) => {
     if (scopes.includes(scope)) {
       setScopes(scopes.filter((s) => s !== scope));
@@ -63,7 +73,6 @@ export default function StepOne({ scopes, setScopes, onNext }: StepOneProps) {
                 }}
               >
                 {checked ? <CheckedIcon /> : <UncheckedIcon />}
-
                 <Body1>{opt}</Body1>
               </label>
             );

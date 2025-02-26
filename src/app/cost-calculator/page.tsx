@@ -7,9 +7,10 @@ import StepOne from "./StepOne";
 import StepTwo from "./StepTwo";
 import StepThree from "./StepThree";
 import StepFour from "./StepFour";
-import { CostCalculatorOption } from "@/data/costCalculatorOptions";
+
 import { Body3, Frame } from "@/atoms";
 import useResponsiveType from "@/hooks/useResponsiveType";
+// import { CostCalculatorOption } from "@/types";
 
 /**
  * <ai_context>
@@ -23,6 +24,14 @@ import useResponsiveType from "@/hooks/useResponsiveType";
  * Updated again: pass 'scopes' to StepThree so it can detect if only BI/CI 디자인 was chosen.
  * </ai_context>
  */
+
+// StepFour에서 정의한 인터페이스와 동일하게 정의
+interface CostCalculatorOption {
+  durationMin: number;
+  durationMax: number;
+  minCost: number;
+  maxCost: number;
+}
 
 export default function CostCalculator() {
   const { responsiveType } = useResponsiveType();
@@ -51,6 +60,7 @@ export default function CostCalculator() {
   const [scopes, setScopes] = useState<string[]>([
     "기획",
     "UX/UI 디자인",
+    "BI/CI 디자인(로고, 브랜딩 등)",
     "개발",
   ]); // default selected
 
@@ -101,7 +111,12 @@ export default function CostCalculator() {
   // finalize => StepFour
   const handleComplete = () => {
     // after sending email, reset
-    setScopes(["기획", "UX/UI 디자인", "개발"]);
+    setScopes([
+      "기획",
+      "UX/UI 디자인",
+      "BI/CI 디자인(로고, 브랜딩 등)",
+      "개발",
+    ]);
     setBudgetRange([1000, 5000]);
     setSelectedOptions([]);
     setStepComplete({ 1: false, 2: false, 3: false, 4: false });

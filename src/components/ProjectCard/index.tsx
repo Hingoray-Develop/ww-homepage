@@ -2,9 +2,10 @@
 
 import { Frame, Text } from "@/atoms";
 import { useDarkMode } from "@/contexts/DarkModeContext";
-import { colors } from "@/styles";
+import { colors, animations } from "@/styles";
 import Image from "next/image";
 import React, { useState } from "react";
+import ScrollAnimation from "../ScrollAnimation";
 
 interface ProjectCardProps {
   image: string;
@@ -12,6 +13,7 @@ interface ProjectCardProps {
   type: string;
   boldTexts?: string[];
   onClick?: () => void;
+  delay?: number;
 }
 
 const ProjectCard: React.FC<ProjectCardProps> = ({
@@ -20,12 +22,12 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
   type,
   boldTexts = [],
   onClick,
+  delay = 0,
 }) => {
   const { isDarkMode } = useDarkMode();
   const [isHovered, setIsHovered] = useState(false);
 
   const renderTitle = (text: string) => {
-    // 텍스트를 boldTexts를 기준으로 분할
     let parts: { text: string; isBold: boolean }[] = [{ text, isBold: false }];
 
     boldTexts.forEach((boldText) => {
@@ -42,11 +44,17 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
     });
 
     return (
-      <Frame row>
+      <div
+        style={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: "4px",
+          marginBottom: "8px",
+        }}
+      >
         {parts.map((part, index) => {
           let content = part.text;
           if (part.isBold) {
-            // Bold 텍스트인 경우 앞뒤에 무조건 한 칸씩 추가합니다.
             content = "\u00A0" + part.text;
           }
           return (
@@ -56,64 +64,82 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
               lineHeight="32px"
               fontColor={isDarkMode ? colors.white : colors.neutral[900]}
               fontWeight={part.isBold ? 700 : 400}
+              style={{
+                wordBreak: "keep-all",
+                whiteSpace: "pre-wrap",
+              }}
             >
               {content}
             </Text>
           );
         })}
-      </Frame>
+      </div>
     );
   };
 
   return (
-    <div
-      onClick={onClick}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      style={{
-        // cursor: "pointer",
-        overflow: "hidden",
-        borderRadius: 32,
-      }}
-    >
+    <ScrollAnimation animation="slide-up" delay={delay}>
       <div
+        onClick={onClick}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
         style={{
-          position: "relative",
-          width: "100%",
-          paddingTop: "80%",
           overflow: "hidden",
-          borderRadius: 32,
+          transform: isHovered ? "translateY(-8px)" : "translateY(0)",
+          transition: `all ${animations.hover.transitionDuration} ${animations.hover.transitionTimingFunction}`,
         }}
       >
-        <Image
-          src={image}
-          alt={title}
-          fill
+        <div
           style={{
-            objectFit: "fill",
+            position: "relative",
+            width: "100%",
+            paddingTop: "80%",
+            overflow: "hidden",
             borderRadius: 32,
-            transition: "all 0.5s ease",
-            transform: isHovered ? "scale(1.02)" : "scale(1)",
-            filter: isHovered ? "brightness(1.05)" : "brightness(1)",
+
+            transition: `all ${animations.hover.transitionDuration} ${animations.hover.transitionTimingFunction}`,
           }}
-          priority
-        />
-      </div>
-      <div
-        style={{
-          paddingTop: 16,
-        }}
-      >
-        {renderTitle(title)}
-        <Text
-          fontSize={16}
-          lineHeight="24px"
-          fontColor={isDarkMode ? colors.white : colors.neutral[950]}
         >
-          {type}
-        </Text>
+          <Image
+            src={image}
+            alt={title}
+            fill
+            style={{
+              objectFit: "fill",
+              borderRadius: 32,
+              transition: `all ${animations.hover.transitionDuration} ${animations.hover.transitionTimingFunction}`,
+              transform: isHovered ? "scale(1.05)" : "scale(1)",
+              filter: isHovered
+                ? "brightness(1.1) contrast(1.1)"
+                : "brightness(1) contrast(1)",
+            }}
+            priority
+          />
+        </div>
+        <div
+          style={{
+            paddingTop: 16,
+            transform: isHovered ? "translateY(-4px)" : "translateY(0)",
+            transition: `all ${animations.hover.transitionDuration} ${animations.hover.transitionTimingFunction}`,
+          }}
+        >
+          {renderTitle(title)}
+          <Text
+            fontSize={16}
+            lineHeight="24px"
+            fontColor={isDarkMode ? colors.white : colors.neutral[950]}
+            style={{
+              opacity: isHovered ? 0.9 : 0.7,
+              transition: `opacity ${animations.hover.transitionDuration} ${animations.hover.transitionTimingFunction}`,
+              wordBreak: "keep-all",
+              whiteSpace: "pre-wrap",
+            }}
+          >
+            {type}
+          </Text>
+        </div>
       </div>
-    </div>
+    </ScrollAnimation>
   );
 };
 

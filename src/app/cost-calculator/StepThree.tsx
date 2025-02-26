@@ -19,6 +19,11 @@ import { colors } from "@/styles";
  * - Also shows total cost of all selected subCategories next to the selected count.
  * Updated: we wrap the list area in a scrollable container with hidden scrollbar.
  * Also if "BI/CI 디자인(로고, 브랜딩 등)" alone is selected in StepOne, skip feature selection.
+ * 
+ * Updated again:
+ * - Sum up durationMin, durationMax from all selected subCategories,
+ *   and display them alongside the total cost in the bottom summary.
+ *   e.g. "4개 선택됨 (약 2,300원, 4~8개월)"
  * </ai_context>
  */
 
@@ -42,12 +47,46 @@ export default function StepThree({
     []
   );
   const hoverTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const isTooltipHoveredRef = useRef<boolean>(false);
+  const [tooltipPosition, setTooltipPosition] = useState<"top" | "bottom">(
+    "bottom"
+  );
+  const buttonRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
   // Detect if only BI/CI 디자인 was selected at StepOne
   const isOnlyBiCi =
     scopes.length === 1 && scopes[0] === "BI/CI 디자인(로고, 브랜딩 등)";
 
   const handleSubCategoryMouseEnter = (subCategoryKey: string) => {
+    const buttonElement = buttonRefs.current[subCategoryKey];
+    if (buttonElement) {
+      const rect = buttonElement.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      const scrollTop =
+        window.pageYOffset || document.documentElement.scrollTop;
+
+      if (rect.top > windowHeight * 0.8 || windowHeight - rect.bottom < 250) {
+        setTooltipPosition("top");
+
+        setTimeout(() => {
+          const tooltipElement = document.querySelector(
+            `[data-tooltip="${subCategoryKey}"]`
+          ) as HTMLElement;
+          if (tooltipElement) {
+            const tooltipRect = tooltipElement.getBoundingClientRect();
+            if (tooltipRect.top < 0) {
+              window.scrollTo({
+                top: scrollTop + tooltipRect.top - 10,
+                behavior: "smooth",
+              });
+            }
+          }
+        }, 550);
+      } else {
+        setTooltipPosition("bottom");
+      }
+    }
+
     hoverTimerRef.current = setTimeout(() => {
       setHoveredSubCategory(subCategoryKey);
     }, 500);
@@ -55,6 +94,20 @@ export default function StepThree({
 
   const handleSubCategoryMouseLeave = () => {
     if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
+    setTimeout(() => {
+      if (!isTooltipHoveredRef.current) {
+        setHoveredSubCategory(null);
+      }
+    }, 100);
+  };
+
+  const handleTooltipMouseEnter = (subCategoryKey: string) => {
+    isTooltipHoveredRef.current = true;
+    setHoveredSubCategory(subCategoryKey);
+  };
+
+  const handleTooltipMouseLeave = () => {
+    isTooltipHoveredRef.current = false;
     setHoveredSubCategory(null);
   };
 
@@ -71,17 +124,31 @@ export default function StepThree({
   const totalSelectedCount = selectedSubCategories.length;
 
   // 선택된 subCategory들의 비용 합산
-  const totalSelectedCost = useMemo(() => {
+  const { totalSelectedCost, totalMinDuration, totalMaxDuration } = useMemo(() => {
     let costSum = 0;
+    let minDurationSum = 0;
+    let maxDurationSum = 0;
+
     costCalculatorOptions.forEach((category: CostCategory) => {
       category.subCategories.forEach((subcat) => {
         const subcatKey = category.title + " > " + subcat.subtitle;
         if (selectedSubCategories.includes(subcatKey)) {
           costSum += subcat.subCategoryCost;
+          if (subcat.durationMin) {
+            minDurationSum += subcat.durationMin;
+          }
+          if (subcat.durationMax) {
+            maxDurationSum += subcat.durationMax;
+          }
         }
       });
     });
-    return costSum;
+
+    return {
+      totalSelectedCost: costSum,
+      totalMinDuration: minDurationSum,
+      totalMaxDuration: maxDurationSum,
+    };
   }, [selectedSubCategories]);
 
   const formattedCost = new Intl.NumberFormat("ko-KR").format(
@@ -89,7 +156,6 @@ export default function StepThree({
   );
 
   if (isOnlyBiCi) {
-    // show simplified version => “아무것도 선택 안해도 됩니다.” + next button
     return (
       <div>
         <Heading2 pb={8}>구현이 필요한 기능을 골라주세요.</Heading2>
@@ -122,23 +188,18 @@ export default function StepThree({
         필요한 기능들을 고를수록 정확한 견적을 보내드려요.
       </Body1>
 
-      {/* scrollable list container */}
       <div
         className="hide-scrollbar"
         style={{
-          maxHeight: 400,
+          maxHeight: 550,
           overflowY: "scroll",
-          marginBottom: 32,
         }}
       >
         {costCalculatorOptions.map((category: CostCategory) => (
           <div key={category.title} style={{ marginBottom: 32 }}>
-            {/* 대분류(H2) */}
             <Text fontSize={18} fontWeight={700} pb={12}>
               {category.title}
             </Text>
-
-            {/* 소분류(H3) 목록 */}
             <div
               style={{
                 display: "grid",
@@ -161,6 +222,9 @@ export default function StepThree({
                       handleSubCategoryMouseEnter(subCategoryKey)
                     }
                     onMouseLeave={handleSubCategoryMouseLeave}
+                    ref={(el) => {
+                      buttonRefs.current[subCategoryKey] = el;
+                    }}
                   >
                     <button
                       type="button"
@@ -198,12 +262,14 @@ export default function StepThree({
                       </Text>
                     </button>
 
-                    {/* 호버 시 나타나는 tooltip - 0.5초 딜레이 */}
                     {isHovered && (
                       <div
+                        data-tooltip={subCategoryKey}
                         style={{
                           position: "absolute",
-                          top: "calc(100% + 4px)",
+                          ...(tooltipPosition === "bottom"
+                            ? { top: "calc(100% + 4px)" }
+                            : { bottom: "calc(100% + 4px)" }),
                           left: 0,
                           backgroundColor: "#333",
                           color: "#fff",
@@ -212,9 +278,14 @@ export default function StepThree({
                           fontSize: 13,
                           width: "280px",
                           zIndex: 100,
+                          maxHeight: "250px",
+                          overflowY: "auto",
                         }}
+                        onMouseEnter={() =>
+                          handleTooltipMouseEnter(subCategoryKey)
+                        }
+                        onMouseLeave={handleTooltipMouseLeave}
                       >
-                        {/* 필수 기능 */}
                         <Text fontWeight={600} pb={8} fontColor="#FFD700">
                           필수 기능
                         </Text>
@@ -226,11 +297,14 @@ export default function StepThree({
                           ))}
                         </ul>
 
-                        {/* 선택 기능이 있을 경우 */}
                         {subcat.optionalItems &&
                           subcat.optionalItems.length > 0 && (
                             <>
-                              <Text fontWeight={600} pb={8} fontColor="#ADD8E6">
+                              <Text
+                                fontWeight={600}
+                                pb={8}
+                                fontColor="#ADD8E6"
+                              >
                                 선택 옵션
                               </Text>
                               <ul style={{ paddingLeft: 16 }}>
@@ -255,7 +329,7 @@ export default function StepThree({
         ))}
       </div>
 
-      <Frame w="100%" pb={40} row alignment="center" gap="auto">
+      <Frame w="100%" alignment="center" gap="auto" pt={20} pb={40} row>
         <Frame>
           <button
             onClick={onNext}
@@ -274,7 +348,11 @@ export default function StepThree({
         {totalSelectedCount > 0 && (
           <Frame bg={colors.main[400]} radius={4} row alignment="center">
             <Body3 px={8} py={5} fontWeight={500} fontColor={colors.white}>
-              {totalSelectedCount}개 선택됨 (약 {formattedCost}원)
+              {totalSelectedCount}개 선택됨 (약 {formattedCost}원
+              {totalMinDuration > 0 || totalMaxDuration > 0
+                ? `, ${totalMinDuration}~${totalMaxDuration}개월`
+                : ""}
+              )
             </Body3>
           </Frame>
         )}
