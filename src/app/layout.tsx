@@ -12,6 +12,9 @@ export const metadata: Metadata = {
   title: "흰고래컴퍼니 | 맞춤형 소프트웨어 개발 및 IT 솔루션",
   description:
     "흰고래컴퍼니는 맞춤형 소프트웨어 개발, 웹 & 앱 제작, IT 컨설팅을 제공하는 최고의 개발 파트너입니다. 효율적인 솔루션과 혁신적인 기술을 만나보세요.",
+  icons: {
+    icon: "/whale.svg",
+  },
 };
 
 const pretendard = localFont({

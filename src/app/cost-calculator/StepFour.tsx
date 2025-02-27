@@ -1,15 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Body1, Frame, Heading2 } from "@/atoms";
-import { useLoading } from "@/contexts/LoadingContext";
 import { colors } from "@/styles";
 
 /**
  * <ai_context>
- * StepFour: now sums minCost and maxCost from selectedOptions to show a range,
- * then sends that range in the request body. We'll show "x,xxx원~x,xxx원" style.
- * Updated: add "additionalNotes" textarea so user can input more details.
+ * StepFour: with basic email validation 
+ * - 유효성 검사 후, 잘못된 이메일은 경고 메시지 표시 & 제출 버튼 비활성화
  * </ai_context>
  */
 
@@ -26,27 +24,51 @@ interface StepFourProps {
   scopes: string[];
   budgetRange: [number, number] | null;
   onComplete: () => void;
+  setStep: (val: number) => void;
 }
 
 export default function StepFour({
   selectedOptions,
   scopes,
-
+  budgetRange,
   onComplete,
+  setStep,
 }: StepFourProps) {
-  const { setIsLoading } = useLoading();
   const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
   const [additionalNotes, setAdditionalNotes] = useState("");
-  console.log("selectedOptions", selectedOptions);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // 평균 기간 계산 (StepThree에서 계산된 durationMin, durationMax 사용)
+  function validateEmail(value: string) {
+    // 간단한 RFC 5322 기반 정규표현식
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(value.trim());
+  }
+
+  useEffect(() => {
+    if (email === "") {
+      setEmailError("");
+      return;
+    }
+    if (!validateEmail(email)) {
+      setEmailError("유효한 이메일 주소가 아닙니다.");
+    } else {
+      setEmailError("");
+    }
+  }, [email]);
 
   async function handleSubmit() {
-    try {
-      setIsLoading(true);
+    // 이메일 유효성 확인 후 전송
+    if (!validateEmail(email)) {
+      alert("이메일 형식이 올바르지 않습니다.");
+      return;
+    }
 
-      // 만약 selectedOptions가 비어있다면 기본값 설정
-      const optionsToSend = [...selectedOptions];
+    try {
+      setIsSubmitting(true);
+
+      const userMinBudget = budgetRange ? budgetRange[0] : null;
+      const userMaxBudget = budgetRange ? budgetRange[1] : null;
 
       const response = await fetch("/api/send-estimate", {
         method: "POST",
@@ -55,12 +77,13 @@ export default function StepFour({
           email,
           additionalNotes,
           scopes,
-
-          selectedOptions: optionsToSend,
+          selectedOptions,
           minDuration: selectedOptions[0].durationMin,
           maxDuration: selectedOptions[0].durationMax,
           totalMinCost: selectedOptions[0].minCost,
           totalMaxCost: selectedOptions[0].maxCost,
+          userMinBudget,
+          userMaxBudget,
         }),
       });
 
@@ -68,13 +91,13 @@ export default function StepFour({
         throw new Error("이메일 전송에 실패했습니다.");
       }
 
-      alert("견적서가 메일로 발송되었어요!");
       onComplete();
+      setStep(5);
     } catch (error) {
       console.error("견적서 전송 실패:", error);
       alert("견적서 전송에 실패했습니다. 다시 시도해주세요.");
     } finally {
-      setIsLoading(false);
+      setIsSubmitting(false);
     }
   }
 
@@ -96,21 +119,19 @@ export default function StepFour({
           width: "100%",
           padding: "16px 20px",
           borderRadius: 8,
-          marginBottom: 24,
+          marginBottom: 8,
           backgroundColor: colors.neutral[100],
           border: "1px solid transparent",
           outline: "none",
           transition: "all 0.2s ease-in-out",
         }}
-        onFocus={(e) => {
-          e.target.style.backgroundColor = "#FFFFFF";
-          e.target.style.borderColor = colors.neutral[300];
-        }}
-        onBlur={(e) => {
-          e.target.style.backgroundColor = colors.neutral[100];
-          e.target.style.borderColor = "transparent";
-        }}
+        disabled={isSubmitting}
       />
+      {emailError && (
+        <div style={{ color: "red", fontSize: 14, marginBottom: 16 }}>
+          {emailError}
+        </div>
+      )}
 
       <Body1 fontColor={colors.neutral[500]} pb={8}>
         추가 문의 사항이 있으신가요?
@@ -131,29 +152,34 @@ export default function StepFour({
           resize: "vertical",
           transition: "all 0.2s ease-in-out",
         }}
-        onFocus={(e) => {
-          e.target.style.backgroundColor = "#FFFFFF";
-          e.target.style.borderColor = colors.neutral[300];
-        }}
-        onBlur={(e) => {
-          e.target.style.backgroundColor = colors.neutral[100];
-          e.target.style.borderColor = "transparent";
-        }}
+        disabled={isSubmitting}
       />
 
       <Frame pb={40}>
         <button
           onClick={handleSubmit}
+          disabled={isSubmitting || !!emailError || email.length === 0}
           style={{
             backgroundColor: "#101828",
             color: "#FFFFFF",
             borderRadius: 8,
             padding: "12px 24px",
-            cursor: "pointer",
+            cursor: isSubmitting ? "default" : "pointer",
             fontSize: "16px",
+            opacity: isSubmitting || !!emailError || email.length === 0 ? 0.7 : 1,
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
           }}
         >
-          제출
+          {isSubmitting ? (
+            <>
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              전송중...
+            </>
+          ) : (
+            "제출"
+          )}
         </button>
       </Frame>
     </div>
