@@ -1,9 +1,15 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Body1, Frame, Heading2 } from "@/atoms";
 import { colors } from "@/styles";
-import { useRouter } from "next/navigation";
+
+/**
+ * <ai_context>
+ * StepFour: with basic email validation 
+ * - 유효성 검사 후, 잘못된 이메일은 경고 메시지 표시 & 제출 버튼 비활성화
+ * </ai_context>
+ */
 
 interface CostCalculatorOption {
   durationMin: number;
@@ -16,7 +22,7 @@ interface CostCalculatorOption {
 interface StepFourProps {
   selectedOptions: CostCalculatorOption[];
   scopes: string[];
-  budgetRange: [number, number] | null; // ← StepTwo에서 넘어온 예산 범위
+  budgetRange: [number, number] | null;
   onComplete: () => void;
   setStep: (val: number) => void;
 }
@@ -29,14 +35,38 @@ export default function StepFour({
   setStep,
 }: StepFourProps) {
   const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
   const [additionalNotes, setAdditionalNotes] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  function validateEmail(value: string) {
+    // 간단한 RFC 5322 기반 정규표현식
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(value.trim());
+  }
+
+  useEffect(() => {
+    if (email === "") {
+      setEmailError("");
+      return;
+    }
+    if (!validateEmail(email)) {
+      setEmailError("유효한 이메일 주소가 아닙니다.");
+    } else {
+      setEmailError("");
+    }
+  }, [email]);
+
   async function handleSubmit() {
+    // 이메일 유효성 확인 후 전송
+    if (!validateEmail(email)) {
+      alert("이메일 형식이 올바르지 않습니다.");
+      return;
+    }
+
     try {
       setIsSubmitting(true);
 
-      // StepTwo에서 선택한 예산 범위를 함께 전송
       const userMinBudget = budgetRange ? budgetRange[0] : null;
       const userMaxBudget = budgetRange ? budgetRange[1] : null;
 
@@ -47,15 +77,11 @@ export default function StepFour({
           email,
           additionalNotes,
           scopes,
-
-          // StepThree/StepFour 계산 결과
           selectedOptions,
           minDuration: selectedOptions[0].durationMin,
           maxDuration: selectedOptions[0].durationMax,
           totalMinCost: selectedOptions[0].minCost,
           totalMaxCost: selectedOptions[0].maxCost,
-
-          // StepTwo에서 선택한 예산 범위
           userMinBudget,
           userMaxBudget,
         }),
@@ -93,7 +119,7 @@ export default function StepFour({
           width: "100%",
           padding: "16px 20px",
           borderRadius: 8,
-          marginBottom: 24,
+          marginBottom: 8,
           backgroundColor: colors.neutral[100],
           border: "1px solid transparent",
           outline: "none",
@@ -101,6 +127,11 @@ export default function StepFour({
         }}
         disabled={isSubmitting}
       />
+      {emailError && (
+        <div style={{ color: "red", fontSize: 14, marginBottom: 16 }}>
+          {emailError}
+        </div>
+      )}
 
       <Body1 fontColor={colors.neutral[500]} pb={8}>
         추가 문의 사항이 있으신가요?
@@ -127,7 +158,7 @@ export default function StepFour({
       <Frame pb={40}>
         <button
           onClick={handleSubmit}
-          disabled={isSubmitting}
+          disabled={isSubmitting || !!emailError || email.length === 0}
           style={{
             backgroundColor: "#101828",
             color: "#FFFFFF",
@@ -135,7 +166,7 @@ export default function StepFour({
             padding: "12px 24px",
             cursor: isSubmitting ? "default" : "pointer",
             fontSize: "16px",
-            opacity: isSubmitting ? 0.7 : 1,
+            opacity: isSubmitting || !!emailError || email.length === 0 ? 0.7 : 1,
             display: "flex",
             alignItems: "center",
             gap: 8,
