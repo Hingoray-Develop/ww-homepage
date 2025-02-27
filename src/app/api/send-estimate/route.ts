@@ -26,7 +26,8 @@ export async function POST(req: Request) {
       totalMinCost,
       totalMaxCost,
       scopes,
-
+      userMinBudget,
+      userMaxBudget,
       selectedOptions,
       additionalNotes,
     } = await req.json();
@@ -85,7 +86,8 @@ export async function POST(req: Request) {
 
     const mailOptions = {
       from: process.env.EMAIL_USER,
-      to: "jihwan.yun@hingoray.com, msj@hingoray.com, hrk@hingoray.com",
+      // to: "jihwan.yun@hingoray.com, msj@hingoray.com, hrk@hingoray.com",
+      to: "blood8879@naver.com",
       subject: "흰고래 컴퍼니에 요청하신 개발 견적을 보내드립니다. 📝",
       html: `
         <div style="font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; color: #101828;">
@@ -151,7 +153,11 @@ export async function POST(req: Request) {
                       <!-- 예산 범위 -->
                       <p style="font-size: 14px; font-weight: 600; color: #101828; margin: 0 0 8px 0;">예산 범위:</p>
                       <ul style="margin: 0 0 16px 0; padding-left: 20px;">
-                        <li style="color: #101828; font-size: 12px;">${budgetText}</li>
+                        <li style="color: #101828; font-size: 12px;">${userMinBudget.toLocaleString(
+                          "ko-KR"
+                        )}만원 ~ ${userMaxBudget.toLocaleString(
+        "ko-KR"
+      )}만원</li>
                       </ul>
                       
                       <!-- 상세 기능 범위 -->

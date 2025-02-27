@@ -2,16 +2,8 @@
 
 import React, { useState } from "react";
 import { Body1, Frame, Heading2 } from "@/atoms";
-import { useLoading } from "@/contexts/LoadingContext";
 import { colors } from "@/styles";
-
-/**
- * <ai_context>
- * StepFour: now sums minCost and maxCost from selectedOptions to show a range,
- * then sends that range in the request body. We'll show "x,xxx원~x,xxx원" style.
- * Updated: add "additionalNotes" textarea so user can input more details.
- * </ai_context>
- */
+import { useRouter } from "next/navigation";
 
 interface CostCalculatorOption {
   durationMin: number;
@@ -24,29 +16,29 @@ interface CostCalculatorOption {
 interface StepFourProps {
   selectedOptions: CostCalculatorOption[];
   scopes: string[];
-  budgetRange: [number, number] | null;
+  budgetRange: [number, number] | null; // ← StepTwo에서 넘어온 예산 범위
   onComplete: () => void;
+  setStep: (val: number) => void;
 }
 
 export default function StepFour({
   selectedOptions,
   scopes,
-
+  budgetRange,
   onComplete,
+  setStep,
 }: StepFourProps) {
-  const { setIsLoading } = useLoading();
   const [email, setEmail] = useState("");
   const [additionalNotes, setAdditionalNotes] = useState("");
-  console.log("selectedOptions", selectedOptions);
-
-  // 평균 기간 계산 (StepThree에서 계산된 durationMin, durationMax 사용)
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   async function handleSubmit() {
     try {
-      setIsLoading(true);
+      setIsSubmitting(true);
 
-      // 만약 selectedOptions가 비어있다면 기본값 설정
-      const optionsToSend = [...selectedOptions];
+      // StepTwo에서 선택한 예산 범위를 함께 전송
+      const userMinBudget = budgetRange ? budgetRange[0] : null;
+      const userMaxBudget = budgetRange ? budgetRange[1] : null;
 
       const response = await fetch("/api/send-estimate", {
         method: "POST",
@@ -56,11 +48,16 @@ export default function StepFour({
           additionalNotes,
           scopes,
 
-          selectedOptions: optionsToSend,
+          // StepThree/StepFour 계산 결과
+          selectedOptions,
           minDuration: selectedOptions[0].durationMin,
           maxDuration: selectedOptions[0].durationMax,
           totalMinCost: selectedOptions[0].minCost,
           totalMaxCost: selectedOptions[0].maxCost,
+
+          // StepTwo에서 선택한 예산 범위
+          userMinBudget,
+          userMaxBudget,
         }),
       });
 
@@ -68,13 +65,13 @@ export default function StepFour({
         throw new Error("이메일 전송에 실패했습니다.");
       }
 
-      alert("견적서가 메일로 발송되었어요!");
       onComplete();
+      setStep(5);
     } catch (error) {
       console.error("견적서 전송 실패:", error);
       alert("견적서 전송에 실패했습니다. 다시 시도해주세요.");
     } finally {
-      setIsLoading(false);
+      setIsSubmitting(false);
     }
   }
 
@@ -102,14 +99,7 @@ export default function StepFour({
           outline: "none",
           transition: "all 0.2s ease-in-out",
         }}
-        onFocus={(e) => {
-          e.target.style.backgroundColor = "#FFFFFF";
-          e.target.style.borderColor = colors.neutral[300];
-        }}
-        onBlur={(e) => {
-          e.target.style.backgroundColor = colors.neutral[100];
-          e.target.style.borderColor = "transparent";
-        }}
+        disabled={isSubmitting}
       />
 
       <Body1 fontColor={colors.neutral[500]} pb={8}>
@@ -131,29 +121,34 @@ export default function StepFour({
           resize: "vertical",
           transition: "all 0.2s ease-in-out",
         }}
-        onFocus={(e) => {
-          e.target.style.backgroundColor = "#FFFFFF";
-          e.target.style.borderColor = colors.neutral[300];
-        }}
-        onBlur={(e) => {
-          e.target.style.backgroundColor = colors.neutral[100];
-          e.target.style.borderColor = "transparent";
-        }}
+        disabled={isSubmitting}
       />
 
       <Frame pb={40}>
         <button
           onClick={handleSubmit}
+          disabled={isSubmitting}
           style={{
             backgroundColor: "#101828",
             color: "#FFFFFF",
             borderRadius: 8,
             padding: "12px 24px",
-            cursor: "pointer",
+            cursor: isSubmitting ? "default" : "pointer",
             fontSize: "16px",
+            opacity: isSubmitting ? 0.7 : 1,
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
           }}
         >
-          제출
+          {isSubmitting ? (
+            <>
+              <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              전송중...
+            </>
+          ) : (
+            "제출"
+          )}
         </button>
       </Frame>
     </div>

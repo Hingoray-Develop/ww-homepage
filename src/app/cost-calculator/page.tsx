@@ -7,21 +7,18 @@ import StepOne from "./StepOne";
 import StepTwo from "./StepTwo";
 import StepThree from "./StepThree";
 import StepFour from "./StepFour";
+import StepFive from "./StepFive";
 
 import { Body3, Frame } from "@/atoms";
 import useResponsiveType from "@/hooks/useResponsiveType";
-// import { CostCalculatorOption } from "@/types";
 
 /**
  * <ai_context>
- * Main cost-calculator page redesigned to 4-step wizard + left panel.
- * Updated to reset step after email is submitted and pass scopes/budgetRange to StepFour.
- * Now updated to give the left panel ~50% width, and the right panel ~50%.
- * Next update: disallow forward navigation if prior steps not completed,
- * but allow backward navigation from later steps.
- * Also store step completion states so previous selections remain.
- * And show disabled style (reduced opacity/cursor) for steps that are not yet allowed.
- * Updated again: pass 'scopes' to StepThree so it can detect if only BI/CI 디자인 was chosen.
+ * Main cost-calculator page. Now extended to 5 steps:
+ * Step1 -> Step2 -> Step3 -> Step4 -> Step5 (success).
+ * Updated so that after StepFour submission, we go to StepFive.
+ * Step indicator now shows 5 steps.
+ * The user can navigate backward if needed (except from StepFive).
  * </ai_context>
  */
 
@@ -49,11 +46,13 @@ export default function CostCalculator() {
     2: boolean;
     3: boolean;
     4: boolean;
+    5: boolean;
   }>({
     1: false,
     2: false,
     3: false,
     4: false,
+    5: false,
   });
 
   // StepOne state
@@ -80,7 +79,7 @@ export default function CostCalculator() {
 
     // else, check if all steps up to (targetStep - 1) are complete
     for (let i = 1; i < targetStep; i++) {
-      if (!stepComplete[i as 1 | 2 | 3 | 4]) {
+      if (!stepComplete[i as 1 | 2 | 3 | 4 | 5]) {
         return false;
       }
     }
@@ -89,7 +88,6 @@ export default function CostCalculator() {
 
   // stepOne "Next"
   const handleNextFromStepOne = () => {
-    // must ensure stepOne is valid
     if (scopes.length > 0) {
       setStepComplete((prev) => ({ ...prev, 1: true }));
       setStep(2);
@@ -108,20 +106,14 @@ export default function CostCalculator() {
     setStep(4);
   };
 
-  // finalize => StepFour
+  // finalize => StepFour (submitting email)
   const handleComplete = () => {
-    // after sending email, reset
-    setScopes([
-      "기획",
-      "UX/UI 디자인",
-      "BI/CI 디자인(로고, 브랜딩 등)",
-      "개발",
-    ]);
-    setBudgetRange([1000, 5000]);
-    setSelectedOptions([]);
-    setStepComplete({ 1: false, 2: false, 3: false, 4: false });
-    setStep(1);
+    // after sending email
+    // normally we might reset state here, but since we want to keep data, we'll do nothing
+    setStepComplete((prev) => ({ ...prev, 4: true }));
   };
+
+  // for step 5 we don't have a "next", so no handle needed.
 
   // 반응형 패딩 값 설정
   const containerPx = isMobile ? 16 : isTablet ? 30 : 40;
@@ -159,45 +151,47 @@ export default function CostCalculator() {
         }}
       >
         {/* Step indicator */}
-        <Frame col w="100%" pt={isMobile ? 24 : 40} pb={isMobile ? 32 : 48}>
-          <div
-            style={{
-              display: "flex",
-              gap: isMobile ? 8 : 16,
-              fontSize: isMobile ? 12 : 14,
-              fontWeight: 600,
-              width: "100%",
-            }}
-          >
-            {[1, 2, 3, 4].map((n) => {
-              const disabled = !canGoForward(n);
-              return (
-                <div
-                  key={n}
-                  onClick={() => {
-                    if (!disabled) {
-                      setStep(n);
-                    }
-                  }}
-                  style={{
-                    borderRadius: 8,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    backgroundColor: step === n ? "#101828" : "#E5E7EB",
-                    color: step === n ? "#FFF" : "#000",
-                    cursor: disabled ? "not-allowed" : "pointer",
-                    opacity: disabled ? 0.5 : 1,
-                  }}
-                >
-                  <Body3 px={isMobile ? 8 : 12} py={isMobile ? 2 : 4}>
-                    {("0" + n).slice(-2)}
-                  </Body3>
-                </div>
-              );
-            })}
-          </div>
-        </Frame>
+        {step <= 4 && (
+          <Frame col w="100%" pt={isMobile ? 24 : 40} pb={isMobile ? 32 : 48}>
+            <div
+              style={{
+                display: "flex",
+                gap: isMobile ? 8 : 16,
+                fontSize: isMobile ? 12 : 14,
+                fontWeight: 600,
+                width: "100%",
+              }}
+            >
+              {[1, 2, 3, 4, 5].map((n) => {
+                const disabled = !canGoForward(n);
+                return (
+                  <div
+                    key={n}
+                    onClick={() => {
+                      if (!disabled) {
+                        setStep(n);
+                      }
+                    }}
+                    style={{
+                      borderRadius: 8,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      backgroundColor: step === n ? "#101828" : "#E5E7EB",
+                      color: step === n ? "#FFF" : "#000",
+                      cursor: disabled ? "not-allowed" : "pointer",
+                      opacity: disabled ? 0.5 : 1,
+                    }}
+                  >
+                    <Body3 px={isMobile ? 8 : 12} py={isMobile ? 2 : 4}>
+                      {("0" + n).slice(-2)}
+                    </Body3>
+                  </div>
+                );
+              })}
+            </div>
+          </Frame>
+        )}
 
         {/* Steps */}
         {step === 1 && (
@@ -228,8 +222,10 @@ export default function CostCalculator() {
             scopes={scopes}
             budgetRange={budgetRange}
             onComplete={handleComplete}
+            setStep={setStep}
           />
         )}
+        {step === 5 && <StepFive />}
       </div>
     </div>
   );
