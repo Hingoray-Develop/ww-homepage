@@ -28,7 +28,7 @@ export async function POST(req: Request) {
 
     const mailOptions = {
       from: process.env.EMAIL_USER,
-      to: process.env.EMAIL_USER, // 문의사항은 운영자(본인)에게 보내도록 함
+      to: "jihwan.yun@hingoray.com, msj@hingoray.com, hrk@hingoray.com",
       subject: "문의사항 도착",
       html: `
         <div>
