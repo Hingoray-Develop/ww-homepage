@@ -398,17 +398,6 @@ export default function StepThree({
             다음
           </button>
         </Frame>
-        {totalSelectedCount > 0 && (
-          <Frame bg={colors.main[400]} radius={4} row alignment="center">
-            <Body3 px={8} py={5} fontWeight={500} fontColor={colors.white}>
-              {totalSelectedCount}개 선택됨 (약 {formattedCost}원
-              {totalMinDuration > 0 || totalMaxDuration > 0
-                ? `, ${totalMinDuration}~${totalMaxDuration}개월`
-                : ""}
-              )
-            </Body3>
-          </Frame>
-        )}
       </Frame>
     </div>
   );
