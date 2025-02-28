@@ -66,7 +66,7 @@ export async function POST(req: Request) {
         : '<li style="color: #101828; font-size: 12px;">없음</li>';
 
     // 기간 범위 계산
-    let durationRangeText = "약 " + minDuration + "~" + maxDuration + "개월";
+    let durationRangeText = "약 " + minDuration + "~" + maxDuration + "일";
 
     // selectedOptions에서 durationMin과 durationMax 추출
     if (selectedOptions && selectedOptions.length > 0) {
@@ -74,13 +74,13 @@ export async function POST(req: Request) {
       const durationMax = selectedOptions[0].durationMax;
 
       if (durationMin && durationMax) {
-        durationRangeText = `약 ${durationMin}~${durationMax}개월`;
+        durationRangeText = `약 ${durationMin}~${durationMax}일`;
       } else if (
-        durationRangeText === "약 0~0개월" ||
+        durationRangeText === "약 0~0일" ||
         !durationMin ||
         !durationMax
       ) {
-        durationRangeText = "약 13~26개월";
+        durationRangeText = "약 13~26일";
       }
     }
 

@@ -23,7 +23,7 @@ import { colors } from "@/styles";
  * Updated again:
  * - Sum up durationMin, durationMax from all selected subCategories,
  *   and display them alongside the total cost in the bottom summary.
- *   e.g. "4개 선택됨 (약 2,300원, 4~8개월)"
+ *   e.g. "4개 선택됨 (약 2,300원, 4~8일)"
  * </ai_context>
  */
 
