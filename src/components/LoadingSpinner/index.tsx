@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import loadingAnimation from "@/assets/lottie/loading2.json";
+import loadingAnimation from "@/assets/lottie/loading3.json";
 import { Frame } from "@/atoms";
 import { useEffect, useState } from "react";
 
