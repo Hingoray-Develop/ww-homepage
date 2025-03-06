@@ -6,7 +6,7 @@ import { colors } from "@/styles";
 
 /**
  * <ai_context>
- * StepFour: with basic email validation 
+ * StepFour: with basic email validation
  * - 유효성 검사 후, 잘못된 이메일은 경고 메시지 표시 & 제출 버튼 비활성화
  * </ai_context>
  */
@@ -124,6 +124,7 @@ export default function StepFour({
           border: "1px solid transparent",
           outline: "none",
           transition: "all 0.2s ease-in-out",
+          color: colors.neutral[950],
         }}
         disabled={isSubmitting}
       />
@@ -151,6 +152,7 @@ export default function StepFour({
           outline: "none",
           resize: "vertical",
           transition: "all 0.2s ease-in-out",
+          color: colors.neutral[950],
         }}
         disabled={isSubmitting}
       />
@@ -166,7 +168,8 @@ export default function StepFour({
             padding: "12px 24px",
             cursor: isSubmitting ? "default" : "pointer",
             fontSize: "16px",
-            opacity: isSubmitting || !!emailError || email.length === 0 ? 0.7 : 1,
+            opacity:
+              isSubmitting || !!emailError || email.length === 0 ? 0.7 : 1,
             display: "flex",
             alignItems: "center",
             gap: 8,

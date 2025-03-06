@@ -92,7 +92,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
             paddingTop: "80%",
             overflow: "hidden",
             borderRadius: 32,
-
             transition: `all ${animations.hover.transitionDuration} ${animations.hover.transitionTimingFunction}`,
           }}
         >
@@ -106,7 +105,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
               transition: `all ${animations.hover.transitionDuration} ${animations.hover.transitionTimingFunction}`,
               transform: isHovered ? "scale(1.05)" : "scale(1)",
               filter: isHovered
-                ? "brightness(1.1) contrast(1.1)"
+                ? "brightness(1.02)"
                 : "brightness(1) contrast(1)",
             }}
             priority
@@ -115,8 +114,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         <div
           style={{
             paddingTop: 16,
-            transform: isHovered ? "translateY(-4px)" : "translateY(0)",
-            transition: `all ${animations.hover.transitionDuration} ${animations.hover.transitionTimingFunction}`,
+            // transition: `all ${animations.hover.transitionDuration} ${animations.hover.transitionTimingFunction}`,
           }}
         >
           {renderTitle(title)}
