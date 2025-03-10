@@ -39,8 +39,8 @@ const Footer = () => {
               alignment="center"
               gap="auto"
               pb={32}
-              // mobile={{ pb: 20 }}
-              // tablet={{ pb: 24 }}
+              mobile={{ pb: 12 }}
+              tablet={{ pb: 24 }}
             >
               <Frame col alignment="center">
                 <Text
@@ -48,7 +48,7 @@ const Footer = () => {
                   lineHeight="72px"
                   fontWeight={700}
                   fontColor={colors.white}
-                  mobile={{ fontSize: 28, lineHeight: "36px" }}
+                  mobile={{ fontSize: 20, lineHeight: "28px" }}
                   tablet={{ fontSize: 36, lineHeight: "48px" }}
                 >
                   IT 솔루션 개발,
@@ -58,7 +58,7 @@ const Footer = () => {
                   lineHeight="72px"
                   fontWeight={700}
                   fontColor={colors.main[200]}
-                  mobile={{ fontSize: 28, lineHeight: "36px" }}
+                  mobile={{ fontSize: 20, lineHeight: "36px" }}
                   tablet={{ fontSize: 36, lineHeight: "48px" }}
                 >
                   첫삽부터 제대로
@@ -89,7 +89,7 @@ const Footer = () => {
                       fontWeight={700}
                       py={2}
                       fontSize={18}
-                      mobile={{ fontSize: 16 }}
+                      mobile={{ fontSize: 12 }}
                       tablet={{ fontSize: 18 }}
                     >
                       빠른 프로젝트 견적내기
@@ -106,7 +106,7 @@ const Footer = () => {
               row
               gap="auto"
               alignment="center"
-              mobile={{ pt: 20 }}
+              mobile={{ pt: 12 }}
               tablet={{ pt: 24 }}
             >
               <Frame mobile={{ pb: 16 }}>

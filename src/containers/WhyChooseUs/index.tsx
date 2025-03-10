@@ -23,6 +23,7 @@ interface ReasonCardProps {
   href?: string;
   iconPosition?: "top-left" | "top-right" | "bottom-left" | "bottom-right";
   iconAboveText?: boolean;
+  backgroundImage?: string;
 }
 
 function ReasonCard({
@@ -60,6 +61,9 @@ function ReasonCard({
           bg: "bg-[#84AAFB]",
           titleColor: colors.main[800],
           descriptionColor: colors.main[800],
+          backgroundImage: "url('/images/image-gradation.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
         };
       case "main400":
         return {
@@ -102,12 +106,20 @@ function ReasonCard({
   const CardContent = () => (
     <div
       className={`relative w-full h-full p-[32px] rounded-[24px] ${styles.bg}`}
+      style={{
+        backgroundImage: styles.backgroundImage,
+        backgroundSize: styles.backgroundSize,
+        backgroundPosition: styles.backgroundPosition,
+      }}
     >
+      {variant === "main300" && (
+        <div className="absolute top-0 left-0 right-0 h-full rounded-[24px] bg-gradient-to-b from-[#84AAFB] to-[#84AAFB]/80 z-0 opacity-95" />
+      )}
       {iconAboveText ? (
         <div
           className={`${
             isDesktop ? "flex" : "hidden"
-          } items-center justify-start`}
+          } justify-start items-end pt-[24px]`}
         >
           {icon}
         </div>

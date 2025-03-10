@@ -1,6 +1,6 @@
 "use client";
 
-import { Frame, FrameScreen, Heading2, Text } from "@/atoms";
+import { Frame, FrameScreen, Heading2, Heading3, Text } from "@/atoms";
 import { ChatBubble, Divider } from "@/components";
 import { colors } from "@/styles";
 import { useEffect, useMemo, useState } from "react";
@@ -81,18 +81,18 @@ const Intro = () => {
           py={containerPy}
           bg={isDarkMode ? colors.neutral[950] : colors.white}
         >
-          <Heading2
+          <Heading3
             fontColor={isDarkMode ? colors.white : colors.neutral[950]}
             fontWeight={700}
           >
             모르는 게 많아도,
-          </Heading2>
-          <Heading2
+          </Heading3>
+          <Heading3
             fontColor={isDarkMode ? colors.white : colors.neutral[950]}
             fontWeight={700}
           >
             어디서부터 시작해야 할지 몰라도 괜찮습니다.
-          </Heading2>
+          </Heading3>
           <Frame w="100%" py={dividerPy}>
             <Divider
               color={isDarkMode ? colors.neutral[700] : colors.neutral[200]}
