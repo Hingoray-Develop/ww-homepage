@@ -401,6 +401,13 @@ export default function StepThree({
             다음
           </button>
         </Frame>
+        <Frame bg={colors.main[400]} radius={4}>
+          <Body3 px={8} py={5} fontColor={colors.white}>
+            {totalSelectedCount > 0
+              ? `${totalSelectedCount}개 선택됨`
+              : "0개 선택됨"}
+          </Body3>
+        </Frame>
       </Frame>
     </div>
   );
