@@ -204,9 +204,18 @@ export default function CostCalculator() {
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      backgroundColor: colors.neutral[100],
+                      backgroundColor:
+                        step === n && !disabled
+                          ? colors.neutral[800]
+                          : step !== n && disabled
+                          ? colors.neutral[100]
+                          : colors.neutral[100],
                       color:
-                        step === n ? colors.neutral[500] : colors.neutral[300],
+                        step === n && !disabled
+                          ? colors.white
+                          : step !== n && disabled
+                          ? colors.neutral[300]
+                          : colors.neutral[500],
                       cursor: disabled ? "not-allowed" : "pointer",
                       opacity: disabled ? 0.6 : 1,
                     }}
