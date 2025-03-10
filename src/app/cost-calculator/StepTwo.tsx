@@ -128,8 +128,8 @@ export default function StepTwo({
                       to right,
                       ${colors.neutral[200]} 0%,
                       ${colors.neutral[200]} ${leftPercent}%,
-                      ${colors.main[500]} ${leftPercent}%,
-                      ${colors.main[500]} ${rightPercent}%,
+                      #5288F9 ${leftPercent}%,
+                      #5288F9 ${rightPercent}%,
                       ${colors.neutral[200]} ${rightPercent}%,
                       ${colors.neutral[200]} 100%
                     )`,
@@ -149,8 +149,8 @@ export default function StepTwo({
                   {...restProps}
                   style={{
                     ...restProps.style,
-                    height: 20,
-                    width: 20,
+                    height: 14,
+                    width: 14,
                     borderRadius: "50%",
                     backgroundColor: "#FFFFFF",
                     boxShadow: "0 0 0 2px " + colors.main[500],
@@ -164,7 +164,7 @@ export default function StepTwo({
               );
             }}
           />
-          <div style={{ position: "relative", height: "24px", marginTop: 8 }}>
+          <div style={{ position: "relative", height: "24px", marginTop: 12 }}>
             {labelTexts.map((label, i) => {
               let leftPercent = (i / STEP_COUNT) * 100;
 
@@ -187,7 +187,7 @@ export default function StepTwo({
                         : i === STEP_COUNT
                         ? "translateX(-100%)"
                         : "translateX(-50%)",
-                    color: "#9CA3AF",
+                    color: "#667085",
                     whiteSpace: "nowrap",
                   }}
                 >

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useClearLoading from "@/hooks/useClearLoading";
 import CostCalculatorLeft from "./CostCalculatorLeft";
 import StepOne from "./StepOne";
@@ -11,6 +11,7 @@ import StepFive from "./StepFive";
 
 import { Body3, Frame } from "@/atoms";
 import useResponsiveType from "@/hooks/useResponsiveType";
+import { colors } from "@/styles";
 
 /**
  * <ai_context>
@@ -59,7 +60,7 @@ export default function CostCalculator() {
   const [scopes, setScopes] = useState<string[]>([
     "기획",
     "UX/UI 디자인",
-    "BI/CI 디자인(로고, 브랜딩 등)",
+
     "개발",
   ]); // default selected
 
@@ -118,15 +119,39 @@ export default function CostCalculator() {
   // 반응형 패딩 값 설정
   const containerPx = isMobile ? 16 : isTablet ? 30 : 40;
 
+  const [windowHeight, setWindowHeight] = useState(0);
+
+  useEffect(() => {
+    // 초기 윈도우 높이 설정
+    setWindowHeight(window.innerHeight);
+
+    // 리사이즈 이벤트 핸들러
+    const handleResize = () => {
+      setWindowHeight(window.innerHeight);
+    };
+
+    // 이벤트 리스너 등록
+    window.addEventListener("resize", handleResize);
+
+    // 클린업 함수
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
     <div
       style={{
         display: "flex",
         flexDirection: isMobile || isTablet ? "column" : "row",
         width: "100%",
+        height: "100%",
+        minHeight: windowHeight > 0 ? `${windowHeight - 88}px` : "780px",
         paddingRight: containerPx,
         paddingLeft: containerPx,
         gap: isMobile || isTablet ? 24 : 0,
+        alignItems: "center",
+        justifyContent: "center",
       }}
     >
       {/* Left panel - 태블릿 이상에서만 표시 */}
@@ -141,6 +166,7 @@ export default function CostCalculator() {
         style={{
           flex: isMobile || isTablet ? "none" : 1,
           width: "100%",
+          minHeight: "642px",
           backgroundColor: "#FFFFFF",
           overflow: "hidden",
           borderRadius: 16,
@@ -156,7 +182,7 @@ export default function CostCalculator() {
             <div
               style={{
                 display: "flex",
-                gap: isMobile ? 8 : 16,
+                gap: 6,
                 fontSize: isMobile ? 12 : 14,
                 fontWeight: 600,
                 width: "100%",
@@ -164,6 +190,7 @@ export default function CostCalculator() {
             >
               {[1, 2, 3, 4, 5].map((n) => {
                 const disabled = !canGoForward(n);
+
                 return (
                   <div
                     key={n}
@@ -177,10 +204,11 @@ export default function CostCalculator() {
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
-                      backgroundColor: step === n ? "#101828" : "#E5E7EB",
-                      color: step === n ? "#FFF" : "#000",
+                      backgroundColor: colors.neutral[100],
+                      color:
+                        step === n ? colors.neutral[500] : colors.neutral[300],
                       cursor: disabled ? "not-allowed" : "pointer",
-                      opacity: disabled ? 0.5 : 1,
+                      opacity: disabled ? 0.6 : 1,
                     }}
                   >
                     <Body3 px={isMobile ? 8 : 12} py={isMobile ? 2 : 4}>

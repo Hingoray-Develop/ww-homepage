@@ -167,7 +167,7 @@ export default function StepThree({
 
     if (isOnlyBiCi || selectedSubCategories.length === 0) {
       // BI/CI 디자인만 선택되었거나 선택된 기능이 없는 경우 기본값 설정
-      const baseAmount = 27660000; // 2,766만원
+      const baseAmount = 0; // 2,766만원
       options = {
         label: isOnlyBiCi ? "BI/CI 디자인(로고, 브랜딩 등)" : "선택된 기능",
         durationMin: 13,
@@ -181,8 +181,8 @@ export default function StepThree({
         label: selectedSubCategories.join(", "),
         durationMin: totalMinDuration || 13,
         durationMax: totalMaxDuration || 26,
-        minCost: minCost || Math.round(27660000 * 0.9),
-        maxCost: maxCost || Math.round(27660000 * 1.1),
+        minCost: minCost || Math.round(0 * 0.9),
+        maxCost: maxCost || Math.round(0 * 1.1),
       };
     }
 
@@ -226,7 +226,7 @@ export default function StepThree({
       <Heading2 fontColor={colors.neutral[950]} pb={8}>
         구현이 필요한 기능을 골라주세요.
       </Heading2>
-      <Body1 fontColor={colors.neutral[500]} pb={16}>
+      <Body1 fontColor={colors.neutral[500]} pb={32}>
         필요한 기능들을 고를수록 정확한 견적을 보내드려요.
       </Body1>
 
@@ -238,11 +238,12 @@ export default function StepThree({
         }}
       >
         {costCalculatorOptions.map((category: CostCategory) => (
-          <div key={category.title} style={{ marginBottom: 32 }}>
+          <div key={category.title} style={{ marginBottom: 16 }}>
             <Text
-              fontColor={colors.neutral[950]}
-              fontSize={18}
-              fontWeight={700}
+              fontColor={colors.neutral[700]}
+              fontSize={14}
+              fontWeight={600}
+              lineHeight={"22px"}
               pb={12}
             >
               {category.title}
@@ -278,7 +279,7 @@ export default function StepThree({
                       onClick={() => toggleSubCategorySelection(subCategoryKey)}
                       style={{
                         width: "100%",
-                        padding: "16px",
+                        padding: "14px",
                         borderRadius: 8,
                         backgroundColor: isSelected
                           ? colors.main[100]
@@ -290,20 +291,21 @@ export default function StepThree({
                         cursor: "pointer",
                         display: "flex",
                         alignItems: "center",
-                        gap: 8,
+                        gap: 10,
                       }}
                     >
                       {IconComp && (
                         <IconComp
-                          width={20}
-                          height={20}
-                          fill={isSelected ? "#FFFFFF" : "#666"}
+                          width={28}
+                          height={28}
+                          fill={isSelected ? colors.main[400] : "#000"}
                         />
                       )}
                       <Text
-                        fontSize={14}
+                        fontSize={16}
                         fontWeight={600}
                         fontColor={colors.neutral[900]}
+                        lineHeight={"26px"}
                       >
                         {subcat.subtitle}
                       </Text>
@@ -318,14 +320,15 @@ export default function StepThree({
                             ? { top: "calc(100% + 4px)" }
                             : { bottom: "calc(100% + 4px)" }),
                           left: 0,
-                          backgroundColor: "#333",
+                          backgroundColor: "#101828",
+                          opacity: 0.9,
                           color: "#fff",
-                          padding: "12px",
+                          padding: "12px 16px",
                           borderRadius: 6,
                           fontSize: 13,
                           width: "280px",
                           zIndex: 100,
-                          maxHeight: "250px",
+                          maxHeight: "400px",
                           overflowY: "auto",
                         }}
                         onMouseEnter={() =>
@@ -335,13 +338,13 @@ export default function StepThree({
                       >
                         <Text
                           fontWeight={600}
-                          pb={8}
+                          pb={6}
                           fontSize={14}
                           fontColor={colors.main[300]}
                         >
                           필수 기능
                         </Text>
-                        <ul style={{ paddingLeft: 16, marginBottom: 12 }}>
+                        <ul style={{ paddingLeft: 16 }}>
                           {subcat.items.map((it) => (
                             <li key={it.label} style={{ marginBottom: 4 }}>
                               {it.label}
@@ -382,7 +385,7 @@ export default function StepThree({
         ))}
       </div>
 
-      <Frame w="100%" alignment="center" gap="auto" pt={20} pb={40} row>
+      <Frame w="100%" alignment="center" gap="auto" pt={32} pb={40} row>
         <Frame>
           <button
             onClick={handleNext}

@@ -23,18 +23,18 @@ interface ClientLogo {
 }
 
 const clientLogos: ClientLogo[] = [
-  { name: "중소벤처기업진흥공단", src: <Cooperate1 /> },
-  { name: "신한은행", src: <Cooperate2 /> },
-  { name: "RollingStone", src: <Cooperate3 /> },
-  { name: "Delta", src: <Cooperate4 /> },
-  { name: "Delta", src: <Cooperate5 /> },
-  { name: "Delta", src: <Cooperate6 /> },
-  { name: "Delta", src: <Cooperate8 /> },
-  { name: "Delta", src: <Cooperate9 /> },
-  { name: "Delta", src: <Cooperate10 /> },
-  { name: "Delta", src: <Cooperate11 /> },
-  { name: "Delta", src: <Cooperate12 /> },
-  { name: "Delta", src: <Cooperate13 /> },
+  { name: "창업진흥원", src: <Cooperate1 /> },
+  { name: "중소벤처기업진흥공단", src: <Cooperate2 /> },
+  { name: "과학기술정보통신부", src: <Cooperate3 /> },
+  { name: "Kibo", src: <Cooperate4 /> },
+  { name: "동효", src: <Cooperate5 /> },
+  { name: "PMC", src: <Cooperate6 /> },
+  { name: "신한은행", src: <Cooperate8 /> },
+  { name: "RollingStone", src: <Cooperate9 /> },
+  { name: "DeltaX", src: <Cooperate10 /> },
+  { name: "박정희대통령기념재단", src: <Cooperate11 /> },
+  { name: "SFactory", src: <Cooperate12 /> },
+  { name: "KIATLUX", src: <Cooperate13 /> },
 ];
 
 export default function Clients() {
@@ -67,7 +67,7 @@ export default function Clients() {
           autoFill
           className="overflow-hidden"
         >
-          <div className="flex space-x-8">
+          <div className="flex gap-[80px] mr-[80px]">
             {firstGroup.map((client, idx) => (
               <div key={idx} className="flex flex-col  p-4">
                 <div className="h-12 flex items-center justify-center">
@@ -91,7 +91,7 @@ export default function Clients() {
           autoFill
           className="overflow-hidden"
         >
-          <div className="flex space-x-8">
+          <div className="flex gap-[80px] ml-[80px]">
             {secondGroup.map((client: ClientLogo, idx: number) => (
               <div
                 key={idx}

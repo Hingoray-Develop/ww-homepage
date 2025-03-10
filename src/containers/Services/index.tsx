@@ -1,6 +1,6 @@
 "use client";
 
-import { Frame, Heading2 } from "@/atoms";
+import { Frame, Text } from "@/atoms";
 
 import { colors } from "@/styles";
 import PlanningIcon from "@/assets/icons/line/planning.svg?react";
@@ -116,12 +116,14 @@ const Services = () => {
       }}
     >
       <Frame w={"100%"} alignment="center" pb={80}>
-        <Heading2
+        <Text
           fontColor={isDarkMode ? colors.white : colors.neutral[950]}
           fontWeight={700}
+          fontSize={52}
+          lineHeight={"72px"}
         >
           서비스 제공 범위
-        </Heading2>
+        </Text>
       </Frame>
       <Frame col w="100%" gap={24}>
         <div style={gridStyle}>

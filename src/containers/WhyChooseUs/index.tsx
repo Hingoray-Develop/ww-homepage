@@ -127,7 +127,7 @@ function ReasonCard({
           paddingRight: iconAboveText && isDesktop ? 32 : 0,
         }}
       >
-        <Heading4 fontColor={styles.titleColor} fontWeight={700}>
+        <Heading4 fontColor={styles.titleColor} fontWeight={700} pb={4}>
           {title}
         </Heading4>
         <Body1 fontColor={styles.descriptionColor} fontWeight={400}>
@@ -203,7 +203,7 @@ export default function WhyChooseUs() {
       description:
         "기능별 개발 비용 산정 방식을 통해 모든 개발 비용을 명확히 공개합니다.",
       description2: (
-        <Frame w={40} py={12} tablet={{ w: 0 }} mobile={{ w: 0 }}>
+        <Frame w={40} py={24} tablet={{ w: 0 }} mobile={{ w: 0 }} opacity={0.2}>
           <Divider />
         </Frame>
       ),
@@ -214,29 +214,38 @@ export default function WhyChooseUs() {
     },
   ];
 
+  const { responsiveType } = useResponsiveType();
+  const isDesktop = responsiveType === "desktop";
+
   return (
     <section
       id="why-choose-us"
-      className={`transition-colors duration-500 px-[40px] pt-[160px]  ${
+      className={`transition-colors duration-500  pt-[160px]  ${
         isDarkMode ? "dark-mode" : "light-mode"
       }`}
       style={{
         backgroundColor: isDarkMode ? colors.neutral[950] : colors.white,
+        paddingLeft: isDesktop ? "40px" : "16px",
+        paddingRight: isDesktop ? "40px" : "16px",
       }}
     >
       <div className="text-center pt-4">
-        <Heading2
+        <Text
           fontColor={isDarkMode ? colors.white : colors.neutral[950]}
           fontWeight={700}
+          fontSize={52}
+          lineHeight={"72px"}
         >
           흰고래컴퍼니를
-        </Heading2>
-        <Heading2
+        </Text>
+        <Text
           fontColor={isDarkMode ? colors.white : colors.neutral[950]}
           fontWeight={700}
+          fontSize={52}
+          lineHeight={"72px"}
         >
           이용해야하는 이유
-        </Heading2>
+        </Text>
       </div>
 
       <div
@@ -249,7 +258,7 @@ export default function WhyChooseUs() {
           gridTemplateRows: "repeat(2, 1fr)",
         }}
       >
-        <div className="w-full h-full">
+        <div className="w-full h-full ">
           <ReasonCard {...reasons[0]} />
         </div>
         <div className="w-full h-full" style={{ height: "110%" }}>
@@ -266,7 +275,7 @@ export default function WhyChooseUs() {
         </div>
       </div>
 
-      <div className="lg:hidden grid grid-cols-1 sm:grid-cols-2 gap-6 pt-[60px] px-4 pb-10">
+      <div className="lg:hidden grid grid-cols-1 sm:grid-cols-2 gap-6 pt-[60px] pb-10">
         {reasons.map((reason, i) => (
           <div key={i} className="w-full h-full">
             <ReasonCard {...reason} />

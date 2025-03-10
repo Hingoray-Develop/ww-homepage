@@ -60,7 +60,7 @@ const Intro = () => {
   const containerPx = isMobile ? 16 : isTablet ? 30 : 40;
 
   const textAreaPt = isMobile ? 120 : isTablet ? 200 : 460;
-  const textAreaGap = isMobile ? 8 : isTablet ? 12 : 16;
+  const textAreaGap = isMobile ? 8 : isTablet ? 12 : 24;
   const dividerPy = isMobile ? 16 : isTablet ? 20 : 24;
 
   if (isMobile || isTablet) {
@@ -171,7 +171,7 @@ const Intro = () => {
             w="100%"
             alignment="bottom-left"
             pt={textAreaPt}
-            gap={textAreaGap}
+            // gap={textAreaGap}
           >
             <Heading2
               fontColor={isDarkMode ? colors.white : colors.neutral[950]}
@@ -190,7 +190,7 @@ const Intro = () => {
                 color={isDarkMode ? colors.neutral[700] : colors.neutral[200]}
               />
             </Frame>
-            <Frame>
+            <Frame gap={textAreaGap}>
               <Text
                 fontColor={
                   isDarkMode ? colors.neutral[200] : colors.neutral[600]

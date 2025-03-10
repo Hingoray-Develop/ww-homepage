@@ -62,6 +62,10 @@ export default function ServiceCard({
         {title}
       </Text>
 
+      <div>
+        <div className="w-full h-[1px] bg-[#E4E7EC] " />
+      </div>
+
       {/* 설명 목록 */}
       <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
         {descriptions.map((desc, index) => (

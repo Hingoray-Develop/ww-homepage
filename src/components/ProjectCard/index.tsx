@@ -81,7 +81,6 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
         onMouseLeave={() => setIsHovered(false)}
         style={{
           overflow: "hidden",
-          transform: isHovered ? "translateY(-8px)" : "translateY(0)",
           transition: `all ${animations.hover.transitionDuration} ${animations.hover.transitionTimingFunction}`,
         }}
       >
@@ -103,7 +102,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
               objectFit: "fill",
               borderRadius: 32,
               transition: `all ${animations.hover.transitionDuration} ${animations.hover.transitionTimingFunction}`,
-              transform: isHovered ? "scale(1.05)" : "scale(1)",
+              transform: isHovered ? "scale(1.015)" : "scale(1)",
               filter: isHovered
                 ? "brightness(1.02)"
                 : "brightness(1) contrast(1)",

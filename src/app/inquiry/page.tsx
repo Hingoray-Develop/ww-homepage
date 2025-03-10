@@ -86,17 +86,15 @@ export default function InquiryPage() {
             borderRadius: 8,
             marginBottom: 24,
             backgroundColor: colors.neutral[100],
-            border: "1px solid transparent",
-            outline: "none",
-            transition: "all 0.2s ease-in-out",
+            outline: `1px solid ${colors.neutral[100]}`,
           }}
           onFocus={(e) => {
-            e.target.style.backgroundColor = "#FFFFFF";
-            e.target.style.borderColor = colors.neutral[300];
+            e.target.style.backgroundColor = colors.neutral[100];
+            e.target.style.outline = `1px solid ${colors.neutral[300]}`;
           }}
           onBlur={(e) => {
             e.target.style.backgroundColor = colors.neutral[100];
-            e.target.style.borderColor = "transparent";
+            e.target.style.outline = "none";
           }}
         />
 
@@ -115,18 +113,16 @@ export default function InquiryPage() {
             borderRadius: 8,
             marginBottom: 24,
             backgroundColor: colors.neutral[100],
-            border: "1px solid transparent",
-            outline: "none",
-            resize: "vertical",
-            transition: "all 0.2s ease-in-out",
+            outline: `1px solid ${colors.neutral[100]}`,
+            resize: "none",
           }}
           onFocus={(e) => {
-            e.target.style.backgroundColor = "#FFFFFF";
-            e.target.style.borderColor = colors.neutral[300];
+            e.target.style.backgroundColor = colors.neutral[100];
+            e.target.style.outline = `1px solid ${colors.neutral[300]}`;
           }}
           onBlur={(e) => {
             e.target.style.backgroundColor = colors.neutral[100];
-            e.target.style.borderColor = "transparent";
+            e.target.style.outline = "none";
           }}
         />
 
@@ -134,13 +130,13 @@ export default function InquiryPage() {
           <button
             onClick={() => router.back()}
             style={{
-              backgroundColor: "#E2E8F0",
+              backgroundColor: "#FFFFFF",
               color: "#000000",
+              border: `1px solid ${colors.neutral[800]}`,
               borderRadius: 8,
               padding: "12px 24px",
               cursor: "pointer",
               fontSize: "16px",
-              border: "none",
             }}
           >
             취소

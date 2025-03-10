@@ -97,9 +97,14 @@ const Projects = () => {
       }}
     >
       <Frame w={"100%"} alignment="center" pb={80}>
-        <Heading2 fontColor={colors.neutral[900]} fontWeight={700}>
-          프로젝트
-        </Heading2>
+        <Text
+          fontColor={colors.neutral[900]}
+          fontSize={52}
+          lineHeight={"72px"}
+          fontWeight={700}
+        >
+          포트폴리오
+        </Text>
         <Text
           fontColor={colors.neutral[700]}
           fontSize={20}

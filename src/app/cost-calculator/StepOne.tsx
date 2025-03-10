@@ -67,11 +67,14 @@ export default function StepOne({ scopes, setScopes, onNext }: StepOneProps) {
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  gap: "8px",
+                  gap: "12px",
                   backgroundColor: checked ? "#E7EEFF" : "rgba(0,0,0,0.05)",
-                  padding: "12px 16px",
+                  padding: "16px 20px",
                   borderRadius: 8,
                   cursor: "pointer",
+                  boxShadow: checked
+                    ? "0px 0px 0px 2px #5288F9"
+                    : "0px 0px 0px 2px transparent",
                 }}
               >
                 {checked ? <CheckedIcon /> : <UncheckedIcon />}

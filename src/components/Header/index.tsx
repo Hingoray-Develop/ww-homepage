@@ -116,12 +116,22 @@ const Header = () => {
             </span>
           </div>
 
-          <div className="items-center justify-center px-[4px] py-[19px] cursor-pointer">
-            <span
-              className={`py-[19px] font-[600] text-[16px] items-center justify-center text-[#CED3D8]`}
-            >
-              |
-            </span>
+          <div
+            style={{
+              display: "flex",
+              padding: "0px 8px",
+              justifyContent: "flex-end",
+              alignItems: "center",
+              gap: "10px",
+            }}
+          >
+            <div
+              style={{
+                width: "1px",
+                height: "20px",
+                backgroundColor: "#CED3D8",
+              }}
+            />
           </div>
           <div
             className="items-center justify-center px-[4px] py-[19px] cursor-pointer"
@@ -150,7 +160,7 @@ const Header = () => {
             }}
           >
             <span
-              className={`py-[19px] font-[600] text-[16px] items-center justify-center text-[#CED3D8] hover:text-[#344054]`}
+              className={`py-[19px] font-[600] text-[16px] items-center justify-center text-[#B5CCFC] hover:text-[#344054]`}
             >
               문의하기
             </span>

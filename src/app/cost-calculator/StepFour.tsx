@@ -121,10 +121,16 @@ export default function StepFour({
           borderRadius: 8,
           marginBottom: 8,
           backgroundColor: colors.neutral[100],
-          border: "1px solid transparent",
-          outline: "none",
-          transition: "all 0.2s ease-in-out",
+          outline: `1px solid ${colors.neutral[100]}`,
           color: colors.neutral[950],
+        }}
+        onFocus={(e) => {
+          e.target.style.backgroundColor = colors.neutral[100];
+          e.target.style.outline = `1px solid ${colors.neutral[300]}`;
+        }}
+        onBlur={(e) => {
+          e.target.style.backgroundColor = colors.neutral[100];
+          e.target.style.outline = "none";
         }}
         disabled={isSubmitting}
       />
@@ -148,11 +154,17 @@ export default function StepFour({
           borderRadius: 8,
           marginBottom: 24,
           backgroundColor: colors.neutral[100],
-          border: "1px solid transparent",
-          outline: "none",
-          resize: "vertical",
-          transition: "all 0.2s ease-in-out",
+          outline: `1px solid ${colors.neutral[100]}`,
+          resize: "none",
           color: colors.neutral[950],
+        }}
+        onFocus={(e) => {
+          e.target.style.backgroundColor = colors.neutral[100];
+          e.target.style.outline = `1px solid ${colors.neutral[300]}`;
+        }}
+        onBlur={(e) => {
+          e.target.style.backgroundColor = colors.neutral[100];
+          e.target.style.outline = "none";
         }}
         disabled={isSubmitting}
       />

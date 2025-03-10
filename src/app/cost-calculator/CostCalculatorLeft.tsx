@@ -23,8 +23,7 @@ export default function CostCalculatorLeft() {
       h="100%"
       alignment="top-left"
       bg={colors.neutral[950]}
-      pl={60}
-      py={135}
+      pl={20}
     >
       <Frame col alignment="top-left" gap={8} w="100%">
         <Heading2 fontColor={colors.white} fontWeight={700}>
@@ -35,8 +34,8 @@ export default function CostCalculatorLeft() {
         </Heading2>
       </Frame>
 
-      <Frame w="100%" py={24}>
-        <div style={{ width: "320px", height: "240px", position: "relative" }}>
+      <Frame w="100%" py={18}>
+        <div style={{ width: "380px", height: "240px", position: "relative" }}>
           <Image
             src="/images/coding.png"
             alt="company-intro"
@@ -50,7 +49,7 @@ export default function CostCalculatorLeft() {
       </Frame>
 
       <Frame w="100%" pb={24}>
-        <Body1 fontColor={colors.neutral[300]} fontWeight={400} pb={18}>
+        <Body1 fontColor={colors.white} fontWeight={400} pb={18}>
           세부 진행과정이 궁금하시다면,
           <br />
           언제든지 문의하세요.
