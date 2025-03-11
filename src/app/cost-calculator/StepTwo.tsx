@@ -153,7 +153,7 @@ export default function StepTwo({
                     width: 14,
                     borderRadius: "50%",
                     backgroundColor: "#FFFFFF",
-                    boxShadow: "0 0 0 2px " + colors.main[500],
+                    boxShadow: "0 0 0 2px #5288F9",
                     outline: "none",
                     display: "flex",
                     justifyContent: "center",
