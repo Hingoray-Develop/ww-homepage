@@ -6,6 +6,7 @@ import { Frame, Heading2, Body1, Body2 } from "@/atoms";
 import { colors } from "@/styles";
 import Button from "@/components/Button";
 import HomeIcon from "@/assets/icons/line/home.svg?react";
+import CheckIcon from "@/assets/icons/circle/check.svg?react";
 
 /**
  * <ai_context>
@@ -19,7 +20,8 @@ export default function StepFive() {
 
   return (
     <Frame w="100%" h="100%" col alignment="center">
-      <Heading2 fontColor={colors.neutral[900]} pb={16}>
+      <CheckIcon width={52} height={52} />
+      <Heading2 fontColor={colors.neutral[900]} pt={8} pb={16}>
         견적서 요청 완료!
       </Heading2>
       <Body1 fontColor={colors.neutral[500]} pb={32}>
