@@ -129,7 +129,7 @@ const Header = () => {
               style={{
                 width: "1px",
                 height: "20px",
-                backgroundColor: "#CED3D8",
+                backgroundColor: "#344054",
               }}
             />
           </div>
