@@ -60,7 +60,6 @@ export default function CostCalculator() {
   const [scopes, setScopes] = useState<string[]>([
     "기획",
     "UX/UI 디자인",
-
     "개발",
   ]); // default selected
 
@@ -174,6 +173,8 @@ export default function CostCalculator() {
           paddingRight: isMobile ? 20 : 40,
           margin: isMobile || isTablet ? "0 auto" : undefined,
           maxWidth: isMobile || isTablet ? "600px" : undefined,
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
         {/* Step indicator */}
@@ -220,7 +221,11 @@ export default function CostCalculator() {
                       opacity: disabled ? 0.6 : 1,
                     }}
                   >
-                    <Body3 px={isMobile ? 8 : 12} py={isMobile ? 2 : 4}>
+                    <Body3
+                      px={isMobile ? 8 : 12}
+                      py={isMobile ? 2 : 4}
+                      fontWeight={600}
+                    >
                       {("0" + n).slice(-2)}
                     </Body3>
                   </div>

@@ -28,7 +28,8 @@ export async function POST(req: Request) {
 
     const mailOptions = {
       from: process.env.EMAIL_USER,
-      to: "jihwan.yun@hingoray.com, msj@hingoray.com, hrk@hingoray.com",
+      // to: "jihwan.yun@hingoray.com, msj@hingoray.com, hrk@hingoray.com",
+      to: "blood8879@naver.com",
       subject: "문의사항 도착",
       html: `
         <div>

@@ -190,7 +190,7 @@ const Intro = () => {
                 color={isDarkMode ? colors.neutral[700] : colors.neutral[200]}
               />
             </Frame>
-            <Frame gap={textAreaGap}>
+            <Frame>
               <Text
                 fontColor={
                   isDarkMode ? colors.neutral[200] : colors.neutral[600]

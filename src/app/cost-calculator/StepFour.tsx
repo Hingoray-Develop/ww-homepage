@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Body1, Frame, Heading2 } from "@/atoms";
+import { Body1, Body2, Frame, Heading2 } from "@/atoms";
 import { colors } from "@/styles";
 
 /**
@@ -119,7 +119,7 @@ export default function StepFour({
           width: "100%",
           padding: "16px 20px",
           borderRadius: 8,
-          marginBottom: 8,
+          marginBottom: 20,
           backgroundColor: colors.neutral[100],
           outline: `1px solid ${colors.neutral[100]}`,
           color: colors.neutral[950],
@@ -140,11 +140,11 @@ export default function StepFour({
         </div>
       )}
 
-      <Body1 fontColor={colors.neutral[500]} pb={8}>
+      <Body2 fontColor={colors.neutral[500]} pb={8}>
         추가 문의 사항이 있으신가요?
-      </Body1>
+      </Body2>
       <textarea
-        placeholder="프로젝트에 대해 더 자세히 설명해주시면 더 정확한 견적 산출이 가능해요."
+        placeholder="내용을 입력하세요."
         value={additionalNotes}
         onChange={(e) => setAdditionalNotes(e.target.value)}
         style={{

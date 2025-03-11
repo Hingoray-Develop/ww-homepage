@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLoading } from "@/contexts/LoadingContext";
 import { useRouter } from "next/navigation";
-import { Frame, Heading2, Body1 } from "@/atoms";
+import { Frame, Heading2, Body1, FrameScreen } from "@/atoms";
 import { colors } from "@/styles";
 import useClearLoading from "@/hooks/useClearLoading";
 import InquiryComplete from "./InquiryComplete";
@@ -13,6 +13,7 @@ import InquiryComplete from "./InquiryComplete";
  * New inquiry page where user can send an email inquiry using send-inquiry route.
  * Updated: match the design style from StepFour.tsx (e.g. inputs, textarea, button).
  * After submission, shows a success screen with a "홈으로 돌아가기" button.
+ * The form is centered vertically in the screen, accounting for the header.
  * </ai_context>
  */
 
@@ -65,135 +66,143 @@ export default function InquiryPage() {
   }
 
   return (
-    <Frame
-      mobile={{
-        px: 20,
-      }}
-      col
-      w="100%"
-      h="100%"
-      alignment="center"
-      minH={660}
-    >
-      <Frame
-        bg={colors.white}
-        p={40}
-        radius={16}
-        desktop={{ w: "100%" }}
-        tablet={{ w: "600px" }}
-        mobile={{ w: "600px" }}
-        maxW="600px"
+    <div className="mt-[-88px]">
+      <FrameScreen
+        bg={colors.neutral[950]}
+        alignment="center"
+        overflow="hidden"
+        h="calc(100vh - 88px)"
       >
-        <Heading2 fontColor={colors.neutral[950]} pb={8}>
-          문의하기
-        </Heading2>
-        <Body1 fontColor={colors.neutral[500]} pb={32}>
-          문의하실 이메일과 문의 내용을 작성해주세요. 담당자가 확인 후 답변
-          드리겠습니다.
-        </Body1>
-
-        {/* 이메일 입력 */}
-        <input
-          type="email"
-          placeholder="이메일"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          style={{
-            width: "100%",
-            padding: "16px 20px",
-            borderRadius: 8,
-            marginBottom: 24,
-            backgroundColor: colors.neutral[100],
-            outline: `1px solid ${colors.neutral[100]}`,
-            color: colors.neutral[950],
+        <Frame
+          mobile={{
+            px: 20,
           }}
-          onFocus={(e) => {
-            e.target.style.backgroundColor = colors.neutral[100];
-            e.target.style.outline = `1px solid ${colors.neutral[300]}`;
-          }}
-          onBlur={(e) => {
-            e.target.style.backgroundColor = colors.neutral[100];
-            e.target.style.outline = "none";
-          }}
-          disabled={isSubmitting}
-        />
-
-        {/* 문의 내용 입력 */}
-        <Body1 fontColor={colors.neutral[500]} pb={8}>
-          문의 내용을 작성해주세요.
-        </Body1>
-        <textarea
-          placeholder="문의하실 내용을 자세히 작성해주시면 더욱 빠른 응대가 가능합니다."
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          style={{
-            width: "100%",
-            minHeight: 100,
-            padding: "16px 20px",
-            borderRadius: 8,
-            marginBottom: 24,
-            backgroundColor: colors.neutral[100],
-            outline: `1px solid ${colors.neutral[100]}`,
-            resize: "none",
-            color: colors.neutral[950],
-          }}
-          onFocus={(e) => {
-            e.target.style.backgroundColor = colors.neutral[100];
-            e.target.style.outline = `1px solid ${colors.neutral[300]}`;
-          }}
-          onBlur={(e) => {
-            e.target.style.backgroundColor = colors.neutral[100];
-            e.target.style.outline = "none";
-          }}
-          disabled={isSubmitting}
-        />
-
-        <Frame pb={40} row gap={16}>
-          <button
-            onClick={() => router.back()}
-            style={{
-              backgroundColor: "#FFFFFF",
-              color: "#000000",
-              border: `1px solid ${colors.neutral[800]}`,
-              borderRadius: 8,
-              padding: "12px 24px",
-              cursor: isSubmitting ? "default" : "pointer",
-              fontSize: "16px",
-              opacity: isSubmitting ? 0.7 : 1,
-            }}
-            disabled={isSubmitting}
+          col
+          w="100%"
+          h="100%"
+          alignment="center"
+        >
+          <Frame
+            bg={colors.white}
+            p={40}
+            radius={16}
+            desktop={{ w: "100%" }}
+            tablet={{ w: "600px" }}
+            mobile={{ w: "600px" }}
+            maxW="600px"
           >
-            취소
-          </button>
+            <Heading2 fontColor={colors.neutral[950]} pb={8}>
+              문의하기
+            </Heading2>
+            <Body1 fontColor={colors.neutral[500]} pb={32}>
+              문의하실 이메일과 문의 내용을 작성해주세요. 담당자가 확인 후 답변
+              드리겠습니다.
+            </Body1>
 
-          <button
-            onClick={handleSubmit}
-            disabled={isSubmitting || !email.trim() || !message.trim()}
-            style={{
-              backgroundColor: "#101828",
-              color: "#FFFFFF",
-              borderRadius: 8,
-              padding: "12px 24px",
-              cursor: isSubmitting ? "default" : "pointer",
-              fontSize: "16px",
-              opacity:
-                isSubmitting || !email.trim() || !message.trim() ? 0.7 : 1,
-              display: "flex",
-              alignItems: "center",
-              gap: 8,
-            }}
-          >
-            {isSubmitting ? (
-              <>
-                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                전송중...
-              </>
-            ) : (
-              "문의 보내기"
-            )}
-          </button>
+            {/* 이메일 입력 */}
+            <input
+              type="email"
+              placeholder="이메일"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              style={{
+                width: "100%",
+                padding: "16px 20px",
+                borderRadius: 8,
+                marginBottom: 24,
+                backgroundColor: colors.neutral[100],
+                outline: `1px solid ${colors.neutral[100]}`,
+                color: colors.neutral[950],
+              }}
+              onFocus={(e) => {
+                e.target.style.backgroundColor = colors.neutral[100];
+                e.target.style.outline = `1px solid ${colors.neutral[300]}`;
+              }}
+              onBlur={(e) => {
+                e.target.style.backgroundColor = colors.neutral[100];
+                e.target.style.outline = "none";
+              }}
+              disabled={isSubmitting}
+            />
+
+            {/* 문의 내용 입력 */}
+            <Body1 fontColor={colors.neutral[500]} pb={8}>
+              문의 내용을 작성해주세요.
+            </Body1>
+            <textarea
+              placeholder="문의하실 내용을 자세히 작성해주시면 더욱 빠른 응대가 가능합니다."
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              style={{
+                width: "100%",
+                minHeight: 100,
+                padding: "16px 20px",
+                borderRadius: 8,
+                marginBottom: 24,
+                backgroundColor: colors.neutral[100],
+                outline: `1px solid ${colors.neutral[100]}`,
+                resize: "none",
+                color: colors.neutral[950],
+              }}
+              onFocus={(e) => {
+                e.target.style.backgroundColor = colors.neutral[100];
+                e.target.style.outline = `1px solid ${colors.neutral[300]}`;
+              }}
+              onBlur={(e) => {
+                e.target.style.backgroundColor = colors.neutral[100];
+                e.target.style.outline = "none";
+              }}
+              disabled={isSubmitting}
+            />
+
+            <Frame row gap={16}>
+              <button
+                onClick={() => router.back()}
+                style={{
+                  backgroundColor: "#FFFFFF",
+                  color: "#000000",
+                  border: `1px solid ${colors.neutral[800]}`,
+                  borderRadius: 8,
+                  padding: "12px 24px",
+                  cursor: isSubmitting ? "default" : "pointer",
+                  fontSize: "16px",
+                  opacity: isSubmitting ? 0.7 : 1,
+                }}
+                disabled={isSubmitting}
+              >
+                취소
+              </button>
+
+              <button
+                onClick={handleSubmit}
+                disabled={isSubmitting || !email.trim() || !message.trim()}
+                style={{
+                  backgroundColor: "#101828",
+                  color: "#FFFFFF",
+                  borderRadius: 8,
+                  padding: "12px 24px",
+                  cursor: isSubmitting ? "default" : "pointer",
+                  fontSize: "16px",
+                  opacity:
+                    isSubmitting || !email.trim() || !message.trim() ? 0.7 : 1,
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 8,
+                }}
+              >
+                {isSubmitting ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    전송중...
+                  </>
+                ) : (
+                  "문의 보내기"
+                )}
+              </button>
+            </Frame>
+          </Frame>
         </Frame>
-      </Frame>
-    </Frame>
+      </FrameScreen>
+    </div>
   );
 }

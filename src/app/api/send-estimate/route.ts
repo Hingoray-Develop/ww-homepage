@@ -86,7 +86,8 @@ export async function POST(req: Request) {
 
     const mailOptions = {
       from: process.env.EMAIL_USER,
-      to: "jihwan.yun@hingoray.com, msj@hingoray.com, hrk@hingoray.com",
+      // to: "jihwan.yun@hingoray.com, msj@hingoray.com, hrk@hingoray.com",
+      to: "blood8879@naver.com",
       subject: "흰고래 컴퍼니에 요청하신 개발 견적을 보내드립니다. 📝",
       html: `
         <div style="font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; color: #101828;">

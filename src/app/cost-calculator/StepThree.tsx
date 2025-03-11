@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useRef, useMemo } from "react";
+import React, { useState, useRef, useMemo, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { Body1, Body2, Body3, Frame, Heading2, Text } from "@/atoms";
 import {
   costCalculatorOptions,
@@ -24,6 +25,7 @@ import { colors } from "@/styles";
  * - Sum up durationMin, durationMax from all selected subCategories,
  *   and display them alongside the total cost in the bottom summary.
  *   e.g. "4개 선택됨 (약 2,300원, 4~8일)"
+ * - Tooltips are now rendered with React Portal to ensure they appear above all other elements.
  * </ai_context>
  */
 
@@ -32,6 +34,22 @@ interface StepThreeProps {
   scopes: string[];
   selectedOptions: any[];
   setSelectedOptions: (val: any[]) => void;
+}
+
+// 아이템 타입 정의
+interface Item {
+  label: string;
+}
+
+// 서브카테고리 타입 정의
+interface SubCategory {
+  subtitle: string;
+  subCategoryCost: number;
+  durationMin?: number;
+  durationMax?: number;
+  icon?: React.ComponentType<any>;
+  items: Item[];
+  optionalItems?: Item[];
 }
 
 export default function StepThree({
@@ -52,6 +70,13 @@ export default function StepThree({
     "bottom"
   );
   const buttonRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
+  const [tooltipCoords, setTooltipCoords] = useState({ x: 0, y: 0 });
+  const [isBrowser, setIsBrowser] = useState(false);
+
+  // 브라우저 환경인지 확인 (Portal 사용을 위함)
+  useEffect(() => {
+    setIsBrowser(true);
+  }, []);
 
   // 호버 중인 버튼 상태 추적
   const [hoveredButton, setHoveredButton] = useState<string | null>(null);
@@ -73,31 +98,25 @@ export default function StepThree({
       const scrollTop =
         window.pageYOffset || document.documentElement.scrollTop;
 
+      // 툴팁 위치 계산
       if (rect.top > windowHeight * 0.8 || windowHeight - rect.bottom < 250) {
         setTooltipPosition("top");
-
-        setTimeout(() => {
-          const tooltipElement = document.querySelector(
-            `[data-tooltip="${subCategoryKey}"]`
-          ) as HTMLElement;
-          if (tooltipElement) {
-            const tooltipRect = tooltipElement.getBoundingClientRect();
-            if (tooltipRect.top < 0) {
-              window.scrollTo({
-                top: scrollTop + tooltipRect.top - 10,
-                behavior: "smooth",
-              });
-            }
-          }
-        }, 550);
+        setTooltipCoords({
+          x: rect.left,
+          y: rect.top - 10,
+        });
       } else {
         setTooltipPosition("bottom");
+        setTooltipCoords({
+          x: rect.left,
+          y: rect.bottom + 10,
+        });
       }
-    }
 
-    hoverTimerRef.current = setTimeout(() => {
-      setHoveredSubCategory(subCategoryKey);
-    }, 500);
+      hoverTimerRef.current = setTimeout(() => {
+        setHoveredSubCategory(subCategoryKey);
+      }, 500);
+    }
   };
 
   const handleSubCategoryMouseLeave = () => {
@@ -242,8 +261,94 @@ export default function StepThree({
     };
   };
 
+  // 툴팁에 표시할 서브카테고리 찾기
+  const findSubCategory = (key: string): SubCategory | null => {
+    let foundSubCategory: SubCategory | null = null;
+
+    costCalculatorOptions.some((category) => {
+      return category.subCategories.some((subcat) => {
+        const subcatKey = category.title + " > " + subcat.subtitle;
+        if (subcatKey === key) {
+          foundSubCategory = subcat;
+          return true;
+        }
+        return false;
+      });
+    });
+
+    return foundSubCategory;
+  };
+
+  // 툴팁 렌더링 함수
+  const renderTooltip = () => {
+    if (!isBrowser || !hoveredSubCategory) return null;
+
+    // 현재 호버된 카테고리 찾기
+    const currentSubCategory = findSubCategory(hoveredSubCategory);
+
+    if (!currentSubCategory) return null;
+
+    // Portal을 사용하여 body에 직접 렌더링
+    return createPortal(
+      <div
+        data-tooltip={hoveredSubCategory}
+        style={{
+          position: "fixed",
+          left: tooltipCoords.x,
+          top: tooltipCoords.y,
+          backgroundColor: "#101828",
+          opacity: 0.9,
+          color: "#fff",
+          padding: "12px 16px",
+          borderRadius: 6,
+          fontSize: 13,
+          width: "280px",
+          zIndex: 9999,
+          maxHeight: "250px",
+          overflowY: "auto",
+          boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+        }}
+        onMouseEnter={() => handleTooltipMouseEnter(hoveredSubCategory)}
+        onMouseLeave={handleTooltipMouseLeave}
+      >
+        <Text
+          fontWeight={600}
+          pb={6}
+          fontSize={14}
+          fontColor={colors.main[300]}
+        >
+          필수 기능
+        </Text>
+        <ul style={{ paddingLeft: 16 }}>
+          {currentSubCategory.items.map((item) => (
+            <li key={item.label} style={{ marginBottom: 4 }}>
+              {item.label}
+            </li>
+          ))}
+        </ul>
+
+        {currentSubCategory.optionalItems &&
+          currentSubCategory.optionalItems.length > 0 && (
+            <>
+              <Text fontSize={14} fontWeight={600} pb={8} fontColor="#FFB358">
+                선택 옵션
+              </Text>
+              <ul style={{ paddingLeft: 16 }}>
+                {currentSubCategory.optionalItems.map((item) => (
+                  <li key={item.label} style={{ marginBottom: 4 }}>
+                    {item.label}
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
+      </div>,
+      document.body
+    );
+  };
+
   return (
-    <div>
+    <div style={{ position: "relative" }}>
       <Heading2 fontColor={colors.neutral[950]} pb={8}>
         구현이 필요한 기능을 골라주세요.
       </Heading2>
@@ -282,7 +387,6 @@ export default function StepThree({
                 {category.subCategories.map((subcat) => {
                   const subCategoryKey =
                     category.title + " > " + subcat.subtitle;
-                  const isHovered = hoveredSubCategory === subCategoryKey;
                   const isSelected =
                     selectedSubCategories.includes(subCategoryKey);
                   const IconComp = subcat.icon;
@@ -340,73 +444,6 @@ export default function StepThree({
                           {subcat.subtitle}
                         </Text>
                       </button>
-
-                      {isHovered && (
-                        <div
-                          data-tooltip={subCategoryKey}
-                          style={{
-                            position: "absolute",
-                            ...(tooltipPosition === "bottom"
-                              ? { top: "calc(100% + 4px)" }
-                              : { bottom: "calc(100% + 4px)" }),
-                            left: 0,
-                            backgroundColor: "#101828",
-                            opacity: 0.9,
-                            color: "#fff",
-                            padding: "12px 16px",
-                            borderRadius: 6,
-                            fontSize: 13,
-                            width: "280px",
-                            zIndex: 100,
-                            maxHeight: "400px",
-                            overflowY: "auto",
-                          }}
-                          onMouseEnter={() =>
-                            handleTooltipMouseEnter(subCategoryKey)
-                          }
-                          onMouseLeave={handleTooltipMouseLeave}
-                        >
-                          <Text
-                            fontWeight={600}
-                            pb={6}
-                            fontSize={14}
-                            fontColor={colors.main[300]}
-                          >
-                            필수 기능
-                          </Text>
-                          <ul style={{ paddingLeft: 16 }}>
-                            {subcat.items.map((it) => (
-                              <li key={it.label} style={{ marginBottom: 4 }}>
-                                {it.label}
-                              </li>
-                            ))}
-                          </ul>
-
-                          {subcat.optionalItems &&
-                            subcat.optionalItems.length > 0 && (
-                              <>
-                                <Text
-                                  fontSize={14}
-                                  fontWeight={600}
-                                  pb={8}
-                                  fontColor="#FFB358"
-                                >
-                                  선택 옵션
-                                </Text>
-                                <ul style={{ paddingLeft: 16 }}>
-                                  {subcat.optionalItems.map((oit) => (
-                                    <li
-                                      key={oit.label}
-                                      style={{ marginBottom: 4 }}
-                                    >
-                                      {oit.label}
-                                    </li>
-                                  ))}
-                                </ul>
-                              </>
-                            )}
-                        </div>
-                      )}
                     </div>
                   );
                 })}
@@ -423,15 +460,15 @@ export default function StepThree({
               left: "50%",
               transform: "translate(-50%, -50%)",
               backgroundColor: "#0C111D",
+              opacity: 0.85,
               color: colors.white,
               padding: "20px",
-              borderRadius: "6px",
+              borderRadius: "8px",
               textAlign: "center",
-              width: "300px",
-              zIndex: 10,
+              zIndex: 100,
             }}
           >
-            <Body2 fontColor={colors.white} pb={8}>
+            <Body2 fontColor={colors.white}>
               BI/CI 디자인만 선택했을 경우,
             </Body2>
             <Body2 fontColor={colors.white}>선택할 필요가 없어요.</Body2>
@@ -439,7 +476,18 @@ export default function StepThree({
         )}
       </div>
 
-      <Frame w="100%" alignment="center" gap="auto" pt={32} pb={40} row>
+      {/* 툴팁 렌더링 */}
+      {renderTooltip()}
+
+      <Frame
+        w="100%"
+        alignment="center"
+        gap="auto"
+        pt={32}
+        pb={40}
+        row
+        zIndex={10}
+      >
         <Frame>
           <button
             onClick={handleNext}

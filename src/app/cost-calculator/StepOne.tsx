@@ -17,8 +17,8 @@ import UncheckedIcon from "@/assets/icons/line/unchecked.svg?react";
 const DEFAULT_SCOPES = [
   "기획",
   "UX/UI 디자인",
-  "BI/CI 디자인(로고, 브랜딩 등)",
   "개발",
+  "BI/CI 디자인(로고, 브랜딩 등)",
 ];
 
 interface StepOneProps {

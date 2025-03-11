@@ -36,7 +36,7 @@ export default function ServiceCard({
         width: "100%",
         minHeight: minH,
         padding: 24,
-        gap: 24,
+        gap: 20,
         backgroundColor: isDarkMode ? colors.neutral[900] : colors.neutral[100],
         border: isDarkMode ? `1px solid ${colors.neutral[800]}` : undefined,
         borderRadius: "24px",
