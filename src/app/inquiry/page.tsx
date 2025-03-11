@@ -87,6 +87,7 @@ export default function InquiryPage() {
             marginBottom: 24,
             backgroundColor: colors.neutral[100],
             outline: `1px solid ${colors.neutral[100]}`,
+            color: colors.neutral[950],
           }}
           onFocus={(e) => {
             e.target.style.backgroundColor = colors.neutral[100];
@@ -115,6 +116,7 @@ export default function InquiryPage() {
             backgroundColor: colors.neutral[100],
             outline: `1px solid ${colors.neutral[100]}`,
             resize: "none",
+            color: colors.neutral[950],
           }}
           onFocus={(e) => {
             e.target.style.backgroundColor = colors.neutral[100];
