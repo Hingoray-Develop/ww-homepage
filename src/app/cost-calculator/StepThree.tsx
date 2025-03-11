@@ -53,12 +53,18 @@ export default function StepThree({
   );
   const buttonRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
+  // 호버 중인 버튼 상태 추적
+  const [hoveredButton, setHoveredButton] = useState<string | null>(null);
+
   // Detect if only BI/CI 디자인 was selected at StepOne
   const isOnlyBiCi =
     scopes.length === 1 && scopes[0] === "BI/CI 디자인(로고, 브랜딩 등)";
 
   const handleSubCategoryMouseEnter = (subCategoryKey: string) => {
     if (isOnlyBiCi) return; // BI/CI만 선택된 경우 호버 이벤트 무시
+
+    // 호버 중인 버튼 설정
+    setHoveredButton(subCategoryKey);
 
     const buttonElement = buttonRefs.current[subCategoryKey];
     if (buttonElement) {
@@ -96,6 +102,9 @@ export default function StepThree({
 
   const handleSubCategoryMouseLeave = () => {
     if (isOnlyBiCi) return; // BI/CI만 선택된 경우 리브 이벤트 무시
+
+    // 호버 상태 초기화
+    setHoveredButton(null);
 
     if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
     setTimeout(() => {
@@ -203,6 +212,36 @@ export default function StepThree({
     onNext();
   };
 
+  // 호버 중인 버튼의 배경색과 아이콘 색상 결정하는 함수
+  const getButtonStyles = (subCategoryKey: string, isSelected: boolean) => {
+    const isHovered = hoveredButton === subCategoryKey;
+
+    // 기본, 선택됨, 호버 상태에 따른 스타일 설정
+    let backgroundColor = "#F5F6F7"; // 기본 배경색
+    let iconColor = "#000"; // 기본 아이콘 색상
+    let boxShadow = undefined;
+
+    if (isSelected) {
+      backgroundColor = colors.main[100];
+      iconColor = colors.main[400];
+      boxShadow = `0 0 0 2px ${colors.main[400]} inset`;
+    }
+
+    if (isHovered) {
+      if (isSelected) {
+        backgroundColor = colors.main[100]; // 선택된 상태에서의 호버 색상
+      } else {
+        backgroundColor = colors.main[100]; // 선택되지 않은 상태에서의 호버 색상
+      }
+    }
+
+    return {
+      backgroundColor,
+      iconColor,
+      boxShadow,
+    };
+  };
+
   return (
     <div>
       <Heading2 fontColor={colors.neutral[950]} pb={8}>
@@ -248,6 +287,12 @@ export default function StepThree({
                     selectedSubCategories.includes(subCategoryKey);
                   const IconComp = subcat.icon;
 
+                  // 버튼 스타일 결정
+                  const buttonStyle = getButtonStyles(
+                    subCategoryKey,
+                    isSelected
+                  );
+
                   return (
                     <div
                       key={subcat.subtitle}
@@ -269,24 +314,21 @@ export default function StepThree({
                           width: "100%",
                           padding: "14px",
                           borderRadius: 8,
-                          backgroundColor: isSelected
-                            ? colors.main[100]
-                            : "#F5F6F7",
-                          boxShadow: isSelected
-                            ? `0 0 0 2px ${colors.main[400]} inset`
-                            : undefined,
+                          backgroundColor: buttonStyle.backgroundColor,
+                          boxShadow: buttonStyle.boxShadow,
                           textAlign: "left",
                           cursor: isOnlyBiCi ? "default" : "pointer",
                           display: "flex",
                           alignItems: "center",
                           gap: 10,
+                          transition: "all 0.2s ease",
                         }}
                       >
                         {IconComp && (
                           <IconComp
                             width={28}
                             height={28}
-                            fill={isSelected ? colors.main[400] : "#000"}
+                            fill={buttonStyle.iconColor}
                           />
                         )}
                         <Text

@@ -22,7 +22,7 @@ const modal = {
 const hover = {
   transitionProperty: "all",
   transitionTimingFunction: defaultTransition.timing,
-  transitionDuration: "0.2s",
+  transitionDuration: "0.4s",
 };
 
 // 스크롤 애니메이션

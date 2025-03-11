@@ -102,7 +102,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
               objectFit: "fill",
               borderRadius: 32,
               transition: `all ${animations.hover.transitionDuration} ${animations.hover.transitionTimingFunction}`,
-              transform: isHovered ? "scale(1.015)" : "scale(1)",
+              transform: isHovered ? "scale(1.07)" : "scale(1)",
               filter: isHovered
                 ? "brightness(1.02)"
                 : "brightness(1) contrast(1)",
