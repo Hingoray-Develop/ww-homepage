@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useMemo } from "react";
-import { Body1, Body3, Frame, Heading2, Text } from "@/atoms";
+import { Body1, Body2, Body3, Frame, Heading2, Text } from "@/atoms";
 import {
   costCalculatorOptions,
   CostCategory,
@@ -58,6 +58,8 @@ export default function StepThree({
     scopes.length === 1 && scopes[0] === "BI/CI 디자인(로고, 브랜딩 등)";
 
   const handleSubCategoryMouseEnter = (subCategoryKey: string) => {
+    if (isOnlyBiCi) return; // BI/CI만 선택된 경우 호버 이벤트 무시
+
     const buttonElement = buttonRefs.current[subCategoryKey];
     if (buttonElement) {
       const rect = buttonElement.getBoundingClientRect();
@@ -93,6 +95,8 @@ export default function StepThree({
   };
 
   const handleSubCategoryMouseLeave = () => {
+    if (isOnlyBiCi) return; // BI/CI만 선택된 경우 리브 이벤트 무시
+
     if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
     setTimeout(() => {
       if (!isTooltipHoveredRef.current) {
@@ -102,16 +106,22 @@ export default function StepThree({
   };
 
   const handleTooltipMouseEnter = (subCategoryKey: string) => {
+    if (isOnlyBiCi) return; // BI/CI만 선택된 경우 이벤트 무시
+
     isTooltipHoveredRef.current = true;
     setHoveredSubCategory(subCategoryKey);
   };
 
   const handleTooltipMouseLeave = () => {
+    if (isOnlyBiCi) return; // BI/CI만 선택된 경우 이벤트 무시
+
     isTooltipHoveredRef.current = false;
     setHoveredSubCategory(null);
   };
 
   const toggleSubCategorySelection = (subCategoryKey: string) => {
+    if (isOnlyBiCi) return; // BI/CI만 선택된 경우 선택 이벤트 무시
+
     setSelectedSubCategories((prev) => {
       if (prev.includes(subCategoryKey)) {
         return prev.filter((item) => item !== subCategoryKey);
@@ -193,34 +203,6 @@ export default function StepThree({
     onNext();
   };
 
-  if (isOnlyBiCi) {
-    return (
-      <div>
-        <Heading2 fontColor={colors.neutral[950]} pb={8}>
-          구현이 필요한 기능을 골라주세요.
-        </Heading2>
-        <Body1 fontColor={colors.neutral[500]} pb={32}>
-          BI/CI 디자인만 선택했을 경우, 기능을 선택하실 필요가 없어요
-        </Body1>
-        <Frame pb={40}>
-          <button
-            onClick={handleNext}
-            style={{
-              backgroundColor: "#101828",
-              color: "#FFFFFF",
-              borderRadius: 8,
-              padding: "12px 24px",
-              cursor: "pointer",
-              fontSize: "16px",
-            }}
-          >
-            다음
-          </button>
-        </Frame>
-      </div>
-    );
-  }
-
   return (
     <div>
       <Heading2 fontColor={colors.neutral[950]} pb={8}>
@@ -230,159 +212,189 @@ export default function StepThree({
         필요한 기능들을 고를수록 정확한 견적을 보내드려요.
       </Body1>
 
-      <div
-        className="hide-scrollbar"
-        style={{
-          maxHeight: 450,
-          overflowY: "scroll",
-        }}
-      >
-        {costCalculatorOptions.map((category: CostCategory) => (
-          <div key={category.title} style={{ marginBottom: 16 }}>
-            <Text
-              fontColor={colors.neutral[700]}
-              fontSize={14}
-              fontWeight={600}
-              lineHeight={"22px"}
-              pb={12}
-            >
-              {category.title}
-            </Text>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(2, 1fr)",
-                gap: 16,
-              }}
-            >
-              {category.subCategories.map((subcat) => {
-                const subCategoryKey = category.title + " > " + subcat.subtitle;
-                const isHovered = hoveredSubCategory === subCategoryKey;
-                const isSelected =
-                  selectedSubCategories.includes(subCategoryKey);
-                const IconComp = subcat.icon;
+      <div style={{ position: "relative" }}>
+        <div
+          className="hide-scrollbar"
+          style={{
+            maxHeight: 450,
+            overflowY: "scroll",
+            opacity: isOnlyBiCi ? 0.2 : 1,
+            pointerEvents: isOnlyBiCi ? "none" : "auto",
+          }}
+        >
+          {costCalculatorOptions.map((category: CostCategory) => (
+            <div key={category.title} style={{ marginBottom: 16 }}>
+              <Text
+                fontColor={colors.neutral[700]}
+                fontSize={14}
+                fontWeight={600}
+                lineHeight={"22px"}
+                pb={12}
+              >
+                {category.title}
+              </Text>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(2, 1fr)",
+                  gap: 16,
+                }}
+              >
+                {category.subCategories.map((subcat) => {
+                  const subCategoryKey =
+                    category.title + " > " + subcat.subtitle;
+                  const isHovered = hoveredSubCategory === subCategoryKey;
+                  const isSelected =
+                    selectedSubCategories.includes(subCategoryKey);
+                  const IconComp = subcat.icon;
 
-                return (
-                  <div
-                    key={subcat.subtitle}
-                    style={{ position: "relative" }}
-                    onMouseEnter={() =>
-                      handleSubCategoryMouseEnter(subCategoryKey)
-                    }
-                    onMouseLeave={handleSubCategoryMouseLeave}
-                    ref={(el) => {
-                      buttonRefs.current[subCategoryKey] = el;
-                    }}
-                  >
-                    <button
-                      type="button"
-                      onClick={() => toggleSubCategorySelection(subCategoryKey)}
-                      style={{
-                        width: "100%",
-                        padding: "14px",
-                        borderRadius: 8,
-                        backgroundColor: isSelected
-                          ? colors.main[100]
-                          : "#F5F6F7",
-                        boxShadow: isSelected
-                          ? `0 0 0 2px ${colors.main[400]} inset`
-                          : undefined,
-                        textAlign: "left",
-                        cursor: "pointer",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: 10,
+                  return (
+                    <div
+                      key={subcat.subtitle}
+                      style={{ position: "relative" }}
+                      onMouseEnter={() =>
+                        handleSubCategoryMouseEnter(subCategoryKey)
+                      }
+                      onMouseLeave={handleSubCategoryMouseLeave}
+                      ref={(el) => {
+                        buttonRefs.current[subCategoryKey] = el;
                       }}
                     >
-                      {IconComp && (
-                        <IconComp
-                          width={28}
-                          height={28}
-                          fill={isSelected ? colors.main[400] : "#000"}
-                        />
-                      )}
-                      <Text
-                        fontSize={16}
-                        fontWeight={600}
-                        fontColor={colors.neutral[900]}
-                        lineHeight={"26px"}
-                      >
-                        {subcat.subtitle}
-                      </Text>
-                    </button>
-
-                    {isHovered && (
-                      <div
-                        data-tooltip={subCategoryKey}
-                        style={{
-                          position: "absolute",
-                          ...(tooltipPosition === "bottom"
-                            ? { top: "calc(100% + 4px)" }
-                            : { bottom: "calc(100% + 4px)" }),
-                          left: 0,
-                          backgroundColor: "#101828",
-                          opacity: 0.9,
-                          color: "#fff",
-                          padding: "12px 16px",
-                          borderRadius: 6,
-                          fontSize: 13,
-                          width: "280px",
-                          zIndex: 100,
-                          maxHeight: "400px",
-                          overflowY: "auto",
-                        }}
-                        onMouseEnter={() =>
-                          handleTooltipMouseEnter(subCategoryKey)
+                      <button
+                        type="button"
+                        onClick={() =>
+                          toggleSubCategorySelection(subCategoryKey)
                         }
-                        onMouseLeave={handleTooltipMouseLeave}
+                        style={{
+                          width: "100%",
+                          padding: "14px",
+                          borderRadius: 8,
+                          backgroundColor: isSelected
+                            ? colors.main[100]
+                            : "#F5F6F7",
+                          boxShadow: isSelected
+                            ? `0 0 0 2px ${colors.main[400]} inset`
+                            : undefined,
+                          textAlign: "left",
+                          cursor: isOnlyBiCi ? "default" : "pointer",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: 10,
+                        }}
                       >
+                        {IconComp && (
+                          <IconComp
+                            width={28}
+                            height={28}
+                            fill={isSelected ? colors.main[400] : "#000"}
+                          />
+                        )}
                         <Text
+                          fontSize={16}
                           fontWeight={600}
-                          pb={6}
-                          fontSize={14}
-                          fontColor={colors.main[300]}
+                          fontColor={colors.neutral[900]}
+                          lineHeight={"26px"}
                         >
-                          필수 기능
+                          {subcat.subtitle}
                         </Text>
-                        <ul style={{ paddingLeft: 16 }}>
-                          {subcat.items.map((it) => (
-                            <li key={it.label} style={{ marginBottom: 4 }}>
-                              {it.label}
-                            </li>
-                          ))}
-                        </ul>
+                      </button>
 
-                        {subcat.optionalItems &&
-                          subcat.optionalItems.length > 0 && (
-                            <>
-                              <Text
-                                fontSize={14}
-                                fontWeight={600}
-                                pb={8}
-                                fontColor="#FFB358"
-                              >
-                                선택 옵션
-                              </Text>
-                              <ul style={{ paddingLeft: 16 }}>
-                                {subcat.optionalItems.map((oit) => (
-                                  <li
-                                    key={oit.label}
-                                    style={{ marginBottom: 4 }}
-                                  >
-                                    {oit.label}
-                                  </li>
-                                ))}
-                              </ul>
-                            </>
-                          )}
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
+                      {isHovered && (
+                        <div
+                          data-tooltip={subCategoryKey}
+                          style={{
+                            position: "absolute",
+                            ...(tooltipPosition === "bottom"
+                              ? { top: "calc(100% + 4px)" }
+                              : { bottom: "calc(100% + 4px)" }),
+                            left: 0,
+                            backgroundColor: "#101828",
+                            opacity: 0.9,
+                            color: "#fff",
+                            padding: "12px 16px",
+                            borderRadius: 6,
+                            fontSize: 13,
+                            width: "280px",
+                            zIndex: 100,
+                            maxHeight: "400px",
+                            overflowY: "auto",
+                          }}
+                          onMouseEnter={() =>
+                            handleTooltipMouseEnter(subCategoryKey)
+                          }
+                          onMouseLeave={handleTooltipMouseLeave}
+                        >
+                          <Text
+                            fontWeight={600}
+                            pb={6}
+                            fontSize={14}
+                            fontColor={colors.main[300]}
+                          >
+                            필수 기능
+                          </Text>
+                          <ul style={{ paddingLeft: 16 }}>
+                            {subcat.items.map((it) => (
+                              <li key={it.label} style={{ marginBottom: 4 }}>
+                                {it.label}
+                              </li>
+                            ))}
+                          </ul>
+
+                          {subcat.optionalItems &&
+                            subcat.optionalItems.length > 0 && (
+                              <>
+                                <Text
+                                  fontSize={14}
+                                  fontWeight={600}
+                                  pb={8}
+                                  fontColor="#FFB358"
+                                >
+                                  선택 옵션
+                                </Text>
+                                <ul style={{ paddingLeft: 16 }}>
+                                  {subcat.optionalItems.map((oit) => (
+                                    <li
+                                      key={oit.label}
+                                      style={{ marginBottom: 4 }}
+                                    >
+                                      {oit.label}
+                                    </li>
+                                  ))}
+                                </ul>
+                              </>
+                            )}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
+          ))}
+        </div>
+
+        {isOnlyBiCi && (
+          <div
+            style={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+              backgroundColor: "#0C111D",
+              color: colors.white,
+              padding: "20px",
+              borderRadius: "6px",
+              textAlign: "center",
+              width: "300px",
+              zIndex: 10,
+            }}
+          >
+            <Body2 fontColor={colors.white} pb={8}>
+              BI/CI 디자인만 선택했을 경우,
+            </Body2>
+            <Body2 fontColor={colors.white}>선택할 필요가 없어요.</Body2>
           </div>
-        ))}
+        )}
       </div>
 
       <Frame w="100%" alignment="center" gap="auto" pt={32} pb={40} row>
@@ -401,13 +413,15 @@ export default function StepThree({
             다음
           </button>
         </Frame>
-        <Frame bg={colors.main[400]} radius={4}>
-          <Body3 px={8} py={5} fontColor={colors.white}>
-            {totalSelectedCount > 0
-              ? `${totalSelectedCount}개 선택됨`
-              : "0개 선택됨"}
-          </Body3>
-        </Frame>
+        {!isOnlyBiCi && (
+          <Frame bg={colors.main[400]} radius={4}>
+            <Body3 px={8} py={5} fontColor={colors.white}>
+              {totalSelectedCount > 0
+                ? `${totalSelectedCount}개 선택됨`
+                : "0개 선택됨"}
+            </Body3>
+          </Frame>
+        )}
       </Frame>
     </div>
   );
