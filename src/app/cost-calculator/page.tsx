@@ -20,6 +20,7 @@ import { colors } from "@/styles";
  * Updated so that after StepFour submission, we go to StepFive.
  * Step indicator now shows 5 steps.
  * The user can navigate backward if needed (except from StepFive).
+ * Layout updated to have left and right areas take exactly 50% width each.
  * </ai_context>
  */
 
@@ -155,7 +156,7 @@ export default function CostCalculator() {
     >
       {/* Left panel - 태블릿 이상에서만 표시 */}
       {!isMobile && !isTablet && (
-        <div style={{ flex: 1, width: "auto" }}>
+        <div style={{ width: "50%", height: "100%" }}>
           <CostCalculatorLeft />
         </div>
       )}
@@ -163,8 +164,7 @@ export default function CostCalculator() {
       {/* Right panel (Steps) */}
       <div
         style={{
-          flex: isMobile || isTablet ? "none" : 1,
-          width: "100%",
+          width: isMobile || isTablet ? "100%" : "50%",
           minHeight: "642px",
           backgroundColor: "#FFFFFF",
           overflow: "hidden",
