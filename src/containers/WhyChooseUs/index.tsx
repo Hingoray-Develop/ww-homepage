@@ -62,6 +62,7 @@ function ReasonCard({
           titleColor: colors.main[800],
           descriptionColor: colors.main[800],
           backgroundImage: "url('/images/image-gradation.png')",
+          backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
           backgroundPosition: "center",
         };
@@ -113,7 +114,7 @@ function ReasonCard({
       }}
     >
       {variant === "main300" && (
-        <div className="absolute top-0 left-0 right-0 h-full rounded-[24px] bg-gradient-to-b from-[#84AAFB] to-[#84AAFB]/80 z-0 opacity-95" />
+        <div className="absolute top-0 left-0 right-0 h-full rounded-[24px]  from-[#84AAFB] to-[#84AAFB]/10 z-0" />
       )}
       {iconAboveText ? (
         <div
