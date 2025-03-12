@@ -21,6 +21,7 @@ import { colors } from "@/styles";
  * Step indicator now shows 5 steps.
  * The user can navigate backward if needed (except from StepFive).
  * Layout updated to have left and right areas take exactly 50% width each.
+ * Right panel now takes full available screen height dynamically.
  * </ai_context>
  */
 
@@ -139,6 +140,9 @@ export default function CostCalculator() {
     };
   }, []);
 
+  // 헤더 높이(88px)와 컨테이너 패딩을 고려한 높이 계산
+  const calculatedHeight = windowHeight - 88 - containerPx * 2;
+
   return (
     <div
       style={{
@@ -147,6 +151,7 @@ export default function CostCalculator() {
         width: "100%",
         height: "100%",
         minHeight: windowHeight > 0 ? `${windowHeight - 88}px` : "780px",
+        maxHeight: windowHeight > 0 ? `${windowHeight - 88}px` : "780px",
         paddingRight: containerPx,
         paddingLeft: containerPx,
         gap: isMobile || isTablet ? 24 : 0,
@@ -165,12 +170,14 @@ export default function CostCalculator() {
       <div
         style={{
           width: isMobile || isTablet ? "100%" : "50%",
-          minHeight: "642px",
+          minHeight: calculatedHeight > 0 ? `${calculatedHeight}px` : "642px",
+          maxHeight: calculatedHeight > 0 ? `${calculatedHeight}px` : "820px",
           backgroundColor: "#FFFFFF",
           overflow: "hidden",
           borderRadius: 16,
           paddingLeft: isMobile ? 20 : 40,
           paddingRight: isMobile ? 20 : 40,
+
           margin: isMobile || isTablet ? "0 auto" : undefined,
           maxWidth: isMobile || isTablet ? "600px" : undefined,
           justifyContent: "center",
