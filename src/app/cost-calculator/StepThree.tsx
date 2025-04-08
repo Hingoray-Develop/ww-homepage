@@ -381,7 +381,8 @@ export default function StepThree({
                 style={{
                   display: "grid",
                   gridTemplateColumns: "repeat(2, 1fr)",
-                  gap: 16,
+                  rowGap: 8,
+                  columnGap: 12,
                 }}
               >
                 {category.subCategories.map((subcat) => {
