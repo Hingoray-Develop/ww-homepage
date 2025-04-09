@@ -8,26 +8,7 @@ import {
   CostCategory,
 } from "@/data/costCalculatorOptions";
 import { colors } from "@/styles";
-
-/**
- * <ai_context>
- * StepThree now handles hierarchical data:
- * - For each category(H2) => subCategories(H3)
- * - On hover of a subCategory, after 1s, show bullet points (items + optionalItems).
- * - subCategory.icon is now displayed inside the button.
- * - Clicking each subCategory toggles selection, changing background/border color to #5288F9.
- * - Displays total selected subCategories count in the bottom right.
- * - Also shows total cost of all selected subCategories next to the selected count.
- * Updated: we wrap the list area in a scrollable container with hidden scrollbar.
- * Also if "BI/CI 디자인(로고, 브랜딩 등)" alone is selected in StepOne, skip feature selection.
- *
- * Updated again:
- * - Sum up durationMin, durationMax from all selected subCategories,
- *   and display them alongside the total cost in the bottom summary.
- *   e.g. "4개 선택됨 (약 2,300원, 4~8일)"
- * - Tooltips are now rendered with React Portal to ensure they appear above all other elements.
- * </ai_context>
- */
+import { useResponsiveType } from "@/hooks";
 
 interface StepThreeProps {
   onNext: () => void;
@@ -72,6 +53,10 @@ export default function StepThree({
   const buttonRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
   const [tooltipCoords, setTooltipCoords] = useState({ x: 0, y: 0 });
   const [isBrowser, setIsBrowser] = useState(false);
+
+  const { responsiveType } = useResponsiveType();
+  const isMobile = responsiveType === "mobile";
+  const isTablet = responsiveType === "tablet";
 
   // 브라우저 환경인지 확인 (Portal 사용을 위함)
   useEffect(() => {
@@ -381,7 +366,10 @@ export default function StepThree({
                 <div
                   style={{
                     display: "grid",
-                    gridTemplateColumns: "repeat(2, 1fr)",
+                    gridTemplateColumns:
+                      isMobile || isTablet
+                        ? "repeat(1, 1fr)"
+                        : "repeat(2, 1fr)",
                     rowGap: 8,
                     columnGap: 12,
                   }}

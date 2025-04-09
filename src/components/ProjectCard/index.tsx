@@ -88,7 +88,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
           style={{
             position: "relative",
             width: "100%",
-            paddingTop: "80%",
+            paddingTop: "80%", // This creates a container with an 80% aspect ratio
             overflow: "hidden",
             borderRadius: 32,
             transition: `all ${animations.hover.transitionDuration} ${animations.hover.transitionTimingFunction}`,
@@ -98,8 +98,9 @@ const ProjectCard: React.FC<ProjectCardProps> = ({
             src={image}
             alt={title}
             fill
+            objectFit="cover" // Changed from "contain" to "cover" for full width fill and hiding overflow height
+            objectPosition="top" // Aligns the image to the top edge of the container
             style={{
-              objectFit: "fill",
               borderRadius: 32,
               transition: `all ${animations.hover.transitionDuration} ${animations.hover.transitionTimingFunction}`,
               transform: isHovered ? "scale(1.07)" : "scale(1)",

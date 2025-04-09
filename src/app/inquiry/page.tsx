@@ -8,15 +8,6 @@ import { colors } from "@/styles";
 import useClearLoading from "@/hooks/useClearLoading";
 import InquiryComplete from "./InquiryComplete";
 
-/**
- * <ai_context>
- * New inquiry page where user can send an email inquiry using send-inquiry route.
- * Updated: match the design style from StepFour.tsx (e.g. inputs, textarea, button).
- * After submission, shows a success screen with a "홈으로 돌아가기" button.
- * The form is centered vertically in the screen, accounting for the header.
- * </ai_context>
- */
-
 export default function InquiryPage() {
   const { setIsLoading } = useLoading();
   const router = useRouter();

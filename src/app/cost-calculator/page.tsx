@@ -184,7 +184,7 @@ export default function CostCalculator() {
         }}
       >
         {/* Step indicator */}
-        {step <= 4 && (
+        {step <= 5 && (
           <div
             className="flex flex-col w-[100%]"
             style={{
