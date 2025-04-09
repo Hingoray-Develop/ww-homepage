@@ -13,16 +13,6 @@ interface StepTwoProps {
   onNext: () => void;
 }
 
-/**
- * <ai_context>
- * StepTwo: min/max budget range slider with discrete marks,
- * re-implemented so we have 7 equally spaced steps (0~6),
- * each mapped to DISCRETE_VALUES = [500, 1000, 3000, 5000, 7000, 9000, 10000].
- * We track the user's last used slider values so toggling
- * "아직 잘 모르겠어요" off again restores them.
- * </ai_context>
- */
-
 const DISCRETE_VALUES = [500, 1000, 3000, 5000, 7000, 9000, 10000];
 
 export default function StepTwo({
@@ -90,41 +80,43 @@ export default function StepTwo({
   const STEP_COUNT = DISCRETE_VALUES.length - 1;
 
   return (
-    <div>
-      <Heading2 fontColor={colors.neutral[950]} pb={8}>
-        예산 범위를 알려주세요.
-      </Heading2>
-      <Body1 fontColor={colors.neutral[500]}>
-        대략적인 예산의 범위를 알려주세요.
-      </Body1>
-
-      <Frame col gap={24} py={32} w="100%">
-        <div
-          style={{
-            width: "100%",
-            position: "relative",
-            opacity: dontKnow ? 0.5 : 1,
-          }}
-        >
-          <Range
-            values={sliderValues}
-            step={1}
-            min={0}
-            max={STEP_COUNT}
-            disabled={dontKnow}
-            onChange={(vals) => handleSliderChange(vals as [number, number])}
-            renderTrack={({ props, children }) => {
-              const [val0, val1] = sliderValues;
-              const leftPercent = ((val0 - 0) / STEP_COUNT) * 100;
-              const rightPercent = ((val1 - 0) / STEP_COUNT) * 100;
-              return (
-                <div
-                  {...props}
-                  style={{
-                    ...props.style,
-                    width: "100%",
-                    height: 6,
-                    background: `linear-gradient(
+    <>
+      <Frame col w="100%" flex={1} overflow="scroll">
+        <div>
+          <Heading2 fontColor={colors.neutral[950]} pb={8}>
+            예산 범위를 알려주세요.
+          </Heading2>
+          <Body1 fontColor={colors.neutral[500]}>
+            대략적인 예산의 범위를 알려주세요.
+          </Body1>
+        </div>
+        <Frame col gap={24} px={12} py={32} w="100%">
+          <div
+            style={{
+              width: "100%",
+              position: "relative",
+              opacity: dontKnow ? 0.5 : 1,
+            }}
+          >
+            <Range
+              values={sliderValues}
+              step={1}
+              min={0}
+              max={STEP_COUNT}
+              disabled={dontKnow}
+              onChange={(vals) => handleSliderChange(vals as [number, number])}
+              renderTrack={({ props, children }) => {
+                const [val0, val1] = sliderValues;
+                const leftPercent = ((val0 - 0) / STEP_COUNT) * 100;
+                const rightPercent = ((val1 - 0) / STEP_COUNT) * 100;
+                return (
+                  <div
+                    {...props}
+                    style={{
+                      ...props.style,
+                      width: "100%",
+                      height: 6,
+                      background: `linear-gradient(
                       to right,
                       ${colors.neutral[200]} 0%,
                       ${colors.neutral[200]} ${leftPercent}%,
@@ -133,89 +125,91 @@ export default function StepTwo({
                       ${colors.neutral[200]} ${rightPercent}%,
                       ${colors.neutral[200]} 100%
                     )`,
-                    borderRadius: 3,
-                    position: "relative",
-                  }}
-                >
-                  {children}
-                </div>
-              );
-            }}
-            renderThumb={({ props, isDragged }) => {
-              const { key, ...restProps } = props;
-              return (
-                <div
-                  key={key}
-                  {...restProps}
-                  style={{
-                    ...restProps.style,
-                    height: 14,
-                    width: 14,
-                    borderRadius: "50%",
-                    backgroundColor: "#FFFFFF",
-                    boxShadow: "0 0 0 2px #5288F9",
-                    outline: "none",
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    transform: "translateX(-50%)",
-                  }}
-                />
-              );
-            }}
-          />
-          <div style={{ position: "relative", height: "24px", marginTop: 12 }}>
-            {labelTexts.map((label, i) => {
-              let leftPercent = (i / STEP_COUNT) * 100;
+                      borderRadius: 3,
+                      position: "relative",
+                    }}
+                  >
+                    {children}
+                  </div>
+                );
+              }}
+              renderThumb={({ props, isDragged }) => {
+                const { key, ...restProps } = props;
+                return (
+                  <div
+                    key={key}
+                    {...restProps}
+                    style={{
+                      ...restProps.style,
+                      height: 14,
+                      width: 14,
+                      borderRadius: "50%",
+                      backgroundColor: "#FFFFFF",
+                      boxShadow: "0 0 0 2px #5288F9",
+                      outline: "none",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      transform: "translateX(-50%)",
+                    }}
+                  />
+                );
+              }}
+            />
+            <div
+              style={{ position: "relative", height: "24px", marginTop: 12 }}
+            >
+              {labelTexts.map((label, i) => {
+                let leftPercent = (i / STEP_COUNT) * 100;
 
-              // 첫 번째와 마지막 라벨의 위치 조정
-              if (i === 0) {
-                leftPercent = 0;
-              } else if (i === STEP_COUNT) {
-                leftPercent = 100;
-              }
+                // 첫 번째와 마지막 라벨의 위치 조정
+                if (i === 0) {
+                  leftPercent = 0;
+                } else if (i === STEP_COUNT) {
+                  leftPercent = 100;
+                }
 
-              return (
-                <div
-                  key={i}
-                  style={{
-                    position: "absolute",
-                    left: `${leftPercent}%`,
-                    transform:
-                      i === 0
-                        ? "translateX(0)"
-                        : i === STEP_COUNT
-                        ? "translateX(-100%)"
-                        : "translateX(-50%)",
-                    color: "#667085",
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  {label}
-                </div>
-              );
-            })}
+                return (
+                  <div
+                    key={i}
+                    style={{
+                      position: "absolute",
+                      left: `${leftPercent}%`,
+                      transform:
+                        i === 0
+                          ? "translateX(0)"
+                          : i === STEP_COUNT
+                          ? "translateX(-100%)"
+                          : "translateX(-50%)",
+                      color: "#667085",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    {label}
+                  </div>
+                );
+              })}
+            </div>
           </div>
-        </div>
-      </Frame>
+        </Frame>
 
-      <label
-        onClick={() => handleDontKnow(!dontKnow)}
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 8,
-          color: colors.neutral[950],
-        }}
-      >
-        {dontKnow ? <CheckedIcon /> : <UncheckedIcon />}
-        아직 잘 모르겠어요.
-      </label>
-      <Frame pb={40}>
+        <label
+          onClick={() => handleDontKnow(!dontKnow)}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            color: colors.neutral[950],
+          }}
+        >
+          {dontKnow ? <CheckedIcon /> : <UncheckedIcon />}
+          아직 잘 모르겠어요.
+        </label>
+      </Frame>
+      <Frame pb={40} alignment="left" w="100%">
         <button
           onClick={onNext}
           style={{
-            marginTop: 24,
             backgroundColor: "#101828",
             color: "#FFFFFF",
             borderRadius: 8,
@@ -227,6 +221,6 @@ export default function StepTwo({
           다음
         </button>
       </Frame>
-    </div>
+    </>
   );
 }

@@ -8,14 +8,6 @@ import Button from "@/components/Button";
 import HomeIcon from "@/assets/icons/line/home.svg?react";
 import CheckIcon from "@/assets/icons/circle/check.svg?react";
 
-/**
- * <ai_context>
- * StepFive: final step of the wizard, shown after email is successfully sent.
- * Displays the success message. The "메인으로 돌아가기" button navigates to the homepage.
- * Content is centered in the white area.
- * </ai_context>
- */
-
 export default function StepFive() {
   const router = useRouter();
 
@@ -25,9 +17,10 @@ export default function StepFive() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        height: "100%",
         width: "100%",
+        flexGrow: 1,
         minHeight: "642px",
+        paddingBottom: "40px",
       }}
     >
       <Frame col alignment="center">
@@ -36,12 +29,16 @@ export default function StepFive() {
           견적서 요청 완료!
         </Heading2>
         <Body1 fontColor={colors.neutral[500]}>
-          견적서는 검토 후 빠른 시일 내 입력해주신 이메일 주소로 발송될
-          예정입니다.
+          <p className="text-center break-keep">
+            견적서는 검토 후 빠른 시일 내 입력해주신 이메일 주소로 발송될
+            예정입니다.
+          </p>
         </Body1>
         <Body1 fontColor={colors.neutral[500]} pb={32}>
-          이메일 주소가 정확하지 않을 경우 연락이 어려울 수 있으니 확인
-          부탁드립니다.
+          <div className="text-center break-keep">
+            이메일 주소가 정확하지 않을 경우 연락이 어려울 수 있으니 확인
+            부탁드립니다.
+          </div>
         </Body1>
         <Button
           onClick={() => router.push("/")}

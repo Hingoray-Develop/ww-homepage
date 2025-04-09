@@ -7,21 +7,13 @@ import MailIcon from "@/assets/icons/line/mail.svg?react";
 import Link from "next/link";
 import { Button } from "@/components";
 
-/**
- * <ai_context>
- * Left-side component for cost-calculator steps,
- * featuring an image, title, and "회사소개서 다운로드" button.
- * Updated to fill ~50% of screen width, no border radius, bigger layout.
- * </ai_context>
- */
-
 export default function CostCalculatorLeft() {
   return (
     <Frame
       col
       w="100%"
       h="100%"
-      alignment="top-left"
+      alignment="center"
       bg={colors.neutral[950]}
       pl={20}
     >
