@@ -4,13 +4,6 @@ import React, { useState, useEffect } from "react";
 import { Body1, Body2, Frame, Heading2 } from "@/atoms";
 import { colors } from "@/styles";
 
-/**
- * <ai_context>
- * StepFour: with basic email validation
- * - 유효성 검사 후, 잘못된 이메일은 경고 메시지 표시 & 제출 버튼 비활성화
- * </ai_context>
- */
-
 interface CostCalculatorOption {
   durationMin: number;
   durationMax: number;
@@ -102,74 +95,78 @@ export default function StepFour({
   }
 
   return (
-    <div>
-      <Heading2 fontColor={colors.neutral[950]} pb={8}>
-        연락처를 알려주세요.
-      </Heading2>
-      <Body1 fontColor={colors.neutral[500]} pb={32}>
-        작성하신 이메일로 견적서가 보내질 예정이에요.
-      </Body1>
-
-      <input
-        type="email"
-        placeholder="이메일"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        style={{
-          width: "100%",
-          padding: "16px 20px",
-          borderRadius: 8,
-          marginBottom: 20,
-          backgroundColor: colors.neutral[100],
-          outline: `1px solid ${colors.neutral[100]}`,
-          color: colors.neutral[950],
-        }}
-        onFocus={(e) => {
-          e.target.style.backgroundColor = colors.neutral[100];
-          e.target.style.outline = `1px solid ${colors.neutral[300]}`;
-        }}
-        onBlur={(e) => {
-          e.target.style.backgroundColor = colors.neutral[100];
-          e.target.style.outline = "none";
-        }}
-        disabled={isSubmitting}
-      />
-      {emailError && (
-        <div style={{ color: "red", fontSize: 14, marginBottom: 16 }}>
-          {emailError}
+    <>
+      <Frame col w="100%" flex={1} overflow="scroll">
+        <div>
+          <Heading2 fontColor={colors.neutral[950]} pb={8}>
+            연락처를 알려주세요.
+          </Heading2>
+          <Body1 fontColor={colors.neutral[500]} pb={32}>
+            작성하신 이메일로 견적서가 보내질 예정이에요.
+          </Body1>
         </div>
-      )}
+        <input
+          type="email"
+          placeholder="이메일"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          style={{
+            width: "100%",
+            padding: "16px 20px",
+            borderRadius: 8,
+            marginBottom: 20,
+            backgroundColor: colors.neutral[100],
+            border: `1px solid ${colors.neutral[100]}`,
+            color: colors.neutral[950],
+          }}
+          onFocus={(e) => {
+            e.target.style.backgroundColor = colors.neutral[100];
+            e.target.style.border = `1px solid ${colors.neutral[300]}`;
+          }}
+          onBlur={(e) => {
+            e.target.style.backgroundColor = colors.neutral[100];
+            e.target.style.border = `1px solid ${colors.neutral[100]}`;
+          }}
+          disabled={isSubmitting}
+        />
+        {emailError && (
+          <div style={{ color: "red", fontSize: 14, marginBottom: 16 }}>
+            {emailError}
+          </div>
+        )}
 
-      <Body2 fontColor={colors.neutral[500]} pb={8}>
-        추가 문의 사항이 있으신가요?
-      </Body2>
-      <textarea
-        placeholder="내용을 입력하세요."
-        value={additionalNotes}
-        onChange={(e) => setAdditionalNotes(e.target.value)}
-        style={{
-          width: "100%",
-          minHeight: 100,
-          padding: "16px 20px",
-          borderRadius: 8,
-          marginBottom: 24,
-          backgroundColor: colors.neutral[100],
-          outline: `1px solid ${colors.neutral[100]}`,
-          resize: "none",
-          color: colors.neutral[950],
-        }}
-        onFocus={(e) => {
-          e.target.style.backgroundColor = colors.neutral[100];
-          e.target.style.outline = `1px solid ${colors.neutral[300]}`;
-        }}
-        onBlur={(e) => {
-          e.target.style.backgroundColor = colors.neutral[100];
-          e.target.style.outline = "none";
-        }}
-        disabled={isSubmitting}
-      />
-
-      <Frame pb={40}>
+        <div>
+          <Body2 fontColor={colors.neutral[500]} pb={8}>
+            추가 문의 사항이 있으신가요?
+          </Body2>
+        </div>
+        <textarea
+          placeholder="내용을 입력하세요."
+          value={additionalNotes}
+          onChange={(e) => setAdditionalNotes(e.target.value)}
+          style={{
+            width: "100%",
+            minHeight: 100,
+            padding: "16px 20px",
+            borderRadius: 8,
+            marginBottom: 24,
+            backgroundColor: colors.neutral[100],
+            border: `1px solid ${colors.neutral[100]}`,
+            resize: "none",
+            color: colors.neutral[950],
+          }}
+          onFocus={(e) => {
+            e.target.style.backgroundColor = colors.neutral[100];
+            e.target.style.border = `1px solid ${colors.neutral[300]}`;
+          }}
+          onBlur={(e) => {
+            e.target.style.backgroundColor = colors.neutral[100];
+            e.target.style.border = `1px solid ${colors.neutral[100]}`;
+          }}
+          disabled={isSubmitting}
+        />
+      </Frame>
+      <Frame pb={40} alignment="left" w="100%">
         <button
           onClick={handleSubmit}
           disabled={isSubmitting || !!emailError || email.length === 0}
@@ -197,6 +194,6 @@ export default function StepFour({
           )}
         </button>
       </Frame>
-    </div>
+    </>
   );
 }

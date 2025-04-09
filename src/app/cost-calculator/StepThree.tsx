@@ -348,134 +348,135 @@ export default function StepThree({
   };
 
   return (
-    <div style={{ position: "relative" }}>
-      <Heading2 fontColor={colors.neutral[950]} pb={8}>
-        구현이 필요한 기능을 골라주세요.
-      </Heading2>
-      <Body1 fontColor={colors.neutral[500]} pb={32}>
-        필요한 기능들을 고를수록 정확한 견적을 보내드려요.
-      </Body1>
-
-      <div style={{ position: "relative" }}>
-        <div
-          className="hide-scrollbar"
-          style={{
-            maxHeight: 450,
-            overflowY: "scroll",
-            opacity: isOnlyBiCi ? 0.2 : 1,
-            pointerEvents: isOnlyBiCi ? "none" : "auto",
-          }}
-        >
-          {costCalculatorOptions.map((category: CostCategory) => (
-            <div key={category.title} style={{ marginBottom: 16 }}>
-              <Text
-                fontColor={colors.neutral[700]}
-                fontSize={14}
-                fontWeight={600}
-                lineHeight={"22px"}
-                pb={12}
-              >
-                {category.title}
-              </Text>
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(2, 1fr)",
-                  rowGap: 8,
-                  columnGap: 12,
-                }}
-              >
-                {category.subCategories.map((subcat) => {
-                  const subCategoryKey =
-                    category.title + " > " + subcat.subtitle;
-                  const isSelected =
-                    selectedSubCategories.includes(subCategoryKey);
-                  const IconComp = subcat.icon;
-
-                  // 버튼 스타일 결정
-                  const buttonStyle = getButtonStyles(
-                    subCategoryKey,
-                    isSelected
-                  );
-
-                  return (
-                    <div
-                      key={subcat.subtitle}
-                      style={{ position: "relative" }}
-                      onMouseEnter={() =>
-                        handleSubCategoryMouseEnter(subCategoryKey)
-                      }
-                      onMouseLeave={handleSubCategoryMouseLeave}
-                      ref={(el) => {
-                        buttonRefs.current[subCategoryKey] = el;
-                      }}
-                    >
-                      <button
-                        type="button"
-                        onClick={() =>
-                          toggleSubCategorySelection(subCategoryKey)
-                        }
-                        style={{
-                          width: "100%",
-                          padding: "14px",
-                          borderRadius: 8,
-                          backgroundColor: buttonStyle.backgroundColor,
-                          boxShadow: buttonStyle.boxShadow,
-                          textAlign: "left",
-                          cursor: isOnlyBiCi ? "default" : "pointer",
-                          display: "flex",
-                          alignItems: "center",
-                          gap: 10,
-                          transition: "all 0.2s ease",
-                        }}
-                      >
-                        {IconComp && (
-                          <IconComp
-                            width={28}
-                            height={28}
-                            fill={buttonStyle.iconColor}
-                          />
-                        )}
-                        <Text
-                          fontSize={16}
-                          fontWeight={600}
-                          fontColor={colors.neutral[900]}
-                          lineHeight={"26px"}
-                        >
-                          {subcat.subtitle}
-                        </Text>
-                      </button>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-          ))}
+    <>
+      <Frame col w="100%" flex={1} overflow="scroll">
+        <div>
+          <Heading2 fontColor={colors.neutral[950]} pb={8}>
+            구현이 필요한 기능을 골라주세요.
+          </Heading2>
+          <Body1 fontColor={colors.neutral[500]} pb={32}>
+            필요한 기능들을 고를수록 정확한 견적을 보내드려요.
+          </Body1>
         </div>
-
-        {isOnlyBiCi && (
+        <div style={{ position: "relative" }}>
           <div
+            className="hide-scrollbar"
             style={{
-              position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)",
-              backgroundColor: "#0C111D",
-              opacity: 0.85,
-              color: colors.white,
-              padding: "20px",
-              borderRadius: "8px",
-              textAlign: "center",
-              zIndex: 100,
+              overflowY: "scroll",
+              opacity: isOnlyBiCi ? 0.2 : 1,
+              pointerEvents: isOnlyBiCi ? "none" : "auto",
             }}
           >
-            <Body2 fontColor={colors.white}>
-              BI/CI 디자인만 선택했을 경우,
-            </Body2>
-            <Body2 fontColor={colors.white}>선택할 필요가 없어요.</Body2>
+            {costCalculatorOptions.map((category: CostCategory) => (
+              <div key={category.title} style={{ marginBottom: 16 }}>
+                <Text
+                  fontColor={colors.neutral[700]}
+                  fontSize={14}
+                  fontWeight={600}
+                  lineHeight={"22px"}
+                  pb={12}
+                >
+                  {category.title}
+                </Text>
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(2, 1fr)",
+                    rowGap: 8,
+                    columnGap: 12,
+                  }}
+                >
+                  {category.subCategories.map((subcat) => {
+                    const subCategoryKey =
+                      category.title + " > " + subcat.subtitle;
+                    const isSelected =
+                      selectedSubCategories.includes(subCategoryKey);
+                    const IconComp = subcat.icon;
+
+                    // 버튼 스타일 결정
+                    const buttonStyle = getButtonStyles(
+                      subCategoryKey,
+                      isSelected
+                    );
+                    return (
+                      <div
+                        key={subcat.subtitle}
+                        style={{ position: "relative" }}
+                        onMouseEnter={() =>
+                          handleSubCategoryMouseEnter(subCategoryKey)
+                        }
+                        onMouseLeave={handleSubCategoryMouseLeave}
+                        ref={(el) => {
+                          buttonRefs.current[subCategoryKey] = el;
+                        }}
+                      >
+                        <button
+                          type="button"
+                          onClick={() =>
+                            toggleSubCategorySelection(subCategoryKey)
+                          }
+                          style={{
+                            width: "100%",
+                            padding: "14px",
+                            borderRadius: 8,
+                            backgroundColor: buttonStyle.backgroundColor,
+                            boxShadow: buttonStyle.boxShadow,
+                            textAlign: "left",
+                            cursor: isOnlyBiCi ? "default" : "pointer",
+                            display: "flex",
+                            alignItems: "center",
+                            gap: 10,
+                            transition: "all 0.2s ease",
+                          }}
+                        >
+                          {IconComp && (
+                            <IconComp
+                              width={28}
+                              height={28}
+                              fill={buttonStyle.iconColor}
+                            />
+                          )}
+                          <Text
+                            fontSize={16}
+                            fontWeight={600}
+                            fontColor={colors.neutral[900]}
+                            lineHeight={"26px"}
+                          >
+                            {subcat.subtitle}
+                          </Text>
+                        </button>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
           </div>
-        )}
-      </div>
+
+          {isOnlyBiCi && (
+            <div
+              style={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                transform: "translate(-50%, -50%)",
+                backgroundColor: "#0C111D",
+                opacity: 0.85,
+                color: colors.white,
+                padding: "20px",
+                borderRadius: "8px",
+                textAlign: "center",
+                zIndex: 100,
+              }}
+            >
+              <Body2 fontColor={colors.white}>
+                BI/CI 디자인만 선택했을 경우,
+              </Body2>
+              <Body2 fontColor={colors.white}>선택할 필요가 없어요.</Body2>
+            </div>
+          )}
+        </div>
+      </Frame>
 
       {/* 툴팁 렌더링 */}
       {renderTooltip()}
@@ -514,6 +515,6 @@ export default function StepThree({
           </Frame>
         )}
       </Frame>
-    </div>
+    </>
   );
 }

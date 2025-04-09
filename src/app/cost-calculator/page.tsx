@@ -141,7 +141,7 @@ export default function CostCalculator() {
   }, []);
 
   // 헤더 높이(88px)와 컨테이너 패딩을 고려한 높이 계산
-  const calculatedHeight = windowHeight - 88 - containerPx * 2;
+  const calculatedHeight = windowHeight - 88 - containerPx;
 
   return (
     <div
@@ -149,9 +149,8 @@ export default function CostCalculator() {
         display: "flex",
         flexDirection: isMobile || isTablet ? "column" : "row",
         width: "100%",
-        height: "100%",
-        minHeight: windowHeight > 0 ? `${windowHeight - 88}px` : "780px",
-        maxHeight: windowHeight > 0 ? `${windowHeight - 88}px` : "780px",
+        height: calculatedHeight, // `${windowHeight - 88}px`,
+        minHeight: "540px",
         paddingRight: containerPx,
         paddingLeft: containerPx,
         gap: isMobile || isTablet ? 24 : 0,
@@ -170,14 +169,14 @@ export default function CostCalculator() {
       <div
         style={{
           width: isMobile || isTablet ? "100%" : "50%",
-          minHeight: calculatedHeight > 0 ? `${calculatedHeight}px` : "642px",
-          maxHeight: calculatedHeight > 0 ? `${calculatedHeight}px` : "820px",
+          display: "flex",
+          flexDirection: "column",
+          height: "100%",
           backgroundColor: "#FFFFFF",
           overflow: "hidden",
           borderRadius: 16,
           paddingLeft: isMobile ? 20 : 40,
           paddingRight: isMobile ? 20 : 40,
-
           margin: isMobile || isTablet ? "0 auto" : undefined,
           maxWidth: isMobile || isTablet ? "600px" : undefined,
           justifyContent: "center",
@@ -186,7 +185,13 @@ export default function CostCalculator() {
       >
         {/* Step indicator */}
         {step <= 4 && (
-          <Frame col w="100%" pt={isMobile ? 24 : 40} pb={isMobile ? 32 : 48}>
+          <div
+            className="flex flex-col w-[100%]"
+            style={{
+              paddingTop: isMobile ? 20 : 40,
+              paddingBottom: isMobile ? 24 : 48,
+            }}
+          >
             <div
               style={{
                 display: "flex",
@@ -239,7 +244,7 @@ export default function CostCalculator() {
                 );
               })}
             </div>
-          </Frame>
+          </div>
         )}
 
         {/* Steps */}

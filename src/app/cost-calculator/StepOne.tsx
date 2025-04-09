@@ -50,13 +50,15 @@ export default function StepOne({ scopes, setScopes, onNext }: StepOneProps) {
 
   return (
     <>
-      <Frame col w="100%">
-        <Heading2 fontColor={colors.neutral[950]} pb={8}>
-          프로젝트 범위를 알려주세요.
-        </Heading2>
-        <Body1 fontColor={colors.neutral[500]}>
-          프로젝트에 필요한 부분을 전부 체크해주세요.
-        </Body1>
+      <Frame col w="100%" flex={1} overflow="scroll">
+        <div>
+          <Heading2 fontColor={colors.neutral[950]} pb={8}>
+            프로젝트 범위를 알려주세요.
+          </Heading2>
+          <Body1 fontColor={colors.neutral[500]}>
+            프로젝트에 필요한 부분을 전부 체크해주세요.
+          </Body1>
+        </div>
         <Frame col w="100%" gap={16} py={32}>
           {STEP_OPTIONS.map((opt) => {
             const checked = scopes.includes(opt);
@@ -72,9 +74,7 @@ export default function StepOne({ scopes, setScopes, onNext }: StepOneProps) {
                   padding: "16px 20px",
                   borderRadius: 8,
                   cursor: "pointer",
-                  boxShadow: checked
-                    ? "0px 0px 0px 2px #5288F9"
-                    : "0px 0px 0px 2px transparent",
+                  border: checked ? "2px solid #5288F9" : "2px solid #ffffff",
                 }}
               >
                 {checked ? <CheckedIcon /> : <UncheckedIcon />}
@@ -84,7 +84,7 @@ export default function StepOne({ scopes, setScopes, onNext }: StepOneProps) {
           })}
         </Frame>
       </Frame>
-      <Frame pb={40}>
+      <Frame pb={40} alignment="left" w="100%">
         <button
           onClick={onNext}
           disabled={isDisabled}
