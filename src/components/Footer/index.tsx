@@ -155,7 +155,7 @@ const Footer = () => {
                     mobile={{ fontSize: 12, lineHeight: "18px" }}
                     fontColor={colors.neutral[400]}
                   >
-                    사업자등록번호 467-34-00514
+                    사업자등록번호 537-81-02834
                   </Text>
                 </Frame>
                 <Text
